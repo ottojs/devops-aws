@@ -1,0 +1,46 @@
+
+variable "name" {
+  type        = string
+  description = "VPC Name"
+}
+
+variable "region" {
+  type        = string
+  description = "Region"
+}
+
+variable "cidr" {
+  type = string
+}
+
+variable "kms_key" {
+  type = object({
+    id  = string
+    arn = string
+  })
+  description = "KMS Key Object"
+}
+
+variable "subnets_public" {
+  type = list(object({
+    name = string
+    az   = string
+    cidr = string
+  }))
+}
+
+variable "subnets_private" {
+  type = list(object({
+    name = string
+    az   = string
+    cidr = string
+  }))
+}
+
+variable "remote_cidr" {
+  type = string
+}
+
+variable "tag_app" {
+  type = string
+}
