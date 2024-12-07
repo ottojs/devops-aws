@@ -37,8 +37,8 @@ variable "subnets_private" {
   }))
 }
 
-variable "remote_cidr" {
-  type = string
+variable "allowed_cidrs" {
+  type = list(string)
 }
 
 variable "tag_app" {

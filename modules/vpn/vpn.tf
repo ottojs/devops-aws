@@ -85,7 +85,7 @@ resource "aws_security_group" "entry" {
     from_port   = 443
     to_port     = 443
     protocol    = "udp"
-    cidr_blocks = [var.remote_cidr]
+    cidr_blocks = var.allowed_cidrs
     description = "ALLOW - HTTPS"
   }
 

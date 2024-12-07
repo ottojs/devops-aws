@@ -18,12 +18,12 @@ module "log_bucket" {
 }
 
 module "vpc_ohio" {
-  source      = "./modules/vpc"
-  name        = "ohio"
-  region      = "us-east-2"
-  kms_key     = module.kms_main.key
-  cidr        = "10.2.0.0/16"
-  remote_cidr = var.remote_cidr
+  source        = "./modules/vpc"
+  name          = "ohio"
+  region        = "us-east-2"
+  kms_key       = module.kms_main.key
+  cidr          = "10.2.0.0/16"
+  allowed_cidrs = var.allowed_cidrs
   subnets_public = [
     {
       name = "main"
@@ -67,16 +67,16 @@ module "vpc_ohio" {
 }
 
 module "vpn" {
-  source      = "./modules/vpn"
-  name        = "remote"
-  cidr        = "10.99.0.0/16"
-  file_key    = "key.pem"
-  file_crt    = "cert.pem"
-  kms_key     = module.kms_main.key
-  subnet      = module.vpc_ohio.subnets_private[3] # "vpn" subnet
-  vpc         = module.vpc_ohio.vpc
-  remote_cidr = var.remote_cidr
-  tag_app     = "CORE"
+  source        = "./modules/vpn"
+  name          = "remote"
+  cidr          = "10.99.0.0/16"
+  file_key      = "key.pem"
+  file_crt      = "cert.pem"
+  kms_key       = module.kms_main.key
+  subnet        = module.vpc_ohio.subnets_private[3] # "vpn" subnet
+  vpc           = module.vpc_ohio.vpc
+  allowed_cidrs = var.allowed_cidrs
+  tag_app       = "CORE"
 }
 
 module "ec2_machine_al2023" {

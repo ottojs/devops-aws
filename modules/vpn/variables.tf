@@ -41,6 +41,6 @@ variable "tag_app" {
   type = string
 }
 
-variable "remote_cidr" {
-  type = string
+variable "allowed_cidrs" {
+  type = list(string)
 }
