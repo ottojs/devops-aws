@@ -7,6 +7,18 @@ data "aws_s3_bucket" "logging" {
   bucket = "devops-log-bucket-${var.random_id}"
 }
 
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic
+resource "aws_sns_topic" "devops" {
+  name              = "devops"
+  display_name      = "devops"
+  kms_master_key_id = data.aws_kms_key.main.id
+  fifo_topic        = false # FIFO cannot deliver to email, sms, https
+  signature_version = 2
+  tags = {
+    Name = "devops"
+    App  = var.tag_app
+  }
+}
 
 # Create the VPC with:
 # - public and private subnets
