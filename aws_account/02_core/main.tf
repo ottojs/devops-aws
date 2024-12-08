@@ -93,6 +93,18 @@ module "vpc_ohio" {
 #   tag_app       = var.tag_app
 # }
 
+# Redis/ValKey In-Memory Cache
+# WARNING: This is for testing only and will be replaced with ValKey v8.x soon
+# For now, it's Redis v7.1.x
+# More info: https://valkey.io/blog/valkey-8-ga/
+module "db_valkey" {
+  source    = "../../modules/db_valkey"
+  name      = "my-redis-but-valkey-soon"
+  passwords = ["letsusevalkeynow2024"]
+  vpc       = module.vpc_ohio.vpc
+  subnets   = module.vpc_ohio.subnets_private
+}
+
 # EC2 Machine - Amazon Linux 2023 (RedHat-based)
 module "ec2_machine_al2023" {
   source               = "../../modules/ec2"
