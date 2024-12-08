@@ -14,6 +14,12 @@ terraform {
       version = "5.80.0"
     }
   }
+  backend "s3" {
+    bucket         = "devops-terraform-state-bucket-[RANDOM-ID-HERE-FROM-STEP-1]"
+    region         = "us-east-2"
+    key            = "core/terraform.tfstate"
+    dynamodb_table = "devops-terraform-state"
+  }
 }
 
 provider "aws" {

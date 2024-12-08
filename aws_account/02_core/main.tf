@@ -1,27 +1,12 @@
-
-module "kms_main" {
-  source      = "./modules/kms_key_region_symmetric"
-  name        = "main"
-  description = "Main Customer-Managed Key"
-  iam_user    = var.iam_user
-  tag_app     = "CORE"
-}
-
-module "log_bucket" {
-  source              = "./modules/bucket_private"
-  name                = "log-bucket"
-  random_id           = var.random_id
-  kms_key             = module.kms_main.key
-  log_bucket_id       = "none"
-  log_bucket_disabled = true
-  tag_app             = "CORE"
+data "aws_kms_key" "main" {
+  key_id = "alias/main"
 }
 
 module "vpc_ohio" {
-  source        = "./modules/vpc"
+  source        = "../../modules/vpc"
   name          = "ohio"
   region        = "us-east-2"
-  kms_key       = module.kms_main.key
+  kms_key       = data.aws_kms_key.main
   cidr          = "10.2.0.0/16"
   allowed_cidrs = var.allowed_cidrs
   subnets_public = [
@@ -63,24 +48,28 @@ module "vpc_ohio" {
       cidr = "10.2.99.0/24"
     }
   ]
-  tag_app = "CORE"
+  tag_app = var.tag_app
 }
 
-module "vpn" {
-  source        = "./modules/vpn"
-  name          = "remote"
-  cidr          = "10.99.0.0/16"
-  file_key      = "key.pem"
-  file_crt      = "cert.pem"
-  kms_key       = module.kms_main.key
-  subnet        = module.vpc_ohio.subnets_private[3] # "vpn" subnet
-  vpc           = module.vpc_ohio.vpc
-  allowed_cidrs = var.allowed_cidrs
-  tag_app       = "CORE"
-}
+# Setting up a VPN has a fairly high cost
+# You probably don't need it and if you do, it can be enabled temporarily
+# To use it, run "./script_generate_cert.sh" and uncomment this section
+#
+# module "vpn" {
+#   source        = "../../modules/vpn"
+#   name          = "remote"
+#   cidr          = "10.99.0.0/16"
+#   file_key      = "key.pem"
+#   file_crt      = "cert.pem"
+#   kms_key       = data.aws_kms_key.main
+#   subnet        = module.vpc_ohio.subnets_private[3] # "vpn" subnet
+#   vpc           = module.vpc_ohio.vpc
+#   allowed_cidrs = var.allowed_cidrs
+#   tag_app       = var.tag_app
+# }
 
 module "ec2_machine_al2023" {
-  source               = "./modules/ec2"
+  source               = "../../modules/ec2"
   name                 = "al2023-machine"
   region               = "us-east-2"
   access               = "private"
@@ -92,6 +81,6 @@ module "ec2_machine_al2023" {
   security_groups      = [module.vpc_ohio.security_group.id]
   iam_instance_profile = aws_iam_instance_profile.ec2_session_manager
   userdata             = "userdata/userdata_rhel.sh"
-  kms_key              = module.kms_main.key
-  tag_app              = "CORE"
+  kms_key              = data.aws_kms_key.main
+  tag_app              = var.tag_app
 }
