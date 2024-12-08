@@ -1,4 +1,3 @@
-
 # Before First Run
 # tofu init
 #
@@ -15,7 +14,7 @@ terraform {
     }
   }
   backend "s3" {
-    bucket         = "devops-terraform-state-bucket-[RANDOM-ID-HERE-FROM-STEP-1]"
+    bucket         = "devops-terraform-state-bucket-${var.random_id}"
     region         = "us-east-2"
     key            = "core/terraform.tfstate"
     dynamodb_table = "devops-terraform-state"

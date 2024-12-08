@@ -1,11 +1,19 @@
+
+# Import the main key from Step 1 to use it here
 data "aws_kms_key" "main" {
   key_id = "alias/main"
 }
 
+# Create the VPC with:
+# - public and private subnets
+# - NAT gateway, Internet gateway, Network ACLs
+# - empty default security group
+# - "main" security group as a starting point (HTTP, HTTPS, SSH)
+# - VPC flow logs in CloudWatch
 module "vpc_ohio" {
   source        = "../../modules/vpc"
   name          = "ohio"
-  region        = "us-east-2"
+  region        = data.aws_region.current.name
   kms_key       = data.aws_kms_key.main
   cidr          = "10.2.0.0/16"
   allowed_cidrs = var.allowed_cidrs
@@ -42,18 +50,18 @@ module "vpc_ohio" {
       az   = "c"
       cidr = "10.2.13.0/24"
     },
-    {
-      name = "vpn"
-      az   = "a"
-      cidr = "10.2.99.0/24"
-    }
+    # {
+    #   name = "vpn"
+    #   az   = "a"
+    #   cidr = "10.2.99.0/24"
+    # }
   ]
   tag_app = var.tag_app
 }
 
 # Setting up a VPN has a fairly high cost
 # You probably don't need it and if you do, it can be enabled temporarily
-# To use it, run "./script_generate_cert.sh" and uncomment this section
+# See the README.md file for more instructions
 #
 # module "vpn" {
 #   source        = "../../modules/vpn"
@@ -68,10 +76,11 @@ module "vpc_ohio" {
 #   tag_app       = var.tag_app
 # }
 
+# EC2 Machine - Amazon Linux 2023 (RedHat-based)
 module "ec2_machine_al2023" {
   source               = "../../modules/ec2"
   name                 = "al2023-machine"
-  region               = "us-east-2"
+  region               = data.aws_region.current.name
   access               = "private"
   subnet_id            = module.vpc_ohio.subnets_private[0].id
   os                   = "al2023_241111"
