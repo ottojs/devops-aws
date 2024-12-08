@@ -1,8 +1,12 @@
 
-# Import the main key from Step 1 to use it here
+# Import the main key and logging bucket from Step 1 to use it here
 data "aws_kms_key" "main" {
   key_id = "alias/main"
 }
+data "aws_s3_bucket" "logging" {
+  bucket = "devops-log-bucket-${var.random_id}"
+}
+
 
 # Create the VPC with:
 # - public and private subnets
@@ -17,6 +21,7 @@ module "vpc_ohio" {
   kms_key       = data.aws_kms_key.main
   cidr          = "10.2.0.0/16"
   allowed_cidrs = var.allowed_cidrs
+  log_bucket    = data.aws_s3_bucket.logging
   subnets_public = [
     {
       name = "main"

@@ -21,6 +21,12 @@ variable "kms_key" {
   description = "KMS Key Object"
 }
 
+variable "log_bucket" {
+  type = object({
+    id = string
+  })
+}
+
 variable "subnets_public" {
   type = list(object({
     name = string
