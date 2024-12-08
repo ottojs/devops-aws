@@ -8,7 +8,7 @@ resource "aws_default_network_acl" "main" {
 
   ingress {
     protocol   = "tcp"
-    rule_no    = 101
+    rule_no    = 10
     action     = "allow"
     cidr_block = "0.0.0.0/0"
     from_port  = 80
@@ -17,7 +17,7 @@ resource "aws_default_network_acl" "main" {
 
   ingress {
     protocol   = "tcp"
-    rule_no    = 102
+    rule_no    = 20
     action     = "allow"
     cidr_block = "0.0.0.0/0"
     from_port  = 443
@@ -27,7 +27,7 @@ resource "aws_default_network_acl" "main" {
   # For VPN
   ingress {
     protocol   = "udp"
-    rule_no    = 103
+    rule_no    = 30
     action     = "allow"
     cidr_block = "0.0.0.0/0"
     from_port  = 443
@@ -37,7 +37,7 @@ resource "aws_default_network_acl" "main" {
   # For SSH in VPC
   ingress {
     protocol   = "tcp"
-    rule_no    = 104
+    rule_no    = 40
     action     = "allow"
     cidr_block = aws_vpc.main.cidr_block
     from_port  = 22
@@ -47,7 +47,7 @@ resource "aws_default_network_acl" "main" {
   # For Return-Traffic
   ingress {
     protocol   = "tcp"
-    rule_no    = 105
+    rule_no    = 60
     action     = "allow"
     cidr_block = "0.0.0.0/0"
     from_port  = 4096
@@ -56,7 +56,7 @@ resource "aws_default_network_acl" "main" {
 
   egress {
     protocol   = -1
-    rule_no    = 201
+    rule_no    = 10
     action     = "allow"
     cidr_block = "0.0.0.0/0"
     from_port  = 0
@@ -65,7 +65,7 @@ resource "aws_default_network_acl" "main" {
 
   egress {
     protocol        = -1
-    rule_no         = 202
+    rule_no         = 20
     action          = "allow"
     ipv6_cidr_block = "::/0"
     from_port       = 0

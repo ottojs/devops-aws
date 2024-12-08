@@ -9,7 +9,7 @@ resource "aws_flow_log" "flowlogs" {
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group
 resource "aws_cloudwatch_log_group" "flowlogs" {
-  name       = "vpc-flow-logs-${aws_vpc.main.id}"
+  name       = "vpc/flow-logs/${aws_vpc.main.id}"
   kms_key_id = var.kms_key.arn
 }
 
@@ -29,7 +29,7 @@ data "aws_iam_policy_document" "assume_role" {
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role
 resource "aws_iam_role" "flowlogs" {
-  name               = "vpc-flow-logs-${aws_vpc.main.id}"
+  name               = "tf-role-vpc-flow-logs-${aws_vpc.main.id}"
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
@@ -57,7 +57,7 @@ data "aws_iam_policy_document" "flowlogs" {
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy
 resource "aws_iam_role_policy" "flowlogs" {
-  name   = "vpc-flow-logs-${aws_vpc.main.id}"
+  name   = "tf-policy-vpc-flow-logs-${aws_vpc.main.id}"
   role   = aws_iam_role.flowlogs.id
   policy = data.aws_iam_policy_document.flowlogs.json
 }
