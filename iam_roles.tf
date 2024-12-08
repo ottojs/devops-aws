@@ -17,7 +17,7 @@ data "aws_iam_policy_document" "ec2_assume_role" {
 # Role
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role
 resource "aws_iam_role" "ec2_session_manager" {
-  name               = "instance-profile-sessionmanager"
+  name               = "tf-role-ec2"
   assume_role_policy = data.aws_iam_policy_document.ec2_assume_role.json
 }
 
