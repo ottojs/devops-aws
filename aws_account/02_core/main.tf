@@ -143,3 +143,10 @@ module "ec2_machine_al2023" {
   kms_key              = data.aws_kms_key.main
   tag_app              = var.tag_app
 }
+
+module "ecs_cluster_fargate" {
+  source  = "../../modules/ecs_cluster_fargate"
+  name    = "tf-ecs-cluster-fargate"
+  kms_key = data.aws_kms_key.main
+  tag_app = var.tag_app
+}
