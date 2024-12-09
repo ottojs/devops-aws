@@ -93,6 +93,17 @@ module "vpc_ohio" {
 #   tag_app       = var.tag_app
 # }
 
+# PostgreSQL Database
+module "db_postgresql" {
+  source         = "../../modules/db_postgresql"
+  name           = "my-postgresql-17"
+  vpc            = module.vpc_ohio.vpc
+  subnets        = module.vpc_ohio.subnets_private
+  kms_key        = data.aws_kms_key.main
+  admin_username = "customadmin"
+  db_name        = "myapp"
+}
+
 # Redis/ValKey In-Memory Cache
 # WARNING: This is for testing only and will be replaced with ValKey v8.x soon
 # For now, it's Redis v7.1.x
