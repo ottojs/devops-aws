@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 # Settings
+export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --output text --query 'Account');
+export AWS_REGION=$(aws ec2 describe-availability-zones --output text --query 'AvailabilityZones[0].[RegionName]');
 export ARCH=$(arch);
 if [ $ARCH == "aarch64" ]; then
   export ARCH="arm64";
@@ -63,12 +65,6 @@ rpm --checksig ./amazon-ssm-agent.rpm.sig ./amazon-ssm-agent.rpm;
 # v3.3.987.0 - 2024-12-08
 amazon-ssm-agent --version > /home/ec2-user/amazon-ssm-agent-info.txt;
 
-##################
-##### Docker #####
-##################
-# Used for container builds (ECR, ECS, etc.)
-yum install -y docker;
-
 #########################
 ##### Node.js v22.x #####
 #########################
@@ -91,6 +87,32 @@ yum check-update;
 yum install -y nodejs;
 node --version;
 npm --version;
+
+#############################
+##### Container Builder #####
+#############################
+yum install -y docker git;
+systemctl enable docker --now;
+cat << EOF > /root/container_build.sh;
+#!/usr/bin/env bash
+
+# Verify arguments
+if [ -z \$1 ]; then
+  echo "Usage: ./\${0} IMAGE_NAME IMAGE_TAG";
+  exit 1;
+fi
+if [ -z \$2 ]; then
+  echo "Usage: ./\${0} IMAGE_NAME IMAGE_TAG";
+  exit 1;
+fi
+
+# Log into AWS ECR (Elastic Container Registry)
+aws ecr get-login-password --region "${AWS_REGION}" | docker login --username AWS --password-stdin "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com";
+# Build and Push
+docker build -t "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/\${1}:\${2}" .;
+docker push "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/\${1}:\${2}";
+EOF
+chmod +x /root/container_build.sh;
 
 # All Done
 echo "=> ALL DONE";

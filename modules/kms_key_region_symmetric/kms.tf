@@ -2,11 +2,13 @@
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_alias
 resource "aws_kms_alias" "main" {
   name          = "alias/${var.name}"
   target_key_id = aws_kms_key.main.key_id
 }
 
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key
 resource "aws_kms_key" "main" {
   key_usage                = "ENCRYPT_DECRYPT"
   customer_master_key_spec = "SYMMETRIC_DEFAULT"
@@ -23,7 +25,7 @@ resource "aws_kms_key" "main" {
     Id      = "kms-${var.name}"
     Statement = [
       {
-        Sid    = "Enable IAM User Permissions"
+        Sid    = "Allow administration by root user"
         Effect = "Allow"
         Principal = {
           AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
@@ -32,7 +34,7 @@ resource "aws_kms_key" "main" {
         Resource = "*"
       },
       {
-        Sid    = "Allow administration of the key by user"
+        Sid    = "Allow administration by provided IAM user"
         Effect = "Allow"
         Principal = {
           AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:user/${var.iam_user}"
