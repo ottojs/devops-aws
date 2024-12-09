@@ -36,6 +36,10 @@ Using this software will incur costs on your AWS account. You are solely respons
 - Edit `variables.tf` with `allowed_cidrs` to your IP address or change to empty array/list
 - Edit `variables.tf` with your local SSH key
 - Edit `variables.tf` with **the same** random string ID from Step 1
+- Edit `variables.tf` with your root domain name
+- Add a hosted zone for your domain in Route 53
+- Point your root domain name servers to Route 53 hosted zone values (NS Records)
+- Add a wildcard certificate for your domain in [AWS Certificate Manager](https://us-east-2.console.aws.amazon.com/acm/home?region=us-east-2#/certificates/list). Wait for "Create records in Route 53" button and click it
 - Review the modules listed and remove any you will not use (Database, Cache, EC2 Machines, etc.)
 - You may need to tweak some settings to you liking
 

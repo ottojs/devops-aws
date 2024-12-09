@@ -76,6 +76,16 @@ module "vpc_ohio" {
   tag_app = var.tag_app
 }
 
+# External Load Balancer
+module "alb_main" {
+  source      = "../../modules/load_balancer"
+  name        = "alb-main"
+  vpc         = module.vpc_ohio.vpc
+  subnets     = module.vpc_ohio.subnets_public
+  root_domain = var.root_domain
+  tag_app     = var.tag_app
+}
+
 # Setting up a VPN has a fairly high cost
 # You probably don't need it and if you do, it can be enabled temporarily
 # See the README.md file for more instructions

@@ -44,6 +44,16 @@ resource "aws_default_network_acl" "main" {
     to_port    = 22
   }
 
+  # For ELB/EC2/ECS in VPC
+  ingress {
+    protocol   = "tcp"
+    rule_no    = 50
+    action     = "allow"
+    cidr_block = aws_vpc.main.cidr_block
+    from_port  = 8080
+    to_port    = 8080
+  }
+
   # For Return-Traffic
   ingress {
     protocol   = "tcp"

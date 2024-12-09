@@ -23,6 +23,11 @@ variable "random_id" {
   default = "RANDOM-ID-HERE-FROM-STEP-1"
 }
 
+variable "root_domain" {
+  type    = string
+  default = "example.com"
+}
+
 variable "tag_app" {
   type    = string
   default = "DEVOPS-MAIN"
