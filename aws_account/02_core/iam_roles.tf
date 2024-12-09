@@ -14,18 +14,20 @@ data "aws_iam_policy_document" "ec2_assume_role" {
   }
 }
 
-# Role
+# Role - EC2/SSM
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role
 resource "aws_iam_role" "ec2_session_manager" {
   name               = "tf-role-ec2"
   assume_role_policy = data.aws_iam_policy_document.ec2_assume_role.json
 }
 
-# Policy
+# Policy - EC2/SSM
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment
 resource "aws_iam_role_policy_attachment" "ec2_session_manager" {
-  role       = aws_iam_role.ec2_session_manager.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+  role = aws_iam_role.ec2_session_manager.name
+  # This is too lightweight and does not support encrypted CloudWatch/S3 Encrypted Logs
+  # policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM"
 }
 
 # Instance Profile (from Role)

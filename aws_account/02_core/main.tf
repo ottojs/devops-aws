@@ -127,13 +127,29 @@ module "db_valkey" {
 }
 
 # EC2 Machine - Amazon Linux 2023 (RedHat-based)
-module "ec2_machine_al2023" {
+module "ec2_machine_al2023_x86_64" {
   source               = "../../modules/ec2"
-  name                 = "al2023-machine"
+  name                 = "al2023-machine-x86_64"
   region               = data.aws_region.current.name
   access               = "private"
   subnet_id            = module.vpc_ohio.subnets_private[0].id
-  os                   = "al2023_241111"
+  os                   = "al2023_241121"
+  arch                 = "x86_64"
+  machine              = "t3.medium"
+  ssh_key              = aws_key_pair.main.key_name
+  security_groups      = [module.vpc_ohio.security_group.id]
+  iam_instance_profile = aws_iam_instance_profile.ec2_session_manager
+  userdata             = "userdata/userdata_rhel.sh"
+  kms_key              = data.aws_kms_key.main
+  tag_app              = var.tag_app
+}
+module "ec2_machine_al2023_arm64" {
+  source               = "../../modules/ec2"
+  name                 = "al2023-machine-arm64"
+  region               = data.aws_region.current.name
+  access               = "private"
+  subnet_id            = module.vpc_ohio.subnets_private[0].id
+  os                   = "al2023_241121"
   arch                 = "arm64"
   machine              = "t4g.medium"
   ssh_key              = aws_key_pair.main.key_name

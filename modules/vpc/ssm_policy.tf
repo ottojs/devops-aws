@@ -30,6 +30,7 @@ resource "aws_ssm_document" "sessions" {
 }
 
 resource "aws_cloudwatch_log_group" "ssm_sessions" {
-  name       = "/aws/ssm/sessions"
-  kms_key_id = var.kms_key.arn
+  name         = "/aws/ssm/sessions"
+  kms_key_id   = var.kms_key.arn
+  skip_destroy = true
 }

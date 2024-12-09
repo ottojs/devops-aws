@@ -1,14 +1,19 @@
 #!/usr/bin/env bash
 
-# TODO: Dynamic
 # Settings
-export ARCH="arm64";
+export ARCH=$(arch);
+if [ $ARCH == "aarch64" ]; then
+  export ARCH="arm64";
+fi
 
 echo "=> UPGRADE PACKAGES";
 yum update -y;
 
-# Amazon SSM
+######################
+##### Amazon SSM #####
+######################
 # https://docs.aws.amazon.com/systems-manager/latest/userguide/verify-agent-signature.html
+# We hardcode this for security purposes, because a dynamic URI download could change
 echo "=> INSTALL AMAZON SSM";
 cat << EOF > ./amazon-ssm-agent.gpg;
 -----BEGIN PGP PUBLIC KEY BLOCK-----
@@ -48,10 +53,25 @@ wget --quiet "https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/lin
 wget --quiet "https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_${ARCH}/amazon-ssm-agent.rpm.sig";
 # TODO: Exit on failure
 rpm --checksig ./amazon-ssm-agent.rpm.sig ./amazon-ssm-agent.rpm;
+#
+# Debug Commands
 # systemctl status amazon-ssm-agent;
 # journalctl -u amazon-ssm-agent -n 50;
 
-# Node.js v22.x
+# Capture SSM Agent Version
+# It's core to connecting and may be useful for debugging
+# v3.3.987.0 - 2024-12-08
+amazon-ssm-agent --version > /home/ec2-user/amazon-ssm-agent-info.txt;
+
+##################
+##### Docker #####
+##################
+# Used for container builds (ECR, ECS, etc.)
+yum install -y docker;
+
+#########################
+##### Node.js v22.x #####
+#########################
 # https://github.com/nodesource/distributions/blob/master/scripts/rpm/setup_22.x
 echo "=> INSTALL NODEJS";
 NODE_VERSION="22.x";
@@ -74,4 +94,3 @@ npm --version;
 
 # All Done
 echo "=> ALL DONE";
-touch /home/ec2-user/userdata.txt;

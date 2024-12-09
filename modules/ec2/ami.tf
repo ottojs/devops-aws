@@ -4,16 +4,16 @@ locals {
     #############################
     ##### Amazon Linux 2023 #####
     #############################
-    al2023_241111 = {
+    al2023_241121 = {
       x86_64 = {
-        # al2023-ami-2023.6.20241111.0-kernel-6.1-x86_64
-        "us-east-1" = "ami-012967cc5a8c9f891"
-        "us-east-2" = "ami-0942ecd5d85baa812"
+        # al2023-ami-2023.6.20241121.0-kernel-6.1-x86_64
+        "us-east-1" = "ami-0453ec754f44f9a4a"
+        "us-east-2" = "ami-0c80e2b6ccb9ad6d1"
       }
       arm64 = {
-        # al2023-ami-2023.6.20241111.0-kernel-6.1-arm64
-        "us-east-1" = "ami-055e62b4ea2fe95fd"
-        "us-east-2" = "ami-0a7c06753900acc19"
+        # al2023-ami-2023.6.20241121.0-kernel-6.1-arm64
+        "us-east-1" = "ami-0ed83e7a78a23014e"
+        "us-east-2" = "ami-0a9f08a6603f3338e"
       }
     }
   }
