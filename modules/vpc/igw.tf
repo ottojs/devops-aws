@@ -8,7 +8,7 @@ resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
   tags = {
     Name = "${var.name}-igw"
-    APP  = var.tag_app
+    App  = var.tag_app
   }
 }
 
@@ -25,7 +25,7 @@ resource "aws_route_table" "public" {
   }
   tags = {
     Name = "rt-${var.name}-public-igw"
-    APP  = var.tag_app
+    App  = var.tag_app
   }
 }
 

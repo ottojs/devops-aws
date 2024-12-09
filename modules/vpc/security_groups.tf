@@ -20,7 +20,7 @@ resource "aws_security_group" "main" {
 
   tags = {
     Name = "secgrp-main"
-    APP  = var.tag_app
+    App  = var.tag_app
   }
 
   ingress {

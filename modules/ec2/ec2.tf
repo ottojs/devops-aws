@@ -35,7 +35,7 @@ resource "aws_instance" "ec2" {
     volume_type           = "gp3"
     tags = {
       Name = "${var.name}-disk"
-      APP  = var.tag_app
+      App  = var.tag_app
     }
   }
   vpc_security_group_ids      = var.security_groups

@@ -8,7 +8,7 @@ resource "aws_eip" "nat" {
   domain = "vpc"
   tags = {
     Name = "${var.name}-nat-ip"
-    APP  = var.tag_app
+    App  = var.tag_app
   }
   depends_on = [aws_internet_gateway.igw]
 }
@@ -38,7 +38,7 @@ resource "aws_default_route_table" "private" {
   }
   tags = {
     Name = "rt-${var.name}-private-nat"
-    APP  = var.tag_app
+    App  = var.tag_app
   }
 }
 

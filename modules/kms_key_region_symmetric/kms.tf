@@ -18,7 +18,7 @@ resource "aws_kms_key" "main" {
   multi_region             = false
   deletion_window_in_days  = 7
   tags = {
-    APP = var.tag_app
+    App = var.tag_app
   }
   policy = jsonencode({
     Version = "2012-10-17"

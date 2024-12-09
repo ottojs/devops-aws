@@ -81,7 +81,7 @@ resource "aws_security_group" "postgresql" {
 
   tags = {
     Name = "secgrp-rds-postgresql"
-    APP  = var.tag_app
+    App  = var.tag_app
   }
 
   ingress {

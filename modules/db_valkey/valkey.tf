@@ -60,7 +60,7 @@ resource "aws_security_group" "valkey" {
 
   tags = {
     Name = "secgrp-db-valkey"
-    APP  = var.tag_app
+    App  = var.tag_app
   }
 
   ingress {

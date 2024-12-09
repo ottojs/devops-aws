@@ -35,7 +35,7 @@ resource "aws_lb" "main" {
   # }
 
   tags = {
-    APP = var.tag_app
+    App = var.tag_app
   }
 }
 
@@ -84,7 +84,7 @@ resource "aws_security_group" "alb" {
 
   tags = {
     Name = "secgrp-alb"
-    APP  = var.tag_app
+    App  = var.tag_app
   }
 
   ingress {

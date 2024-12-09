@@ -79,7 +79,7 @@ resource "aws_security_group" "entry" {
 
   tags = {
     Name = "secgrp-cvpn-${var.name}-entry"
-    APP  = var.tag_app
+    App  = var.tag_app
   }
 
   ingress {
@@ -107,7 +107,7 @@ resource "aws_security_group" "machine" {
 
   tags = {
     Name = "secgrp-cvpn-${var.name}-machine"
-    APP  = var.tag_app
+    App  = var.tag_app
   }
 
   ingress {

@@ -12,7 +12,7 @@ resource "aws_subnet" "public" {
   map_public_ip_on_launch = false
   tags = {
     Name = "subnet-${var.name}-public-${each.value.az}-${each.value.name}"
-    APP  = var.tag_app
+    App  = var.tag_app
   }
 }
 
@@ -25,6 +25,6 @@ resource "aws_subnet" "private" {
   map_public_ip_on_launch = false
   tags = {
     Name = "subnet-${var.name}-private-${each.value.az}-${each.value.name}"
-    APP  = var.tag_app
+    App  = var.tag_app
   }
 }

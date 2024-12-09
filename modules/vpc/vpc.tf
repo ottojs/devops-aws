@@ -11,6 +11,6 @@ resource "aws_vpc" "main" {
 
   tags = {
     Name = "vpc-${var.name}"
-    APP  = var.tag_app
+    App  = var.tag_app
   }
 }
