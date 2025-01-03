@@ -10,7 +10,7 @@ terraform {
     # https://registry.terraform.io/providers/hashicorp/aws/latest
     aws = {
       source  = "hashicorp/aws"
-      version = "5.80.0"
+      version = "5.82.2"
     }
   }
   backend "s3" {
