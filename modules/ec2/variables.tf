@@ -20,7 +20,7 @@ variable "arch" {
 
 variable "os" {
   type    = string
-  default = "al2023_241121"
+  default = "al2023_250107"
 }
 
 variable "azs" {
