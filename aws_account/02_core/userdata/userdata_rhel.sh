@@ -114,5 +114,9 @@ docker push "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/\${1}:\${2}";
 EOF
 chmod +x /root/container_build.sh;
 
+# # Optional - Used for Testing
+# yum install nginx -y;
+# systemctl enable nginx --now;
+
 # All Done
 echo "=> ALL DONE";

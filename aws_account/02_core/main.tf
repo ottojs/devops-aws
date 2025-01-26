@@ -183,3 +183,24 @@ module "ecs_service_api" {
   lb_listener = module.alb_main.listener_https
   tag_app     = var.tag_app
 }
+
+# WARNING: You want to underestimate the autoscaling CPU threshold
+# We want this to scale at 80% but put in 60% due to reporting
+# Even when CPU was pinned at 100% in the OS, only 80% was reported
+# We may consider an alternative monitoring solution in the future
+module "asg_ec2" {
+  source               = "../../modules/asg"
+  name                 = "tf-nginx-test"
+  subnets              = module.vpc_ohio.subnets_private
+  security_groups      = [module.vpc_ohio.security_group.id]
+  kms_key              = data.aws_kms_key.main
+  iam_instance_profile = aws_iam_instance_profile.ec2_session_manager
+  instance_type        = "t3.small"
+  scale_up_cpu         = 60
+  count_min            = 1
+  count_max            = 4
+  tag_app              = var.tag_app
+  # RHEL Example
+  ami           = "ami-0eb070c40e6a142a3" # AL2023 X86_64
+  userdata_file = file("./userdata/userdata_rhel.sh")
+}
