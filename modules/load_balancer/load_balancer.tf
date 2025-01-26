@@ -7,7 +7,7 @@ data "aws_acm_certificate" "main" {
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb
 resource "aws_lb" "main" {
-  name               = "main-alb"
+  name               = var.name
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.alb.id]
@@ -23,14 +23,14 @@ resource "aws_lb" "main" {
   # needs KMS AWS-managed
   # delivery.logs.amazonaws.com on KMS Policy
   # access_logs {
-  #   bucket  = var.log_bucket_id
-  #   prefix  = "loadbalancers-access/main-alb"
+  #   bucket  = var.log_bucket.id
+  #   prefix  = "devops/aws/load-balancer/${var.name}/access"
   #   enabled = true
   # }
 
   # connection_logs {
-  #   bucket  = var.log_bucket_id
-  #   prefix  = "loadbalancers-connection/main-alb"
+  #   bucket  = var.log_bucket.id
+  #   prefix  = "devops/aws/load-balancer/${var.name}/connection"
   #   enabled = true
   # }
 

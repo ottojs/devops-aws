@@ -15,9 +15,10 @@ resource "aws_ecs_cluster" "main" {
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group
 resource "aws_cloudwatch_log_group" "main" {
-  name         = "/ecs/${var.name}"
-  kms_key_id   = var.kms_key.arn
-  skip_destroy = true
+  name              = "devops/aws/ecs/${var.name}"
+  kms_key_id        = var.kms_key.arn
+  skip_destroy      = true
+  retention_in_days = var.log_retention_days
   tags = {
     App = var.tag_app
   }

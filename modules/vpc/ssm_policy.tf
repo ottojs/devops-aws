@@ -13,9 +13,9 @@ resource "aws_ssm_document" "sessions" {
     inputs = {
       kmsKeyId                    = var.kms_key.arn
       s3BucketName                = var.log_bucket.id
-      s3KeyPrefix                 = "aws-ssm-sessions"
+      s3KeyPrefix                 = "devops/aws/ssm/sessions"
       s3EncryptionEnabled         = true
-      cloudWatchLogGroupName      = "/aws/ssm/sessions"
+      cloudWatchLogGroupName      = "devops/aws/ssm/sessions"
       cloudWatchEncryptionEnabled = true
       cloudWatchStreamingEnabled  = true
       idleSessionTimeout          = 10
@@ -30,7 +30,8 @@ resource "aws_ssm_document" "sessions" {
 }
 
 resource "aws_cloudwatch_log_group" "ssm_sessions" {
-  name         = "/aws/ssm/sessions"
-  kms_key_id   = var.kms_key.arn
-  skip_destroy = true
+  name              = "devops/aws/ssm/sessions"
+  kms_key_id        = var.kms_key.arn
+  skip_destroy      = true
+  retention_in_days = var.log_retention_days
 }

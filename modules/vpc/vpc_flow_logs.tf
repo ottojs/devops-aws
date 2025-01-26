@@ -9,9 +9,10 @@ resource "aws_flow_log" "flowlogs" {
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group
 resource "aws_cloudwatch_log_group" "flowlogs" {
-  name         = "vpc/flow-logs/${aws_vpc.main.id}"
-  kms_key_id   = var.kms_key.arn
-  skip_destroy = true
+  name              = "devops/aws/vpc/${aws_vpc.main.id}/flow-logs"
+  kms_key_id        = var.kms_key.arn
+  skip_destroy      = true
+  retention_in_days = var.log_retention_days
 }
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document

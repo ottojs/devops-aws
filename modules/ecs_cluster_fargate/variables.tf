@@ -10,6 +10,10 @@ variable "kms_key" {
   })
 }
 
+variable "log_retention_days" {
+  type = number
+}
+
 variable "tag_app" {
   type = string
 }

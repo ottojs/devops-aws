@@ -27,13 +27,14 @@ resource "aws_sns_topic" "devops" {
 # - "main" security group as a starting point (HTTP, HTTPS, SSH)
 # - VPC flow logs in CloudWatch
 module "vpc_ohio" {
-  source        = "../../modules/vpc"
-  name          = "ohio"
-  region        = data.aws_region.current.name
-  kms_key       = data.aws_kms_key.main
-  cidr          = "10.2.0.0/16"
-  allowed_cidrs = var.allowed_cidrs
-  log_bucket    = data.aws_s3_bucket.logging
+  source             = "../../modules/vpc"
+  name               = "ohio"
+  region             = data.aws_region.current.name
+  kms_key            = data.aws_kms_key.main
+  cidr               = "10.2.0.0/16"
+  allowed_cidrs      = var.allowed_cidrs
+  log_bucket         = data.aws_s3_bucket.logging
+  log_retention_days = var.log_retention_days
   subnets_public = [
     {
       name = "main"
@@ -83,6 +84,7 @@ module "alb_main" {
   vpc         = module.vpc_ohio.vpc
   subnets     = module.vpc_ohio.subnets_public
   root_domain = var.root_domain
+  log_bucket  = data.aws_s3_bucket.logging
   tag_app     = var.tag_app
 }
 
@@ -161,10 +163,11 @@ module "ec2_machine_al2023_arm64" {
 }
 
 module "ecs_cluster_fargate" {
-  source  = "../../modules/ecs_cluster_fargate"
-  name    = "tf-ecs-cluster-fargate"
-  kms_key = data.aws_kms_key.main
-  tag_app = var.tag_app
+  source             = "../../modules/ecs_cluster_fargate"
+  name               = "tf-ecs-cluster-fargate"
+  kms_key            = data.aws_kms_key.main
+  log_retention_days = var.log_retention_days
+  tag_app            = var.tag_app
 }
 
 module "ecs_service_api" {

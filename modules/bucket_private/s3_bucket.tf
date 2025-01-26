@@ -54,5 +54,5 @@ resource "aws_s3_bucket_logging" "bucket_private" {
   count         = var.log_bucket_disabled ? 0 : 1
   bucket        = aws_s3_bucket.bucket_private.id
   target_bucket = var.log_bucket_id
-  target_prefix = "${var.name}-${var.random_id}/"
+  target_prefix = "devops/aws/s3/${var.name}-${var.random_id}/"
 }

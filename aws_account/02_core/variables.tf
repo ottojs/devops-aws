@@ -28,6 +28,11 @@ variable "root_domain" {
   default = "example.com"
 }
 
+variable "log_retention_days" {
+  type    = number
+  default = 365
+}
+
 variable "tag_app" {
   type    = string
   default = "DEVOPS-MAIN"

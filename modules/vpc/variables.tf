@@ -47,6 +47,10 @@ variable "allowed_cidrs" {
   type = list(string)
 }
 
+variable "log_retention_days" {
+  type = number
+}
+
 variable "tag_app" {
   type = string
 }
