@@ -1,7 +1,7 @@
 
 # Fargate Platform Versions
 # https://docs.aws.amazon.com/AmazonECS/latest/developerguide/platform-fargate.html
-
+#
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_service
 resource "aws_ecs_service" "main" {
   # TODO: Review
@@ -13,16 +13,17 @@ resource "aws_ecs_service" "main" {
   task_definition = aws_ecs_task_definition.main.arn
   desired_count   = 1
   ###
-  # TODO
+  # TODO: Variable for Switching
   launch_type      = "FARGATE"
   platform_version = "1.4.0"
-  #launch_type = "EC2"
+  # launch_type    = "EC2"
   ###
 
   # TODO: Review
   force_new_deployment = false
   #   iam_role        = aws_iam_role.main.arn
-  #   depends_on      = [aws_iam_role_policy.main]
+  # TODO: Prevent Race Condition
+  # depends_on      = [aws_iam_role_policy.main]
   wait_for_steady_state = false
 
   # Only in EC2

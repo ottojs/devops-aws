@@ -171,17 +171,19 @@ module "ecs_cluster_fargate" {
 }
 
 module "ecs_service_api" {
-  source      = "../../modules/ecs_service"
-  name        = "api"
-  tag         = "0.0.1"
-  arch        = "X86_64" # ARM64
-  ecs_cluster = module.ecs_cluster_fargate.cluster
-  vpc         = module.vpc_ohio.vpc
-  subnets     = module.vpc_ohio.subnets_private
-  kms_key     = data.aws_kms_key.main
-  root_domain = var.root_domain
-  lb_listener = module.alb_main.listener_https
-  tag_app     = var.tag_app
+  source        = "../../modules/ecs_service"
+  public        = true
+  name          = "api"
+  tag           = "0.0.1"
+  arch          = "X86_64" # ARM64
+  ecs_cluster   = module.ecs_cluster_fargate.cluster
+  vpc           = module.vpc_ohio.vpc
+  subnets       = module.vpc_ohio.subnets_private
+  kms_key       = data.aws_kms_key.main
+  root_domain   = var.root_domain
+  load_balancer = module.alb_main.load_balancer
+  lb_listener   = module.alb_main.listener_https
+  tag_app       = var.tag_app
 }
 
 # WARNING: You want to underestimate the autoscaling CPU threshold

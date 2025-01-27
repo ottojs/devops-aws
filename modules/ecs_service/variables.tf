@@ -62,10 +62,22 @@ variable "root_domain" {
   type = string
 }
 
+variable "load_balancer" {
+  type = object({
+    dns_name = string
+    zone_id  = string
+  })
+}
+
 variable "lb_listener" {
   type = object({
     arn = string
   })
+}
+
+variable "public" {
+  type    = bool
+  default = false
 }
 
 variable "tag_app" {

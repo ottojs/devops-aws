@@ -1,7 +1,7 @@
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_task_definition
 resource "aws_ecs_task_definition" "main" {
-  family             = "task"
+  family             = var.name
   network_mode       = "awsvpc" # none, bridge, awsvpc, host
   execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
 

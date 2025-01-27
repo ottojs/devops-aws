@@ -63,6 +63,20 @@ However, if you really need a VPN connection into your AWS VPC, you can enable a
 - The file `downloaded-client-config.ovpn` is now ready to be imported into OpenVPN
 - [Download the OpenVPN client](https://openvpn.net/client/) on their website (if needed)
 
+### Publishing a Container Image
+
+Edit the below commands to match your account ID, region, etc.  
+There's also a helper script in the bastion host.
+
+#### Podman / Docker
+
+```bash
+aws ecr get
+aws ecr get-login-password --region "REGION" | docker login --username AWS --password-stdin "ACCOUNTID.dkr.ecr.REGION.amazonaws.com";
+podman build -t ACCOUNTID.dkr.ecr.REGION.amazonaws.com/NAME:TAG .
+podman push ACCOUNTID.dkr.ecr.REGION.amazonaws.com/NAME:TAG
+```
+
 ## TODO
 
 - Increase KMS Key deletion to max days for grace period

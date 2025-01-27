@@ -19,10 +19,12 @@ resource "aws_security_group" "main" {
   }
 
   egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = [var.vpc.cidr_block]
+    from_port = 0
+    to_port   = 0
+    protocol  = "-1"
+    # TODO: Refine
+    # This is required for Secrets Manager
+    cidr_blocks = ["0.0.0.0/0"] #[var.vpc.cidr_block]
     description = "ALLOW - All Outbound"
   }
 }
