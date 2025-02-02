@@ -167,7 +167,7 @@ module "ec2_machine_al2023_arm64" {
 ###################
 
 module "ecs_cluster_fargate" {
-  source             = "../../modules/ecs_cluster_fargate"
+  source             = "../../modules/ecs_cluster"
   name               = "tf-ecs-cluster-fargate"
   type               = "FARGATE"
   kms_key            = data.aws_kms_key.main
@@ -227,7 +227,7 @@ module "asg_ec2" {
 }
 
 module "ecs_cluster_ec2" {
-  source             = "../../modules/ecs_cluster_fargate"
+  source             = "../../modules/ecs_cluster"
   name               = "tf-ecs-cluster-ec2"
   type               = "EC2"
   asg                = module.asg_ec2.asg
