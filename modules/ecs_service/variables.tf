@@ -80,6 +80,15 @@ variable "public" {
   default = false
 }
 
+# FARGATE or EC2
+variable "type" {
+  type = string
+}
+
+variable "priority" {
+  type = number
+}
+
 variable "tag_app" {
   type = string
 }

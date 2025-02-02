@@ -6,7 +6,7 @@
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/launch_template
 resource "aws_launch_template" "asg" {
   # name_prefix = "lt-${var.name}-"
-  name                                 = "lt-${var.name}"
+  name                                 = "tf-lt-${var.name}"
   disable_api_stop                     = false
   disable_api_termination              = false
   image_id                             = var.ami
@@ -72,7 +72,7 @@ resource "aws_launch_template" "asg" {
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_policy
 resource "aws_autoscaling_policy" "example" {
-  name                      = "asg-policy-${var.name}"
+  name                      = "tf-asg-policy-${var.name}"
   autoscaling_group_name    = aws_autoscaling_group.asg.name
   policy_type               = "TargetTrackingScaling"
   estimated_instance_warmup = var.seconds_warmup
@@ -91,7 +91,8 @@ resource "aws_autoscaling_policy" "example" {
 #
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_group
 resource "aws_autoscaling_group" "asg" {
-  name_prefix          = "asg-${var.name}"
+  # name_prefix        = "tf-asg-${var.name}-"
+  name                 = "tf-asg-${var.name}"
   min_size             = var.count_min
   max_size             = var.count_max
   termination_policies = ["OldestInstance"]

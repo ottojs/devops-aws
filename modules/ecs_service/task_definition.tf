@@ -5,9 +5,7 @@ resource "aws_ecs_task_definition" "main" {
   network_mode       = "awsvpc" # none, bridge, awsvpc, host
   execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
 
-  # TODO
-  #requires_compatibilities = ["EC2"]
-  requires_compatibilities = ["FARGATE"]
+  requires_compatibilities = [var.type]
   cpu                      = var.cpu
   memory                   = var.ram
   # ephemeral_storage {

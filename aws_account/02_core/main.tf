@@ -140,7 +140,7 @@ module "ec2_machine_al2023_x86_64" {
   machine              = "t3.medium"
   ssh_key              = aws_key_pair.main.key_name
   security_groups      = [module.vpc_ohio.security_group.id]
-  iam_instance_profile = aws_iam_instance_profile.ec2_session_manager
+  iam_instance_profile = aws_iam_instance_profile.ec2
   userdata             = "userdata/userdata_rhel.sh"
   kms_key              = data.aws_kms_key.main
   tag_app              = var.tag_app
@@ -156,24 +156,31 @@ module "ec2_machine_al2023_arm64" {
   machine              = "t4g.medium"
   ssh_key              = aws_key_pair.main.key_name
   security_groups      = [module.vpc_ohio.security_group.id]
-  iam_instance_profile = aws_iam_instance_profile.ec2_session_manager
+  iam_instance_profile = aws_iam_instance_profile.ec2
   userdata             = "userdata/userdata_rhel.sh"
   kms_key              = data.aws_kms_key.main
   tag_app              = var.tag_app
 }
 
+###################
+##### FARGATE #####
+###################
+
 module "ecs_cluster_fargate" {
   source             = "../../modules/ecs_cluster_fargate"
   name               = "tf-ecs-cluster-fargate"
+  type               = "FARGATE"
   kms_key            = data.aws_kms_key.main
   log_retention_days = var.log_retention_days
   tag_app            = var.tag_app
 }
 
-module "ecs_service_api" {
+module "ecs_service_api_fargate" {
   source        = "../../modules/ecs_service"
+  type          = "FARGATE"
   public        = true
-  name          = "api"
+  name          = "api-fargate"
+  priority      = 1
   tag           = "0.0.1"
   arch          = "X86_64" # ARM64
   ecs_cluster   = module.ecs_cluster_fargate.cluster
@@ -186,23 +193,63 @@ module "ecs_service_api" {
   tag_app       = var.tag_app
 }
 
+###########################
+##### EC2 SELF-HOSTED #####
+###########################
+
 # WARNING: You want to underestimate the autoscaling CPU threshold
-# We want this to scale at 80% but put in 60% due to reporting
+# We want this to scale at 80% but put in 60% due to reporting challenges
 # Even when CPU was pinned at 100% in the OS, only 80% was reported
 # We may consider an alternative monitoring solution in the future
 module "asg_ec2" {
   source               = "../../modules/asg"
-  name                 = "tf-nginx-test"
+  name                 = "tf-asg-ecs-x86_64"
   subnets              = module.vpc_ohio.subnets_private
   security_groups      = [module.vpc_ohio.security_group.id]
   kms_key              = data.aws_kms_key.main
-  iam_instance_profile = aws_iam_instance_profile.ec2_session_manager
+  iam_instance_profile = aws_iam_instance_profile.ec2
   instance_type        = "t3.small"
   scale_up_cpu         = 60
   count_min            = 1
-  count_max            = 4
+  count_max            = 2
   tag_app              = var.tag_app
   # RHEL Example
-  ami           = "ami-0eb070c40e6a142a3" # AL2023 X86_64
-  userdata_file = file("./userdata/userdata_rhel.sh")
+  # al2023-ami-2023.6.20250128.0-kernel-6.1-x86_64  2025/01/28
+  # ami           = "ami-018875e7376831abe"
+  # userdata_file = file("./userdata/userdata_rhel.sh")
+  #
+  # ECS Bottlerocket Example
+  # bottlerocket-aws-ecs-2-x86_64-v1.32.0-cacc4ce9  2025/01/27
+  ami = "ami-06ca440d570381dfe"
+  userdata_file = templatefile("userdata/userdata_ecs_bottlerocket.sh.tpl", {
+    cluster_name = module.ecs_cluster_ec2.cluster.name
+  })
+}
+
+module "ecs_cluster_ec2" {
+  source             = "../../modules/ecs_cluster_fargate"
+  name               = "tf-ecs-cluster-ec2"
+  type               = "EC2"
+  asg                = module.asg_ec2.asg
+  kms_key            = data.aws_kms_key.main
+  log_retention_days = var.log_retention_days
+  tag_app            = var.tag_app
+}
+
+module "ecs_service_api_ec2" {
+  source        = "../../modules/ecs_service"
+  type          = "EC2"
+  public        = true
+  name          = "api-ec2"
+  priority      = 2
+  tag           = "0.0.1"
+  arch          = "X86_64" # ARM64
+  ecs_cluster   = module.ecs_cluster_ec2.cluster
+  vpc           = module.vpc_ohio.vpc
+  subnets       = module.vpc_ohio.subnets_private
+  kms_key       = data.aws_kms_key.main
+  root_domain   = var.root_domain
+  load_balancer = module.alb_main.load_balancer
+  lb_listener   = module.alb_main.listener_https
+  tag_app       = var.tag_app
 }

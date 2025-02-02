@@ -2,7 +2,7 @@
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener_rule
 resource "aws_lb_listener_rule" "default" {
   listener_arn = var.lb_listener.arn
-  priority     = 1
+  priority     = var.priority
   condition {
     host_header {
       values = ["${var.name}.${var.root_domain}"]
@@ -33,8 +33,8 @@ resource "aws_lb_listener_rule" "default" {
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group
 resource "aws_lb_target_group" "main" {
-  #name                         = "tg-${var.name}"
-  name_prefix                   = var.name
+  name = "tg-${var.name}"
+  #name_prefix                   = var.name
   port                          = 8080
   protocol                      = "HTTP"
   vpc_id                        = var.vpc.id

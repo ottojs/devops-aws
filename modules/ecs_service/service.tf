@@ -8,25 +8,21 @@ resource "aws_ecs_service" "main" {
   lifecycle {
     create_before_destroy = true
   }
-  name            = var.name
-  cluster         = var.ecs_cluster.id
-  task_definition = aws_ecs_task_definition.main.arn
-  desired_count   = 1
-  ###
-  # TODO: Variable for Switching
-  launch_type      = "FARGATE"
-  platform_version = "1.4.0"
-  # launch_type    = "EC2"
-  ###
+  name             = var.name
+  cluster          = var.ecs_cluster.id
+  task_definition  = aws_ecs_task_definition.main.arn
+  desired_count    = 1
+  launch_type      = var.type
+  platform_version = var.type == "FARGATE" ? "1.4.0" : null
 
   # TODO: Review
   force_new_deployment = false
-  #   iam_role        = aws_iam_role.main.arn
+  # iam_role        = aws_iam_role.main.arn
   # TODO: Prevent Race Condition
   # depends_on      = [aws_iam_role_policy.main]
   wait_for_steady_state = false
 
-  # Only in EC2
+  # TODO: Only in EC2
   # ordered_placement_strategy {
   #   type  = "binpack"
   #   field = "cpu"
