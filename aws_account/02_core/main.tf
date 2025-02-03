@@ -135,9 +135,9 @@ module "ec2_machine_al2023_x86_64" {
   region               = data.aws_region.current.name
   access               = "private"
   subnet_id            = module.vpc_ohio.subnets_private[0].id
-  os                   = "al2023_250123"
+  os                   = "al2023_250128"
   arch                 = "x86_64"
-  machine              = "t3.medium"
+  machine              = "t3.small"
   ssh_key              = aws_key_pair.main.key_name
   security_groups      = [module.vpc_ohio.security_group.id]
   iam_instance_profile = aws_iam_instance_profile.ec2
@@ -151,9 +151,9 @@ module "ec2_machine_al2023_arm64" {
   region               = data.aws_region.current.name
   access               = "private"
   subnet_id            = module.vpc_ohio.subnets_private[0].id
-  os                   = "al2023_250123"
+  os                   = "al2023_250128"
   arch                 = "arm64"
-  machine              = "t4g.medium"
+  machine              = "t4g.small"
   ssh_key              = aws_key_pair.main.key_name
   security_groups      = [module.vpc_ohio.security_group.id]
   iam_instance_profile = aws_iam_instance_profile.ec2
