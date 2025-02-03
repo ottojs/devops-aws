@@ -28,18 +28,10 @@ resource "aws_ecs_service" "main" {
   #   field = "cpu"
   # }
 
-  # TODO: Dynamic Security Group
   network_configuration {
     subnets          = local.subnet_ids
     security_groups  = [aws_security_group.main.id]
     assign_public_ip = false
-  }
-
-  load_balancer {
-    target_group_arn = aws_lb_target_group.main.id
-    # This needs to match the container definition names above
-    container_name = var.name
-    container_port = 8080
   }
 
   # depends_on = [

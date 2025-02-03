@@ -101,7 +101,9 @@ podman push ACCOUNTID.dkr.ecr.REGION.amazonaws.com/NAME:TAG
 },
 ```
 
-## TODO
+## TODO / Known Issues
 
 - Increase KMS Key deletion to max days for grace period
 - Enable deletion protection on Databases, S3 (non-empty), etc.
+- ECR (Contaimer Registry) shows odd timeouts when pushing images from EC2 instances and local machine too [link](https://repost.aws/questions/QUf2VInuiHT5KO36tAorNgRw/docker-push-to-ecr-failed-with-eof)
+- VPC Endpoint for ECR (see above) but additional cost for security and speed

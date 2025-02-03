@@ -193,6 +193,24 @@ module "ecs_service_api_fargate" {
   tag_app       = var.tag_app
 }
 
+### CRON JOB ###
+# https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+# https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-scheduled-rule-pattern.html
+module "ecs_cron_fargate_example" {
+  source      = "../../modules/ecs_cron"
+  type        = "FARGATE"
+  name        = "example"
+  tag         = "0.0.1"
+  arch        = "X86_64" # ARM64
+  ecs_cluster = module.ecs_cluster_fargate.cluster
+  vpc         = module.vpc_ohio.vpc
+  subnets     = module.vpc_ohio.subnets_private
+  kms_key     = data.aws_kms_key.main
+  timezone    = "US/Eastern"
+  schedule    = "cron(0 * * * ? *)" # Every hour
+  tag_app     = var.tag_app
+}
+
 ###########################
 ##### EC2 SELF-HOSTED #####
 ###########################

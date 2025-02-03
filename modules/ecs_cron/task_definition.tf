@@ -31,16 +31,16 @@ resource "aws_ecs_task_definition" "main" {
           value = "production"
         },
       ]
-      portMappings = [
-        {
-          name = "http"
-          # Both ports are required to be the same
-          containerPort = 8080
-          hostPort      = 8080
-          protocol      = "tcp"
-          appProtocol   = "http2"
-        }
-      ]
+      # portMappings = [
+      #   {
+      #     name = "http"
+      #     # Both ports are required to be the same
+      #     containerPort = 8080
+      #     hostPort      = 8080
+      #     protocol      = "tcp"
+      #     appProtocol   = "http2"
+      #   }
+      # ]
       ulimits = [
         {
           name : "nofile"
@@ -72,7 +72,7 @@ resource "aws_ecs_task_definition" "main" {
           "awslogs-create-group"  = "true"
           "awslogs-group"         = "devops/aws/ecs/${var.ecs_cluster.name}"
           "awslogs-region"        = data.aws_region.current.name
-          "awslogs-stream-prefix" = "service"
+          "awslogs-stream-prefix" = "cron"
           "mode"                  = "non-blocking"
           "max-buffer-size"       = "1m"
         }
