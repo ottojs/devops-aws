@@ -6,7 +6,7 @@
 # tofu init -upgrade
 
 terraform {
-  required_version = ">= 1.8"
+  required_version = ">= 1.9"
   required_providers {
     # https://registry.terraform.io/providers/hashicorp/aws/latest
     aws = {
