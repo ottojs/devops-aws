@@ -32,6 +32,13 @@ variable "log_retention_days" {
   default = 365
 }
 
+variable "email" {
+  type = string
+  # Uncomment and update this value with your email
+  # This is used to subscribe to the devops SNS topic alerts
+  # default = "user@example.com"
+}
+
 variable "tag_app" {
   type    = string
   default = "DEVOPS-MAIN"
