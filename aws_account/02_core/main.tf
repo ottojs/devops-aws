@@ -287,3 +287,10 @@ module "ses" {
   source      = "../../modules/ses"
   root_domain = var.root_domain
 }
+
+module "sqs" {
+  source  = "../../modules/sqs"
+  name    = "devops"
+  kms_key = data.aws_kms_key.main
+  tags    = var.tags
+}
