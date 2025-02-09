@@ -79,6 +79,10 @@ podman push ACCOUNTID.dkr.ecr.REGION.amazonaws.com/NAME:TAG
 
 ## Important Notes
 
+### Log Bucket is using AWS default encryption
+
+Due to limitations with Load Balancer logging, we cannot use a KMS key on the log bucket. If you know a workaround, please let us know. All other buckets are encrypted with your KMS customer-managed key (CMK).
+
 ### KMS Key Edit
 
 - After step 2, you'll need to add this to step 1

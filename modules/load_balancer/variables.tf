@@ -25,7 +25,8 @@ variable "root_domain" {
 
 variable "log_bucket" {
   type = object({
-    id = string
+    id  = string
+    arn = string
   })
   description = "S3 Log Bucket Object"
 }

@@ -222,7 +222,6 @@ module "asg_ec2" {
   name                 = "tf-asg-ecs-x86_64"
   subnets              = module.vpc_ohio.subnets_private
   security_groups      = [module.vpc_ohio.security_group.id]
-  kms_key              = data.aws_kms_key.main
   iam_instance_profile = aws_iam_instance_profile.ec2
   instance_type        = "t3.small"
   scale_up_cpu         = 60

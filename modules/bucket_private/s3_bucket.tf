@@ -32,10 +32,14 @@ resource "aws_s3_bucket_public_access_block" "bucket_private" {
 resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_private" {
   bucket = aws_s3_bucket.bucket_private.id
   rule {
+    # TODO: Disabling the CMK KMS key for now on log buckets
+    # Load Balancer logs are not supported with KMS keys yet (or maybe ever)
+    # https://repost.aws/questions/QU2SV2jkZRSkuhNL-EGUgyTA/storing-application-load-balancer-access-logs-in-a-kms-encrypted-s3-bucket
     apply_server_side_encryption_by_default {
-      kms_master_key_id = var.kms_key.id
-      sse_algorithm     = "aws:kms"
+      kms_master_key_id = var.log_bucket_disabled ? null : var.kms_key.id
+      sse_algorithm     = var.log_bucket_disabled ? "AES256" : "aws:kms"
     }
+    bucket_key_enabled = true
   }
 }
 

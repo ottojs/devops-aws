@@ -5,34 +5,49 @@ data "aws_acm_certificate" "main" {
   statuses = ["ISSUED"]
 }
 
+# Load Balancer Logs
+# https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html
+# https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html
+#
+# Oddly, customer-managed KMS keys are not supported per
+# https://repost.aws/questions/QU2SV2jkZRSkuhNL-EGUgyTA/storing-application-load-balancer-access-logs-in-a-kms-encrypted-s3-bucket
+
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb
 resource "aws_lb" "main" {
   name               = var.name
-  internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.alb.id]
   subnets            = local.subnet_ids
 
-  drop_invalid_header_fields = true
-  ip_address_type            = "ipv4"
-  idle_timeout               = 60
-  enable_xff_client_port     = false
-  enable_http2               = true
-  xff_header_processing_mode = "append"
+  client_keep_alive                           = 3600 # default
+  desync_mitigation_mode                      = "strictest"
+  dns_record_client_routing_policy            = "any_availability_zone" # default
+  drop_invalid_header_fields                  = true
+  enable_deletion_protection                  = false # default
+  enable_http2                                = true  # default
+  enable_tls_version_and_cipher_suite_headers = false # default
+  enable_xff_client_port                      = false # default
+  enable_waf_fail_open                        = false # default
+  enable_zonal_shift                          = false # default
+  idle_timeout                                = 60    # default
+  internal                                    = false # TODO: variable
+  ip_address_type                             = "ipv4"
+  preserve_host_header                        = false    # default (this should be set by the LoadBalancer)
+  xff_header_processing_mode                  = "append" # default
 
-  # needs KMS AWS-managed
-  # delivery.logs.amazonaws.com on KMS Policy
-  # access_logs {
-  #   bucket  = var.log_bucket.id
-  #   prefix  = "devops/aws/load-balancer/${var.name}/access"
-  #   enabled = true
-  # }
-
-  # connection_logs {
-  #   bucket  = var.log_bucket.id
-  #   prefix  = "devops/aws/load-balancer/${var.name}/connection"
-  #   enabled = true
-  # }
+  # TODO
+  # Default log prefix is /AWSLogs/{ACCOUNTID}
+  # We'll use the default for now to see how integration with tools goes
+  access_logs {
+    bucket = var.log_bucket.id
+    # prefix  = "devops/aws/load-balancer/${var.name}/access"
+    enabled = true
+  }
+  connection_logs {
+    bucket = var.log_bucket.id
+    # prefix  = "devops/aws/load-balancer/${var.name}/connection"
+    enabled = true
+  }
 
   tags = {
     App = var.tag_app
