@@ -8,9 +8,9 @@ output "security_group" {
 }
 
 output "subnets_private" {
-  value = aws_subnet.private
+  value = values(aws_subnet.private)[*]
 }
 
 output "subnets_public" {
-  value = aws_subnet.public
+  value = values(aws_subnet.public)[*]
 }

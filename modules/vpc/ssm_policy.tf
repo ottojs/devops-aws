@@ -1,6 +1,8 @@
 
 # To Delete:
 # aws ssm delete-document --name SSM-SessionManagerRunShell
+#
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_document
 resource "aws_ssm_document" "sessions" {
   name            = "SSM-SessionManagerRunShell"
   document_type   = "Session"
@@ -29,6 +31,7 @@ resource "aws_ssm_document" "sessions" {
   })
 }
 
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group
 resource "aws_cloudwatch_log_group" "ssm_sessions" {
   name              = "devops/aws/ssm/sessions"
   kms_key_id        = var.kms_key.arn

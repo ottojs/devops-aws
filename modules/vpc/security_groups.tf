@@ -3,6 +3,7 @@
 # aws_vpc_security_group_ingress_rule
 # aws_vpc_security_group_egress_rule
 
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/default_security_group
 resource "aws_default_security_group" "default" {
   vpc_id = aws_vpc.main.id
   # Intentionally Nothing Allowed

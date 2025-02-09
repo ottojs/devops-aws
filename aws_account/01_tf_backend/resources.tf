@@ -31,6 +31,7 @@ module "bucket_tf_state" {
   tag_app       = var.tag_app
 }
 
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/dynamodb_table
 resource "aws_dynamodb_table" "tf_state" {
   name         = "devops-terraform-state"
   billing_mode = "PAY_PER_REQUEST"

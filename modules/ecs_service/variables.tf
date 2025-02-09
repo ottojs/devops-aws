@@ -16,8 +16,8 @@ variable "vpc" {
   })
 }
 
-# TODO
 variable "subnets" {
+  type    = list(object({ id = string }))
   default = []
 }
 

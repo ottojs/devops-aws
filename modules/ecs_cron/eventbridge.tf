@@ -1,4 +1,10 @@
 
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/scheduler_schedule_group
+# resource "aws_scheduler_schedule_group" "example" {
+#   name = "example"
+# }
+
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/scheduler_schedule
 resource "aws_scheduler_schedule" "cron" {
   # name_prefix = ""
   name        = "cron-${var.name}"

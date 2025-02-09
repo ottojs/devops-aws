@@ -27,14 +27,6 @@ variable "asg" {
   }
 }
 
-# variable "security_groups" {
-#   type = list(string)
-# }
-
-# variable "log_bucket_id" {
-#   type = string
-# }
-
 # FARGATE or EC2
 variable "type" {
   type = string

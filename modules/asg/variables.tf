@@ -7,8 +7,8 @@ variable "name" {
   type = string
 }
 
-# TODO: Specify Type
 variable "subnets" {
+  type = list(object({ id = string }))
 }
 
 variable "instance_type" {
@@ -22,13 +22,6 @@ variable "ami" {
 
 variable "userdata_file" {
   type = string
-}
-
-variable "kms_key" {
-  type = object({
-    id  = string
-    arn = string
-  })
 }
 
 variable "iam_instance_profile" {

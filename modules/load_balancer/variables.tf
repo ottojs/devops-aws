@@ -1,5 +1,3 @@
-data "aws_caller_identity" "current" {}
-data "aws_region" "current" {}
 
 locals {
   subnet_ids = [for s in var.subnets : s.id]
@@ -16,8 +14,8 @@ variable "vpc" {
   })
 }
 
-# TODO
 variable "subnets" {
+  type    = list(object({ id = string }))
   default = []
 }
 
