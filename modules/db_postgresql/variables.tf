@@ -64,7 +64,6 @@ variable "backup_days" {
   default = 7
 }
 
-variable "tag_app" {
-  type    = string
-  default = "SOMEAPP"
+variable "tags" {
+  type = map(string)
 }

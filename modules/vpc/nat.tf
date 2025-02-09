@@ -6,10 +6,9 @@
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip
 resource "aws_eip" "nat" {
   domain = "vpc"
-  tags = {
+  tags = merge(var.tags, {
     Name = "${var.name}-nat-ip"
-    App  = var.tag_app
-  }
+  })
   depends_on = [aws_internet_gateway.igw]
 }
 
@@ -18,9 +17,9 @@ resource "aws_nat_gateway" "ngw" {
   allocation_id     = aws_eip.nat.id
   connectivity_type = "public"
   subnet_id         = aws_subnet.public[0].id
-  tags = {
+  tags = merge(var.tags, {
     Name = "${var.name}-nat"
-  }
+  })
   depends_on = [aws_internet_gateway.igw]
 }
 
@@ -36,10 +35,9 @@ resource "aws_default_route_table" "private" {
     cidr_block = var.cidr
     gateway_id = "local"
   }
-  tags = {
+  tags = merge(var.tags, {
     Name = "rt-${var.name}-private-nat"
-    App  = var.tag_app
-  }
+  })
 }
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/main_route_table_association

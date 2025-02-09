@@ -49,10 +49,9 @@ resource "aws_lb" "main" {
     enabled = true
   }
 
-  tags = {
-    App    = var.tag_app
+  tags = merge(var.tags, {
     Public = var.public ? "true" : "false"
-  }
+  })
 }
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener
@@ -91,10 +90,9 @@ resource "aws_lb_listener" "https" {
     # target_group_arn = aws_lb_target_group.main.arn
   }
 
-  tags = {
-    App    = var.tag_app
+  tags = merge(var.tags, {
     Public = var.public ? "true" : "false"
-  }
+  })
 }
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group
@@ -103,11 +101,10 @@ resource "aws_security_group" "alb" {
   description = "ALB ${var.name}"
   vpc_id      = var.vpc.id
 
-  tags = {
+  tags = merge(var.tags, {
     Name   = "secgrp-${var.name}"
-    App    = var.tag_app
     Public = var.public ? "true" : "false"
-  }
+  })
 
   ingress {
     from_port   = 80

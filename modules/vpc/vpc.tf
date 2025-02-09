@@ -9,8 +9,7 @@ resource "aws_vpc" "main" {
   # We re-purpose the default route table (private)
   # main_route_table_id = aws_route_table.public.id
 
-  tags = {
+  tags = merge(var.tags, {
     Name = "vpc-${var.name}"
-    App  = var.tag_app
-  }
+  })
 }

@@ -21,10 +21,9 @@ resource "aws_elasticache_cluster" "valkey" {
   snapshot_retention_limit   = 10
   snapshot_window            = "00:00-04:00"
   final_snapshot_identifier  = "final-snapshot-${var.name}"
-  tags = {
+  tags = merge(var.tags, {
     Name = var.name
-    App  = var.tag_app
-  }
+  })
 }
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticache_user
@@ -46,10 +45,9 @@ resource "aws_elasticache_subnet_group" "valkey" {
   name        = "tf-db-valkey-subnets"
   description = "tf-db-valkey-subnets"
   subnet_ids  = local.subnet_ids
-  tags = {
+  tags = merge(var.tags, {
     Name = "tf-db-valkey-subnets"
-    App  = var.tag_app
-  }
+  })
 }
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group
@@ -57,11 +55,6 @@ resource "aws_security_group" "valkey" {
   name        = "secgrp-db-valkey"
   description = "Database ValKey"
   vpc_id      = var.vpc.id
-
-  tags = {
-    Name = "secgrp-db-valkey"
-    App  = var.tag_app
-  }
 
   ingress {
     from_port   = 6379
@@ -78,4 +71,8 @@ resource "aws_security_group" "valkey" {
   #     cidr_blocks = ["0.0.0.0/0"]
   #     description = "ALLOW - All Outbound"
   #   }
+
+  tags = merge(var.tags, {
+    Name = "secgrp-db-valkey"
+  })
 }

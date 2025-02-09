@@ -73,6 +73,6 @@ variable "tag" {
   default = "latest"
 }
 
-variable "tag_app" {
-  type = string
+variable "tags" {
+  type = map(string)
 }

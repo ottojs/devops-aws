@@ -12,9 +12,7 @@ resource "aws_s3_bucket" "bucket_private" {
   bucket = "${var.name}-${var.random_id}"
   # TODO: Review
   force_destroy = true
-  tags = {
-    App = var.tag_app
-  }
+  tags          = var.tags
 }
 
 # Block Public Access

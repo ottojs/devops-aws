@@ -19,10 +19,9 @@ resource "aws_security_group" "main" {
   description = "Main"
   vpc_id      = aws_vpc.main.id
 
-  tags = {
+  tags = merge(var.tags, {
     Name = "secgrp-main"
-    App  = var.tag_app
-  }
+  })
 
   ingress {
     from_port   = 80

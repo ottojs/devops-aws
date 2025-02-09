@@ -36,6 +36,6 @@ variable "log_bucket" {
   description = "S3 Log Bucket Object"
 }
 
-variable "tag_app" {
-  type = string
+variable "tags" {
+  type = map(string)
 }

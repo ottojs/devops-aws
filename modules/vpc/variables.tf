@@ -51,6 +51,6 @@ variable "log_retention_days" {
   type = number
 }
 
-variable "tag_app" {
-  type = string
+variable "tags" {
+  type = map(string)
 }

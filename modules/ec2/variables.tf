@@ -63,6 +63,6 @@ variable "iam_instance_profile" {
   })
 }
 
-variable "tag_app" {
-  type = string
+variable "tags" {
+  type = map(string)
 }

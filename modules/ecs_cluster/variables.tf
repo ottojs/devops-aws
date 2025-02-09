@@ -32,6 +32,6 @@ variable "type" {
   type = string
 }
 
-variable "tag_app" {
-  type = string
+variable "tags" {
+  type = map(string)
 }

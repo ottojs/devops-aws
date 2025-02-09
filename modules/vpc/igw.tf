@@ -6,10 +6,9 @@
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/internet_gateway
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
-  tags = {
+  tags = merge(var.tags, {
     Name = "${var.name}-igw"
-    App  = var.tag_app
-  }
+  })
 }
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table
@@ -23,10 +22,9 @@ resource "aws_route_table" "public" {
     cidr_block = var.cidr
     gateway_id = "local"
   }
-  tags = {
+  tags = merge(var.tags, {
     Name = "rt-${var.name}-public-igw"
-    App  = var.tag_app
-  }
+  })
 }
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/main_route_table_association

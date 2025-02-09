@@ -31,6 +31,6 @@ variable "log_bucket_disabled" {
   default = false
 }
 
-variable "tag_app" {
-  type = string
+variable "tags" {
+  type = map(string)
 }

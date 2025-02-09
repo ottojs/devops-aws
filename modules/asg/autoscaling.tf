@@ -46,10 +46,9 @@ resource "aws_launch_template" "asg" {
 
   # tag_specifications {
   #   resource_type = "instance"
-  #   tags = {
+  #   tags = merge(var.tags, {
   #     Name = "lt-test"
-  #     App  = var.tag_app
-  #   }
+  #   })
   # }
 
   # Options for Referencing Userdata
@@ -114,15 +113,18 @@ resource "aws_autoscaling_group" "asg" {
     version = "$Latest"
   }
 
-  tag {
-    key                 = "Name"
-    value               = "asg-${var.name}"
-    propagate_at_launch = true
+  dynamic "tag" {
+    for_each = var.tags
+    content {
+      key                 = tag.key
+      value               = tag.value
+      propagate_at_launch = true
+    }
   }
 
   tag {
-    key                 = "App"
-    value               = var.tag_app
+    key                 = "Name"
+    value               = "asg-${var.name}"
     propagate_at_launch = true
   }
 

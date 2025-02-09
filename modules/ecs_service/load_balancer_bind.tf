@@ -25,10 +25,9 @@ resource "aws_lb_listener_rule" "default" {
       # }
     }
   }
-  tags = {
+  tags = merge(var.tags, {
     Name = var.name
-    App  = var.tag_app
-  }
+  })
 }
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group
@@ -62,7 +61,5 @@ resource "aws_lb_target_group" "main" {
     unhealthy_threshold = "2"
   }
 
-  tags = {
-    App = var.tag_app
-  }
+  tags = var.tags
 }

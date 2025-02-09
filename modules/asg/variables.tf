@@ -65,6 +65,6 @@ variable "scale_up_cpu" {
   default = 60
 }
 
-variable "tag_app" {
-  type = string
+variable "tags" {
+  type = map(string)
 }

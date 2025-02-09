@@ -8,9 +8,7 @@ resource "aws_ecs_cluster" "main" {
     value = "enabled"
   }
 
-  tags = {
-    App = var.tag_app
-  }
+  tags = var.tags
 }
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group
@@ -19,9 +17,7 @@ resource "aws_cloudwatch_log_group" "main" {
   kms_key_id        = var.kms_key.arn
   skip_destroy      = true
   retention_in_days = var.log_retention_days
-  tags = {
-    App = var.tag_app
-  }
+  tags              = var.tags
 }
 
 ###################

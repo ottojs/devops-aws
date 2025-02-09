@@ -37,8 +37,8 @@ variable "vpc" {
   })
 }
 
-variable "tag_app" {
-  type = string
+variable "tags" {
+  type = map(string)
 }
 
 variable "allowed_cidrs" {

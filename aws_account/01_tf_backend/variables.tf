@@ -11,7 +11,10 @@ variable "random_id" {
   default = "RANDOM-ID-HERE"
 }
 
-variable "tag_app" {
-  type    = string
-  default = "DEVOPS-CORE"
+variable "tags" {
+  type = map(string)
+  default = {
+    App   = "DEVOPS-BASE"
+    Owner = "otto"
+  }
 }

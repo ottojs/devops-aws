@@ -17,9 +17,7 @@ resource "aws_kms_key" "main" {
   rotation_period_in_days  = 90
   multi_region             = false
   deletion_window_in_days  = 7
-  tags = {
-    App = var.tag_app
-  }
+  tags                     = var.tags
   policy = jsonencode({
     Version = "2012-10-17"
     Id      = "kms-${var.name}"
@@ -74,7 +72,7 @@ resource "aws_kms_key" "main" {
       },
       # https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/encrypt-log-data-kms.html
       {
-        Sid    = "Allow use of the key by vpcflow"
+        Sid    = "Allow use of the key by VPC Flow Logs"
         Effect = "Allow"
         Principal = {
           Service = "logs.${data.aws_region.current.name}.amazonaws.com"

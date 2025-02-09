@@ -35,7 +35,6 @@ variable "passwords" {
   type = list(string)
 }
 
-variable "tag_app" {
-  type    = string
-  default = "SOMEAPP"
+variable "tags" {
+  type = map(string)
 }

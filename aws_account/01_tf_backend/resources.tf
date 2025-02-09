@@ -6,7 +6,7 @@ module "kms_main" {
   name        = "main"
   description = "Main Customer-Managed Key"
   iam_user    = var.iam_user
-  tag_app     = var.tag_app
+  tags        = var.tags
 }
 
 # This is the main logging bucket
@@ -19,7 +19,7 @@ module "log_bucket" {
   kms_key             = module.kms_main.key
   log_bucket_id       = "none"
   log_bucket_disabled = true
-  tag_app             = var.tag_app
+  tags                = var.tags
 }
 
 module "bucket_tf_state" {
@@ -28,7 +28,7 @@ module "bucket_tf_state" {
   random_id     = var.random_id
   kms_key       = module.kms_main.key
   log_bucket_id = module.log_bucket.bucket.id
-  tag_app       = var.tag_app
+  tags          = var.tags
 }
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/dynamodb_table
@@ -47,8 +47,7 @@ resource "aws_dynamodb_table" "tf_state" {
     enabled     = true
     kms_key_arn = module.kms_main.key.arn
   }
-  tags = {
+  tags = merge(var.tags, {
     Name = "terraform-state"
-    App  = var.tag_app
-  }
+  })
 }

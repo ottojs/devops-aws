@@ -39,10 +39,9 @@ resource "aws_db_instance" "default" {
   delete_automated_backups  = true
   deletion_protection       = false
 
-  tags = {
+  tags = merge(var.tags, {
     Name = var.name
-    App  = var.tag_app
-  }
+  })
 }
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_parameter_group
@@ -56,10 +55,9 @@ resource "aws_db_parameter_group" "postgresql17" {
     apply_method = "immediate"
   }
 
-  tags = {
+  tags = merge(var.tags, {
     Name = "tf-rds-postgresql-17"
-    App  = var.tag_app
-  }
+  })
 }
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_subnet_group
@@ -67,10 +65,9 @@ resource "aws_db_subnet_group" "main" {
   name       = "tf-db-postgresql-subnets"
   subnet_ids = local.subnet_ids
 
-  tags = {
+  tags = merge(var.tags, {
     Name = "tf-db-postgresql-subnets"
-    App  = var.tag_app
-  }
+  })
 }
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group
@@ -79,10 +76,9 @@ resource "aws_security_group" "postgresql" {
   description = "PostgreSQL Security Group"
   vpc_id      = var.vpc.id
 
-  tags = {
+  tags = merge(var.tags, {
     Name = "secgrp-rds-postgresql"
-    App  = var.tag_app
-  }
+  })
 
   ingress {
     from_port   = 5432

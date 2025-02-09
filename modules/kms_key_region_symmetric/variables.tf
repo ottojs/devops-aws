@@ -13,6 +13,6 @@ variable "iam_user" {
   type = string
 }
 
-variable "tag_app" {
-  type = string
+variable "tags" {
+  type = map(string)
 }

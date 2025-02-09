@@ -33,10 +33,9 @@ resource "aws_instance" "ec2" {
     kms_key_id            = var.kms_key.arn
     volume_size           = 16
     volume_type           = "gp3"
-    tags = {
+    tags = merge(var.tags, {
       Name = "${var.name}-disk"
-      App  = var.tag_app
-    }
+    })
   }
   vpc_security_group_ids      = var.security_groups
   user_data                   = filebase64(var.userdata)
@@ -45,8 +44,7 @@ resource "aws_instance" "ec2" {
   # TODO: null does not clear
   iam_instance_profile = var.iam_instance_profile.name
 
-  tags = {
+  tags = merge(var.tags, {
     Name = var.name
-    App  = var.tag_app
-  }
+  })
 }

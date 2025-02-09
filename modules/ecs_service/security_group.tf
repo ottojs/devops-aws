@@ -5,11 +5,6 @@ resource "aws_security_group" "main" {
   description = "ECS Task: ${var.name}"
   vpc_id      = var.vpc.id
 
-  tags = {
-    Name = "secgrp-ecs-${var.name}"
-    App  = var.tag_app
-  }
-
   ingress {
     from_port   = 8080
     to_port     = 8080
@@ -27,4 +22,8 @@ resource "aws_security_group" "main" {
     cidr_blocks = ["0.0.0.0/0"] #[var.vpc.cidr_block]
     description = "ALLOW - All Outbound"
   }
+
+  tags = merge(var.tags, {
+    Name = "secgrp-ecs-${var.name}"
+  })
 }

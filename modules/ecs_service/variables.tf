@@ -89,6 +89,6 @@ variable "priority" {
   type = number
 }
 
-variable "tag_app" {
-  type = string
+variable "tags" {
+  type = map(string)
 }

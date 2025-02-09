@@ -5,10 +5,9 @@ resource "aws_security_group" "main" {
   description = "ECS Task: ${var.name}"
   vpc_id      = var.vpc.id
 
-  tags = {
+  tags = merge(var.tags, {
     Name = "secgrp-ecs-${var.name}"
-    App  = var.tag_app
-  }
+  })
 
   egress {
     from_port = 0

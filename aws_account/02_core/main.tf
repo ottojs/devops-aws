@@ -12,10 +12,9 @@ module "sns" {
   name    = "devops"
   email   = var.email
   kms_key = data.aws_kms_key.main
-  tags = {
+  tags = merge(var.tags, {
     Name = "devops"
-    App  = var.tag_app
-  }
+  })
 }
 
 # Create the VPC with:
@@ -72,7 +71,7 @@ module "vpc_ohio" {
     #   cidr = "10.2.99.0/24"
     # }
   ]
-  tag_app = var.tag_app
+  tags = var.tags
 }
 
 # External Load Balancer (Public)
@@ -84,7 +83,7 @@ module "alb_public" {
   subnets     = module.vpc_ohio.subnets_public
   root_domain = var.root_domain
   log_bucket  = data.aws_s3_bucket.logging
-  tag_app     = var.tag_app
+  tags        = var.tags
 }
 
 # Internal Load Balancer (Private)
@@ -96,7 +95,7 @@ module "alb_private" {
   subnets     = module.vpc_ohio.subnets_private
   root_domain = var.root_domain
   log_bucket  = data.aws_s3_bucket.logging
-  tag_app     = var.tag_app
+  tags        = var.tags
 }
 
 # Setting up a VPN has a fairly high cost
@@ -113,7 +112,7 @@ module "alb_private" {
 #   subnet        = module.vpc_ohio.subnets_private[3] # "vpn" subnet
 #   vpc           = module.vpc_ohio.vpc
 #   allowed_cidrs = var.allowed_cidrs
-#   tag_app       = var.tag_app
+#   tags       = var.tags
 # }
 
 # PostgreSQL Database
@@ -125,6 +124,7 @@ module "db_postgresql" {
   kms_key        = data.aws_kms_key.main
   admin_username = "customadmin"
   db_name        = "myapp"
+  tags           = var.tags
 }
 
 # Redis/ValKey In-Memory Cache
@@ -137,6 +137,7 @@ module "db_valkey" {
   passwords = ["letsusevalkeynow2024"]
   vpc       = module.vpc_ohio.vpc
   subnets   = module.vpc_ohio.subnets_private
+  tags      = var.tags
 }
 
 # EC2 Machine - Amazon Linux 2023 (RedHat-based)
@@ -154,7 +155,7 @@ module "ec2_machine_al2023_x86_64" {
   iam_instance_profile = aws_iam_instance_profile.ec2
   userdata             = "userdata/userdata_rhel.sh"
   kms_key              = data.aws_kms_key.main
-  tag_app              = var.tag_app
+  tags                 = var.tags
 }
 module "ec2_machine_al2023_arm64" {
   source               = "../../modules/ec2"
@@ -170,7 +171,7 @@ module "ec2_machine_al2023_arm64" {
   iam_instance_profile = aws_iam_instance_profile.ec2
   userdata             = "userdata/userdata_rhel.sh"
   kms_key              = data.aws_kms_key.main
-  tag_app              = var.tag_app
+  tags                 = var.tags
 }
 
 ###################
@@ -183,7 +184,7 @@ module "ecs_cluster_fargate" {
   type               = "FARGATE"
   kms_key            = data.aws_kms_key.main
   log_retention_days = var.log_retention_days
-  tag_app            = var.tag_app
+  tags               = var.tags
 }
 
 module "ecs_service_api_fargate" {
@@ -201,7 +202,7 @@ module "ecs_service_api_fargate" {
   root_domain   = var.root_domain
   load_balancer = module.alb_public.load_balancer
   lb_listener   = module.alb_public.listener_https
-  tag_app       = var.tag_app
+  tags          = var.tags
 }
 
 ### CRON JOB ###
@@ -219,7 +220,7 @@ module "ecs_cron_fargate_example" {
   kms_key     = data.aws_kms_key.main
   timezone    = "US/Eastern"
   schedule    = "cron(0 * * * ? *)" # Every hour
-  tag_app     = var.tag_app
+  tags        = var.tags
 }
 
 ###########################
@@ -240,7 +241,7 @@ module "asg_ec2" {
   scale_up_cpu         = 60
   count_min            = 1
   count_max            = 2
-  tag_app              = var.tag_app
+  tags                 = var.tags
   # RHEL Example
   # al2023-ami-2023.6.20250128.0-kernel-6.1-x86_64  2025/01/28
   # ami           = "ami-018875e7376831abe"
@@ -261,7 +262,7 @@ module "ecs_cluster_ec2" {
   asg                = module.asg_ec2.asg
   kms_key            = data.aws_kms_key.main
   log_retention_days = var.log_retention_days
-  tag_app            = var.tag_app
+  tags               = var.tags
 }
 
 module "ecs_service_api_ec2" {
@@ -279,5 +280,5 @@ module "ecs_service_api_ec2" {
   root_domain   = var.root_domain
   load_balancer = module.alb_public.load_balancer
   lb_listener   = module.alb_public.listener_https
-  tag_app       = var.tag_app
+  tags          = var.tags
 }

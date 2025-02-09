@@ -43,10 +43,10 @@ resource "aws_ec2_client_vpn_endpoint" "vpn" {
     cloudwatch_log_group  = aws_cloudwatch_log_group.vpn.name
     cloudwatch_log_stream = aws_cloudwatch_log_stream.vpn.name
   }
-  tags = {
+
+  tags = merge(var.tags, {
     Name = "cvpn-${var.name}"
-    App  = var.tag_app
-  }
+  })
 }
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_client_vpn_authorization_rule
@@ -77,11 +77,6 @@ resource "aws_security_group" "entry" {
   description = "VPN Entry"
   vpc_id      = var.vpc.id
 
-  tags = {
-    Name = "secgrp-cvpn-${var.name}-entry"
-    App  = var.tag_app
-  }
-
   ingress {
     from_port   = 443
     to_port     = 443
@@ -97,6 +92,10 @@ resource "aws_security_group" "entry" {
     cidr_blocks = [var.vpc.cidr_block]
     description = "ALLOW - All Outbound"
   }
+
+  tags = merge(var.tags, {
+    Name = "secgrp-cvpn-${var.name}-entry"
+  })
 }
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group
@@ -105,11 +104,6 @@ resource "aws_security_group" "machine" {
   description = "VPN Machine"
   vpc_id      = var.vpc.id
 
-  tags = {
-    Name = "secgrp-cvpn-${var.name}-machine"
-    App  = var.tag_app
-  }
-
   ingress {
     from_port   = 22
     to_port     = 22
@@ -117,4 +111,8 @@ resource "aws_security_group" "machine" {
     cidr_blocks = [var.subnet.cidr_block]
     description = "ALLOW - SSH"
   }
+
+  tags = merge(var.tags, {
+    Name = "secgrp-cvpn-${var.name}-machine"
+  })
 }

@@ -52,8 +52,5 @@ resource "aws_ecs_service" "main" {
   #   expression = "attribute:ecs.availability-zone in [us-west-2a, us-west-2b]"
   # }
 
-  tags = {
-    key   = "App"
-    value = var.tag_app
-  }
+  tags = var.tags
 }

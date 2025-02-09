@@ -46,6 +46,7 @@ resource "aws_route53_record" "ns_dev" {
   records = aws_route53_zone.dev_public.name_servers
 }
 
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record
 resource "aws_route53_record" "root_public_caa" {
   zone_id = aws_route53_zone.root_public.zone_id
   name    = "${var.root_domain}."
