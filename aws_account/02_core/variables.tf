@@ -39,6 +39,13 @@ variable "email" {
   # default = "user@example.com"
 }
 
+variable "tags" {
+  type = map(string)
+  default = {
+    Owner = "iac"
+  }
+}
+
 variable "tag_app" {
   type    = string
   default = "DEVOPS-MAIN"
