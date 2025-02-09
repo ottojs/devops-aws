@@ -1,6 +1,12 @@
 
 # https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_execution_IAM_role.html
 
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role
+resource "aws_iam_role" "cron" {
+  name               = "tf-role-ecs-cron-${var.name}"
+  assume_role_policy = data.aws_iam_policy_document.cron_assume_role.json
+}
+
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document
 data "aws_iam_policy_document" "cron_assume_role" {
   version = "2012-10-17"
@@ -13,12 +19,6 @@ data "aws_iam_policy_document" "cron_assume_role" {
       identifiers = ["scheduler.amazonaws.com"]
     }
   }
-}
-
-# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role
-resource "aws_iam_role" "cron" {
-  name               = "tf-role-ecs-cron-${var.name}"
-  assume_role_policy = data.aws_iam_policy_document.cron_assume_role.json
 }
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document
@@ -45,6 +45,12 @@ resource "aws_iam_policy" "cron" {
   name        = "tf-policy-ecs-cron-${var.name}"
   description = "Allow EventBridge Scheduler (Cron) to run ECS"
   policy      = data.aws_iam_policy_document.cron.json
+}
+
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment
+resource "aws_iam_role_policy_attachment" "cron" {
+  role       = aws_iam_role.cron.name
+  policy_arn = aws_iam_policy.cron.arn
 }
 
 #####
