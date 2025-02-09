@@ -3,8 +3,15 @@
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_CreateDBInstance.Settings.html
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_PostgreSQL.html
 
+data "aws_sns_topic" "devops" {
+  name = "devops"
+}
+
+# MiB and GiB do not align well with console graphs
 locals {
   subnet_ids = [for s in var.subnets : s.id]
+  mb         = 1000000    # 1048576 Mebibytes
+  gb         = 1000000000 # 1073741824 Gibibytes
 }
 
 variable "name" {
@@ -62,6 +69,31 @@ variable "storage_max" {
 variable "backup_days" {
   type    = number
   default = 7
+}
+
+variable "alert_cpu" {
+  type    = number
+  default = 60 # Percent
+}
+
+variable "alert_memory" {
+  type    = number
+  default = 256 # MB
+}
+
+variable "alert_disk_space" {
+  type    = number
+  default = 5 # GB
+}
+
+variable "alert_write_iops" {
+  type    = number
+  default = 20
+}
+
+variable "alert_read_iops" {
+  type    = number
+  default = 100
 }
 
 variable "tags" {
