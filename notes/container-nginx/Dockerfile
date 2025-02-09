@@ -1,4 +1,4 @@
-FROM nginx:1.27.3-alpine3.21
+FROM nginx:1.27.4-alpine3.21
 
 # Replaces listener on port 80 to 8080
 RUN sed -i \
