@@ -7,6 +7,11 @@ variable "name" {
   type = string
 }
 
+variable "public" {
+  type    = bool
+  default = false
+}
+
 variable "vpc" {
   type = object({
     id         = string

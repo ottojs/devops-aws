@@ -16,6 +16,7 @@ data "aws_acm_certificate" "main" {
 resource "aws_lb" "main" {
   name               = var.name
   load_balancer_type = "application"
+  internal           = !var.public
   security_groups    = [aws_security_group.alb.id]
   subnets            = local.subnet_ids
 
@@ -30,7 +31,6 @@ resource "aws_lb" "main" {
   enable_waf_fail_open                        = false # default
   enable_zonal_shift                          = false # default
   idle_timeout                                = 60    # default
-  internal                                    = false # TODO: variable
   ip_address_type                             = "ipv4"
   preserve_host_header                        = false    # default (this should be set by the LoadBalancer)
   xff_header_processing_mode                  = "append" # default
@@ -50,7 +50,8 @@ resource "aws_lb" "main" {
   }
 
   tags = {
-    App = var.tag_app
+    App    = var.tag_app
+    Public = var.public ? "true" : "false"
   }
 }
 
@@ -82,24 +83,30 @@ resource "aws_lb_listener" "https" {
     type = "fixed-response"
     fixed_response {
       content_type = "text/plain"
-      message_body = "Service Offline"
-      status_code  = "200"
+      message_body = "503 - Service Offline"
+      status_code  = "503"
     }
     # If you wanted a default service use:
     # type             = "forward"
     # target_group_arn = aws_lb_target_group.main.arn
   }
+
+  tags = {
+    App    = var.tag_app
+    Public = var.public ? "true" : "false"
+  }
 }
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group
 resource "aws_security_group" "alb" {
-  name        = "secgrp-alb"
-  description = "ALB"
+  name        = "secgrp-${var.name}"
+  description = "ALB ${var.name}"
   vpc_id      = var.vpc.id
 
   tags = {
-    Name = "secgrp-alb"
-    App  = var.tag_app
+    Name   = "secgrp-${var.name}"
+    App    = var.tag_app
+    Public = var.public ? "true" : "false"
   }
 
   ingress {

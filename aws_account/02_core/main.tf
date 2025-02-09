@@ -75,12 +75,25 @@ module "vpc_ohio" {
   tag_app = var.tag_app
 }
 
-# External Load Balancer
-module "alb_main" {
+# External Load Balancer (Public)
+module "alb_public" {
   source      = "../../modules/load_balancer"
-  name        = "alb-main"
+  name        = "alb-public"
+  public      = true
   vpc         = module.vpc_ohio.vpc
   subnets     = module.vpc_ohio.subnets_public
+  root_domain = var.root_domain
+  log_bucket  = data.aws_s3_bucket.logging
+  tag_app     = var.tag_app
+}
+
+# Internal Load Balancer (Private)
+module "alb_private" {
+  source      = "../../modules/load_balancer"
+  name        = "alb-private"
+  public      = false
+  vpc         = module.vpc_ohio.vpc
+  subnets     = module.vpc_ohio.subnets_private
   root_domain = var.root_domain
   log_bucket  = data.aws_s3_bucket.logging
   tag_app     = var.tag_app
@@ -186,8 +199,8 @@ module "ecs_service_api_fargate" {
   subnets       = module.vpc_ohio.subnets_private
   kms_key       = data.aws_kms_key.main
   root_domain   = var.root_domain
-  load_balancer = module.alb_main.load_balancer
-  lb_listener   = module.alb_main.listener_https
+  load_balancer = module.alb_public.load_balancer
+  lb_listener   = module.alb_public.listener_https
   tag_app       = var.tag_app
 }
 
@@ -264,7 +277,7 @@ module "ecs_service_api_ec2" {
   subnets       = module.vpc_ohio.subnets_private
   kms_key       = data.aws_kms_key.main
   root_domain   = var.root_domain
-  load_balancer = module.alb_main.load_balancer
-  lb_listener   = module.alb_main.listener_https
+  load_balancer = module.alb_public.load_balancer
+  lb_listener   = module.alb_public.listener_https
   tag_app       = var.tag_app
 }
