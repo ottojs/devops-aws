@@ -10,10 +10,10 @@ locals {
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance
 resource "aws_instance" "ec2" {
   count         = 1
-  ami           = local.os[var.os][var.arch][var.region]
+  ami           = local.os[var.os][var.arch][data.aws_region.current.name]
   instance_type = var.machine == "" ? local.instance_type[var.arch] : var.machine
   # TODO: Random Pick
-  availability_zone           = element(var.azs, 0)
+  availability_zone           = "${data.aws_region.current.name}${element(var.azs, 0)}"
   subnet_id                   = var.subnet_id
   associate_public_ip_address = var.access == "public"
   monitoring                  = false

@@ -23,9 +23,9 @@ module "sns" {
 # - empty default security group
 # - "main" security group as a starting point (HTTP, HTTPS, SSH)
 # - VPC flow logs in CloudWatch
-module "vpc_ohio" {
+module "myvpc" {
   source             = "../../modules/vpc"
-  name               = "ohio"
+  name               = "main"
   region             = data.aws_region.current.name
   kms_key            = data.aws_kms_key.main
   cidr               = "10.2.0.0/16"
@@ -79,8 +79,8 @@ module "alb_public" {
   source      = "../../modules/load_balancer"
   name        = "alb-public"
   public      = true
-  vpc         = module.vpc_ohio.vpc
-  subnets     = module.vpc_ohio.subnets_public
+  vpc         = module.myvpc.vpc
+  subnets     = module.myvpc.subnets_public
   root_domain = var.root_domain
   log_bucket  = data.aws_s3_bucket.logging
   tags        = var.tags
@@ -91,8 +91,8 @@ module "alb_private" {
   source      = "../../modules/load_balancer"
   name        = "alb-private"
   public      = false
-  vpc         = module.vpc_ohio.vpc
-  subnets     = module.vpc_ohio.subnets_private
+  vpc         = module.myvpc.vpc
+  subnets     = module.myvpc.subnets_private
   root_domain = var.root_domain
   log_bucket  = data.aws_s3_bucket.logging
   tags        = var.tags
@@ -109,8 +109,8 @@ module "alb_private" {
 #   file_key      = "key.pem"
 #   file_crt      = "cert.pem"
 #   kms_key       = data.aws_kms_key.main
-#   subnet        = module.vpc_ohio.subnets_private[3] # "vpn" subnet
-#   vpc           = module.vpc_ohio.vpc
+#   subnet        = module.myvpc.subnets_private[3] # "vpn" subnet
+#   vpc           = module.myvpc.vpc
 #   allowed_cidrs = var.allowed_cidrs
 #   tags       = var.tags
 # }
@@ -119,8 +119,8 @@ module "alb_private" {
 module "db_postgresql" {
   source         = "../../modules/db_postgresql"
   name           = "my-postgresql-17"
-  vpc            = module.vpc_ohio.vpc
-  subnets        = module.vpc_ohio.subnets_private
+  vpc            = module.myvpc.vpc
+  subnets        = module.myvpc.subnets_private
   kms_key        = data.aws_kms_key.main
   admin_username = "customadmin"
   db_name        = "myapp"
@@ -135,8 +135,8 @@ module "db_valkey" {
   source    = "../../modules/db_valkey"
   name      = "my-redis-but-valkey-soon"
   passwords = ["letsusevalkeynow2024"]
-  vpc       = module.vpc_ohio.vpc
-  subnets   = module.vpc_ohio.subnets_private
+  vpc       = module.myvpc.vpc
+  subnets   = module.myvpc.subnets_private
   tags      = var.tags
 }
 
@@ -144,14 +144,13 @@ module "db_valkey" {
 module "ec2_machine_al2023_x86_64" {
   source               = "../../modules/ec2"
   name                 = "al2023-machine-x86_64"
-  region               = data.aws_region.current.name
   access               = "private"
-  subnet_id            = module.vpc_ohio.subnets_private[0].id
+  subnet_id            = module.myvpc.subnets_private[0].id
   os                   = "al2023_250128"
   arch                 = "x86_64"
   machine              = "t3.small"
   ssh_key              = aws_key_pair.main.key_name
-  security_groups      = [module.vpc_ohio.security_group.id]
+  security_groups      = [module.myvpc.security_group.id]
   iam_instance_profile = aws_iam_instance_profile.ec2
   userdata             = "userdata/userdata_rhel.sh"
   kms_key              = data.aws_kms_key.main
@@ -160,14 +159,13 @@ module "ec2_machine_al2023_x86_64" {
 module "ec2_machine_al2023_arm64" {
   source               = "../../modules/ec2"
   name                 = "al2023-machine-arm64"
-  region               = data.aws_region.current.name
   access               = "private"
-  subnet_id            = module.vpc_ohio.subnets_private[0].id
+  subnet_id            = module.myvpc.subnets_private[0].id
   os                   = "al2023_250128"
   arch                 = "arm64"
   machine              = "t4g.small"
   ssh_key              = aws_key_pair.main.key_name
-  security_groups      = [module.vpc_ohio.security_group.id]
+  security_groups      = [module.myvpc.security_group.id]
   iam_instance_profile = aws_iam_instance_profile.ec2
   userdata             = "userdata/userdata_rhel.sh"
   kms_key              = data.aws_kms_key.main
@@ -196,8 +194,8 @@ module "ecs_service_api_fargate" {
   tag           = "0.0.1"
   arch          = "X86_64" # ARM64
   ecs_cluster   = module.ecs_cluster_fargate.cluster
-  vpc           = module.vpc_ohio.vpc
-  subnets       = module.vpc_ohio.subnets_private
+  vpc           = module.myvpc.vpc
+  subnets       = module.myvpc.subnets_private
   kms_key       = data.aws_kms_key.main
   root_domain   = var.root_domain
   load_balancer = module.alb_public.load_balancer
@@ -215,8 +213,8 @@ module "ecs_cron_fargate_example" {
   tag         = "0.0.1"
   arch        = "X86_64" # ARM64
   ecs_cluster = module.ecs_cluster_fargate.cluster
-  vpc         = module.vpc_ohio.vpc
-  subnets     = module.vpc_ohio.subnets_private
+  vpc         = module.myvpc.vpc
+  subnets     = module.myvpc.subnets_private
   kms_key     = data.aws_kms_key.main
   timezone    = "US/Eastern"
   schedule    = "cron(0 * * * ? *)" # Every hour
@@ -234,8 +232,8 @@ module "ecs_cron_fargate_example" {
 module "asg_ec2" {
   source               = "../../modules/asg"
   name                 = "tf-asg-ecs-x86_64"
-  subnets              = module.vpc_ohio.subnets_private
-  security_groups      = [module.vpc_ohio.security_group.id]
+  subnets              = module.myvpc.subnets_private
+  security_groups      = [module.myvpc.security_group.id]
   iam_instance_profile = aws_iam_instance_profile.ec2
   instance_type        = "t3.small"
   scale_up_cpu         = 60
@@ -274,8 +272,8 @@ module "ecs_service_api_ec2" {
   tag           = "0.0.1"
   arch          = "X86_64" # ARM64
   ecs_cluster   = module.ecs_cluster_ec2.cluster
-  vpc           = module.vpc_ohio.vpc
-  subnets       = module.vpc_ohio.subnets_private
+  vpc           = module.myvpc.vpc
+  subnets       = module.myvpc.subnets_private
   kms_key       = data.aws_kms_key.main
   root_domain   = var.root_domain
   load_balancer = module.alb_public.load_balancer

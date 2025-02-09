@@ -1,11 +1,7 @@
+data "aws_region" "current" {}
 
 variable "name" {
   type = string
-}
-
-variable "region" {
-  type    = string
-  default = "us-east-2"
 }
 
 variable "machine" {
@@ -25,7 +21,7 @@ variable "os" {
 
 variable "azs" {
   type    = list(string)
-  default = ["us-east-2a", "us-east-2b", "us-east-2c"]
+  default = ["a", "b", "c"]
 }
 
 variable "ssh_key" {

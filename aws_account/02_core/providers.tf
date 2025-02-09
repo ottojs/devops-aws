@@ -22,7 +22,6 @@ terraform {
 }
 
 provider "aws" {
-  region = "us-east-2"
   # DO NOT USE
   # access_key
   # secret_key

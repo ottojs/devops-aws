@@ -11,7 +11,7 @@ resource "aws_route53_zone" "root_public" {
 resource "aws_route53_zone" "root_private" {
   name = "${var.root_domain}."
   vpc {
-    vpc_id = module.vpc_ohio.vpc.id
+    vpc_id = module.myvpc.vpc.id
   }
   tags = merge(var.tags, {
     Public = "false"
@@ -30,7 +30,7 @@ resource "aws_route53_zone" "dev_public" {
 resource "aws_route53_zone" "dev_private" {
   name = "dev.${var.root_domain}."
   vpc {
-    vpc_id = module.vpc_ohio.vpc.id
+    vpc_id = module.myvpc.vpc.id
   }
   tags = merge(var.tags, {
     Public = "false"
