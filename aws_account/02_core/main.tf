@@ -282,3 +282,8 @@ module "ecs_service_api_ec2" {
   lb_listener   = module.alb_public.listener_https
   tags          = var.tags
 }
+
+module "ses" {
+  source      = "../../modules/ses"
+  root_domain = var.root_domain
+}
