@@ -37,7 +37,7 @@ resource "aws_db_instance" "default" {
   skip_final_snapshot       = true
   final_snapshot_identifier = "final-snapshot-postgresql-${var.name}"
   delete_automated_backups  = true
-  deletion_protection       = false
+  deletion_protection       = false # TODO: Review
 
   tags = merge(var.tags, {
     Name = var.name

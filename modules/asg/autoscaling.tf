@@ -31,13 +31,13 @@ resource "aws_launch_template" "asg" {
     enabled = true
   }
 
-  # network_interfaces {
-  #   associate_public_ip_address = true
-  #   delete_on_termination       = true
-  #   description                 = "asg-network"
-  #   # subnet_id                 = var.subnet_id
-  #   security_groups             = var.security_groups
-  # }
+  network_interfaces {
+    associate_public_ip_address = false
+    delete_on_termination       = true
+    description                 = "asg-network"
+    # subnet_id                 = var.subnet_id
+    security_groups = var.security_groups
+  }
 
   # placement {
   #   availability_zone = "${data.aws_region.current.name}a"
