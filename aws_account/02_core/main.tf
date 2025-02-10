@@ -132,18 +132,30 @@ module "db_postgresql" {
   tags             = var.tags
 }
 
-# Redis/ValKey In-Memory Cache
-# WARNING: This is for testing only and will be replaced with ValKey v8.x soon
-# For now, it's Redis v7.1.x
-# More info: https://valkey.io/blog/valkey-8-ga/
-module "db_redis" {
-  source    = "../../modules/db_redis"
-  name      = "my-redis"
-  passwords = ["letsusevalkeynow2025"]
-  vpc       = module.myvpc.vpc
-  subnets   = module.myvpc.subnets_private
-  tags      = var.tags
-}
+# # Redis In-Memory Cache
+# # WARNING: You should use Valkey instead
+# # More info: https://valkey.io/blog/valkey-8-ga/
+# module "db_redis" {
+#   source    = "../../modules/db_redis"
+#   name      = "my-redis"
+#   passwords = ["letsusevalkeyinstead2025"]
+#   vpc       = module.myvpc.vpc
+#   subnets   = module.myvpc.subnets_private
+#   tags      = var.tags
+# }
+
+# # Valkey password requirements
+# # 16 to 128 alphanumeric characters or symbols (excluding @, ", and /)
+# # https://www.random.org/strings/?num=5&len=16&digits=on&upperalpha=on&loweralpha=on&unique=on&format=html&rnd=new
+# module "db_valkey" {
+#   source   = "../../modules/db_valkey"
+#   name     = "my-valkey"
+#   vpc      = module.myvpc.vpc
+#   subnets  = module.myvpc.subnets_public
+#   kms_key  = data.aws_kms_key.main
+#   password = "ahTJmNdgAcrXaG3z"
+#   tags     = var.tags
+# }
 
 # EC2 Machine - Amazon Linux 2023 (RedHat-based)
 module "ec2_machine_al2023_x86_64" {
