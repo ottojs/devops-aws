@@ -136,10 +136,10 @@ module "db_postgresql" {
 # WARNING: This is for testing only and will be replaced with ValKey v8.x soon
 # For now, it's Redis v7.1.x
 # More info: https://valkey.io/blog/valkey-8-ga/
-module "db_valkey" {
-  source    = "../../modules/db_valkey"
-  name      = "my-redis-but-valkey-soon"
-  passwords = ["letsusevalkeynow2024"]
+module "db_redis" {
+  source    = "../../modules/db_redis"
+  name      = "my-redis"
+  passwords = ["letsusevalkeynow2025"]
   vpc       = module.myvpc.vpc
   subnets   = module.myvpc.subnets_private
   tags      = var.tags

@@ -1,19 +1,17 @@
 
 # WARNING: This is for testing purposes only
-# This will switch to ValKey v8.x very soon (an open-source Redis fork)
-# More info: https://valkey.io/blog/valkey-8-ga/
 #
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticache_cluster
-resource "aws_elasticache_cluster" "valkey" {
+resource "aws_elasticache_cluster" "redis" {
   cluster_id                 = var.name
-  engine                     = "redis" # valkey
+  engine                     = "redis"
   node_type                  = var.machine_type
   num_cache_nodes            = 1
-  parameter_group_name       = "default.redis7" # default.valkey8, default.valkey8.cluster.on
+  parameter_group_name       = "default.redis7"
   engine_version             = var.engine_version
   port                       = 6379
   az_mode                    = "single-az"
-  subnet_group_name          = aws_elasticache_subnet_group.valkey.name
+  subnet_group_name          = aws_elasticache_subnet_group.redis.name
   auto_minor_version_upgrade = false
   apply_immediately          = true
   maintenance_window         = "sun:05:00-sun:09:00" # UTC/GMT
@@ -27,7 +25,7 @@ resource "aws_elasticache_cluster" "valkey" {
 }
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticache_user
-resource "aws_elasticache_user" "valkey" {
+resource "aws_elasticache_user" "redis" {
   user_id       = "app"
   user_name     = "app"
   access_string = "on ~* +@all"
@@ -41,19 +39,19 @@ resource "aws_elasticache_user" "valkey" {
 }
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticache_subnet_group
-resource "aws_elasticache_subnet_group" "valkey" {
-  name        = "tf-db-valkey-subnets"
-  description = "tf-db-valkey-subnets"
+resource "aws_elasticache_subnet_group" "redis" {
+  name        = "db-${var.name}"
+  description = "db-${var.name}"
   subnet_ids  = local.subnet_ids
   tags = merge(var.tags, {
-    Name = "tf-db-valkey-subnets"
+    Name = "db-${var.name}"
   })
 }
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group
-resource "aws_security_group" "valkey" {
-  name        = "secgrp-db-valkey"
-  description = "Database ValKey"
+resource "aws_security_group" "redis" {
+  name        = "secgrp-db-${var.name}}"
+  description = "Database Redis"
   vpc_id      = var.vpc.id
 
   ingress {
@@ -61,7 +59,7 @@ resource "aws_security_group" "valkey" {
     to_port     = 6379
     protocol    = "tcp"
     cidr_blocks = [var.vpc.cidr_block]
-    description = "ALLOW - ValKey Inbound VPC"
+    description = "ALLOW - Redis Inbound VPC"
   }
 
   #   egress {
@@ -73,6 +71,6 @@ resource "aws_security_group" "valkey" {
   #   }
 
   tags = merge(var.tags, {
-    Name = "secgrp-db-valkey"
+    Name = "secgrp-db-${var.name}"
   })
 }
