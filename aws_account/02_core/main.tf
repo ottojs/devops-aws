@@ -153,7 +153,7 @@ module "db_postgresql" {
 #   vpc      = module.myvpc.vpc
 #   subnets  = module.myvpc.subnets_public
 #   kms_key  = data.aws_kms_key.main
-#   password = "ahTJmNdgAcrXaG3z"
+#   password = "REPLACEME"
 #   tags     = var.tags
 # }
 
@@ -163,7 +163,7 @@ module "ec2_machine_al2023_x86_64" {
   name                 = "al2023-machine-x86_64"
   access               = "private"
   subnet_id            = module.myvpc.subnets_private[0].id
-  os                   = "al2023_250128"
+  os                   = "al2023_250203"
   arch                 = "x86_64"
   machine              = "t3.small"
   ssh_key              = aws_key_pair.main.key_name
@@ -178,7 +178,7 @@ module "ec2_machine_al2023_arm64" {
   name                 = "al2023-machine-arm64"
   access               = "private"
   subnet_id            = module.myvpc.subnets_private[0].id
-  os                   = "al2023_250128"
+  os                   = "al2023_250203"
   arch                 = "arm64"
   machine              = "t4g.small"
   ssh_key              = aws_key_pair.main.key_name
@@ -237,7 +237,7 @@ module "ecs_service_api_fargate" {
 module "ecs_cron_fargate_example" {
   source      = "../../modules/ecs_cron"
   type        = "FARGATE"
-  name        = "example"
+  name        = "cron-example"
   tag         = "0.0.1"
   arch        = "X86_64" # ARM64
   ecs_cluster = module.ecs_cluster_fargate.cluster
@@ -247,8 +247,14 @@ module "ecs_cron_fargate_example" {
   timezone    = "US/Eastern"
   schedule    = "cron(0 * * * ? *)" # Every hour
   envvars     = {}
-  secrets     = {}
-  tags        = var.tags
+  secrets = {
+    # Secrets Manager Key
+    # apps/APPNAME/SECRETNAME
+    # so in this case...
+    # apps/cron-example/balto
+    THESECRET = "balto"
+  }
+  tags = var.tags
 }
 
 ###########################

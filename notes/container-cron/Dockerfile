@@ -7,7 +7,7 @@ RUN cat <<EOF > /home/node/index.js
 console.log("Running...");
 console.log("UNIX:", Date.now());
 console.log("Date:", new Date().toLocaleString());
-console.log("Offset:", new Date().getTimezoneOffset());
+console.log("TZ Offset:", new Date().getTimezoneOffset());
 console.log("Secret Value:", process.env.THESECRET);
 EOF
 
