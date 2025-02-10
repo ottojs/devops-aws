@@ -327,3 +327,21 @@ module "sqs" {
   kms_key = data.aws_kms_key.main
   tags    = var.tags
 }
+
+# password must contain at least one:
+# - uppercase letter
+# - lowercase letter
+# - number
+# - special character
+module "opensearch" {
+  source      = "../../modules/opensearch"
+  name        = "mysearch"
+  password    = "REPLACEME"
+  vpc         = module.myvpc.vpc
+  subnets     = module.myvpc.subnets_public
+  root_domain = var.root_domain
+  node_count  = 1
+  node_size   = "t3.small.search"
+  disk_size   = 20 # GB
+  tags        = var.tags
+}
