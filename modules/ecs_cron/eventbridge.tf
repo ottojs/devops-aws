@@ -1,7 +1,7 @@
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/scheduler_schedule_group
-# resource "aws_scheduler_schedule_group" "example" {
-#   name = "example"
+# resource "aws_scheduler_schedule_group" "cron" {
+#   name = "cron"
 # }
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/scheduler_schedule

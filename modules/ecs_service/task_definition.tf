@@ -21,15 +21,13 @@ resource "aws_ecs_task_definition" "main" {
       memory    = var.ram
       essential = true
       # Environment Variables are (almost) always passed as strings
-      environment = [
+      environment = [for k, v in merge(var.envvars, {
+        PORT = "8080"
+        }) :
         {
-          name  = "PORT",
-          value = "8080"
-        },
-        {
-          name  = "NODE_ENV",
-          value = "production"
-        },
+          name  = k
+          value = v
+        }
       ]
       portMappings = [
         {
@@ -50,11 +48,10 @@ resource "aws_ecs_task_definition" "main" {
       ]
       # https://docs.aws.amazon.com/AmazonECS/latest/developerguide/secrets-envvar-secrets-manager.html
       # https://docs.aws.amazon.com/secretsmanager/latest/userguide/auth-and-access_iam-policies.html
-      # TODO: Dynamic Secrets
-      secrets : [
+      secrets = [for k, v in var.secrets :
         {
-          name : "THESECRET",
-          valueFrom : "arn:aws:secretsmanager:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:secret:thesecret"
+          name      = k
+          valueFrom = "arn:aws:secretsmanager:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:secret:apps/${var.name}/${v}"
         }
       ]
       # requiresAttributes = [

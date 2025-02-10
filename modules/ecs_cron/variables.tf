@@ -73,6 +73,14 @@ variable "tag" {
   default = "latest"
 }
 
+variable "envvars" {
+  type = map(string)
+}
+
+variable "secrets" {
+  type = map(string)
+}
+
 variable "tags" {
   type = map(string)
 }

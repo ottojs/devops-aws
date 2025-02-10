@@ -89,6 +89,14 @@ variable "priority" {
   type = number
 }
 
+variable "envvars" {
+  type = map(string)
+}
+
+variable "secrets" {
+  type = map(string)
+}
+
 variable "tags" {
   type = map(string)
 }

@@ -202,6 +202,7 @@ module "ecs_cluster_fargate" {
   tags               = var.tags
 }
 
+# Your service MUST listen on port 8080
 module "ecs_service_api_fargate" {
   source        = "../../modules/ecs_service"
   type          = "FARGATE"
@@ -217,7 +218,17 @@ module "ecs_service_api_fargate" {
   root_domain   = var.root_domain
   load_balancer = module.alb_public.load_balancer
   lb_listener   = module.alb_public.listener_https
-  tags          = var.tags
+  envvars = {
+    NODE_ENV = "production"
+  }
+  secrets = {
+    # Secrets Manager Key
+    # apps/APPNAME/SECRETNAME
+    # so in this case...
+    # apps/api-fargate/bingo
+    THESECRET = "bingo"
+  }
+  tags = var.tags
 }
 
 ### CRON JOB ###
@@ -235,6 +246,8 @@ module "ecs_cron_fargate_example" {
   kms_key     = data.aws_kms_key.main
   timezone    = "US/Eastern"
   schedule    = "cron(0 * * * ? *)" # Every hour
+  envvars     = {}
+  secrets     = {}
   tags        = var.tags
 }
 
@@ -280,6 +293,7 @@ module "ecs_cluster_ec2" {
   tags               = var.tags
 }
 
+# Your service MUST listen on port 8080
 module "ecs_service_api_ec2" {
   source        = "../../modules/ecs_service"
   type          = "EC2"
@@ -295,7 +309,11 @@ module "ecs_service_api_ec2" {
   root_domain   = var.root_domain
   load_balancer = module.alb_public.load_balancer
   lb_listener   = module.alb_public.listener_https
-  tags          = var.tags
+  envvars = {
+    NODE_ENV = "production"
+  }
+  secrets = {}
+  tags    = var.tags
 }
 
 module "ses" {
