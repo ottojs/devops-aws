@@ -153,11 +153,11 @@ resource "aws_opensearch_domain" "main" {
     log_type                 = "ES_APPLICATION_LOGS"
   }
 
-  # log_publishing_options {
-  #   enabled = true
-  #   cloudwatch_log_group_arn = aws_cloudwatch_log_group.audit_logs.arn
-  #   log_type                 = "AUDIT_LOGS"
-  # }
+  log_publishing_options {
+    enabled = true
+    cloudwatch_log_group_arn = aws_cloudwatch_log_group.audit_logs.arn
+    log_type                 = "AUDIT_LOGS"
+  }
 
   node_to_node_encryption {
     enabled = true
