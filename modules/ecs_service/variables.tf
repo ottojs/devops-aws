@@ -97,6 +97,11 @@ variable "secrets" {
   type = map(string)
 }
 
+variable "health_check_path" {
+  type    = string
+  default = "/"
+}
+
 variable "tags" {
   type = map(string)
 }
