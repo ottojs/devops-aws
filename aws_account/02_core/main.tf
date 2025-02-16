@@ -160,7 +160,7 @@ module "ec2_machine_al2023_x86_64" {
   name                 = "al2023-machine-x86_64"
   access               = "private"
   subnet_id            = module.myvpc.subnets_private[0].id
-  os                   = "al2023_250203"
+  os                   = "al2023_250211"
   arch                 = "x86_64"
   machine              = "t3.small"
   security_groups      = [module.myvpc.security_group.id]
@@ -174,7 +174,7 @@ module "ec2_machine_al2023_arm64" {
   name                 = "al2023-machine-arm64"
   access               = "private"
   subnet_id            = module.myvpc.subnets_private[0].id
-  os                   = "al2023_250203"
+  os                   = "al2023_250211"
   arch                 = "arm64"
   machine              = "t4g.small"
   security_groups      = [module.myvpc.security_group.id]
@@ -272,8 +272,8 @@ module "asg_ec2" {
   count_max            = 2
   tags                 = var.tags
   # RHEL Example
-  # al2023-ami-2023.6.20250128.0-kernel-6.1-x86_64  2025/01/28
-  # ami           = "ami-018875e7376831abe"
+  # al2023-ami-2023.6.20250211.0-kernel-6.1-x86_64  2025/02/11
+  # ami           = "ami-0604f27d956d83a4d"
   # userdata_file = file("../../userdata/userdata_rhel.sh")
   #
   # ECS Bottlerocket Example
