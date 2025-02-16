@@ -154,7 +154,7 @@ resource "aws_opensearch_domain" "main" {
   }
 
   log_publishing_options {
-    enabled = true
+    enabled                  = true
     cloudwatch_log_group_arn = aws_cloudwatch_log_group.audit_logs.arn
     log_type                 = "AUDIT_LOGS"
   }

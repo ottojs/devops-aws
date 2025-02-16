@@ -8,7 +8,7 @@ resource "aws_sns_topic" "main" {
   fifo_topic                  = false          # FIFO cannot deliver to email, sms, https
   content_based_deduplication = false
   signature_version           = 2 # SHA256
-  tags                        = merge(var.tags, {
+  tags = merge(var.tags, {
     Name = var.name
   })
 }
