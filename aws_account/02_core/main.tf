@@ -12,9 +12,7 @@ module "sns" {
   name    = "devops"
   email   = var.email
   kms_key = data.aws_kms_key.main
-  tags = merge(var.tags, {
-    Name = "devops"
-  })
+  tags    = var.tags
 }
 
 # Create the VPC with:
