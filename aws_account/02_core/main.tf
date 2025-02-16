@@ -332,17 +332,12 @@ module "sqs" {
   tags    = var.tags
 }
 
-# password must contain at least one:
-# - uppercase letter
-# - lowercase letter
-# - number
-# - special character
 module "opensearch" {
   source      = "../../modules/opensearch"
   name        = "mysearch"
-  password    = "REPLACEME"
+  password    = var.opensearch_password
   vpc         = module.myvpc.vpc
-  subnets     = module.myvpc.subnets_public
+  subnets     = module.myvpc.subnets_private
   root_domain = var.root_domain
   node_count  = 1
   node_size   = "t3.small.search"

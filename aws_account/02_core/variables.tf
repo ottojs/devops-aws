@@ -39,6 +39,16 @@ variable "email" {
   # default = "user@example.com"
 }
 
+# password must contain at least one:
+# - uppercase letter
+# - lowercase letter
+# - number
+# - special character
+variable "opensearch_password" {
+  type    = string
+  default = "REPLACEME"
+}
+
 # You can use "checksum" to track and dynamically update tags
 # If you change the checksum and immediately run an "apply"
 # You'll be able to detect which resources are not in the pipeline
