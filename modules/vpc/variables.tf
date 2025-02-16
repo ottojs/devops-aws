@@ -43,10 +43,6 @@ variable "subnets_private" {
   }))
 }
 
-variable "allowed_cidrs" {
-  type = list(string)
-}
-
 variable "log_retention_days" {
   type = number
 }

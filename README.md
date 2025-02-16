@@ -33,8 +33,6 @@ Using this software will incur costs on your AWS account. You are solely respons
 
 - Change to directory `aws_account/02_core/`
 - Edit `providers.tf` section `backend "s3"` with **the same** random ID string from Step 1
-- Edit `variables.tf` with `allowed_cidrs` to your IP address or change to empty array/list
-- Edit `variables.tf` with your local SSH key
 - Edit `variables.tf` with **the same** random string ID from Step 1
 - Edit `variables.tf` with your root domain name
 - Review the modules listed in `main.tf` and remove or comment any you will not use (Database, Cache, EC2 Machines, etc.)

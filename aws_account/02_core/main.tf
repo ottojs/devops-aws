@@ -27,7 +27,6 @@ module "myvpc" {
   region             = data.aws_region.current.name
   kms_key            = data.aws_kms_key.main
   cidr               = "10.2.0.0/16"
-  allowed_cidrs      = var.allowed_cidrs
   log_bucket         = data.aws_s3_bucket.logging
   log_retention_days = var.log_retention_days
   subnets_public = [
@@ -109,8 +108,8 @@ module "alb_private" {
 #   kms_key       = data.aws_kms_key.main
 #   subnet        = module.myvpc.subnets_private[3] # "vpn" subnet
 #   vpc           = module.myvpc.vpc
-#   allowed_cidrs = var.allowed_cidrs
-#   tags       = var.tags
+#   vpn_cidrs     = var.vpn_cidrs
+#   tags          = var.tags
 # }
 
 # PostgreSQL Database
@@ -164,7 +163,6 @@ module "ec2_machine_al2023_x86_64" {
   os                   = "al2023_250203"
   arch                 = "x86_64"
   machine              = "t3.small"
-  ssh_key              = aws_key_pair.main.key_name
   security_groups      = [module.myvpc.security_group.id]
   iam_instance_profile = aws_iam_instance_profile.ec2
   userdata             = "../../userdata/userdata_rhel.sh"
@@ -179,7 +177,6 @@ module "ec2_machine_al2023_arm64" {
   os                   = "al2023_250203"
   arch                 = "arm64"
   machine              = "t4g.small"
-  ssh_key              = aws_key_pair.main.key_name
   security_groups      = [module.myvpc.security_group.id]
   iam_instance_profile = aws_iam_instance_profile.ec2
   userdata             = "../../userdata/userdata_rhel.sh"

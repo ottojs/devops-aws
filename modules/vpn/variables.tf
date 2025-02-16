@@ -41,6 +41,6 @@ variable "tags" {
   type = map(string)
 }
 
-variable "allowed_cidrs" {
+variable "vpn_cidrs" {
   type = list(string)
 }

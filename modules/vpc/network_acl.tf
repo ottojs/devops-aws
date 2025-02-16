@@ -6,6 +6,8 @@ resource "aws_default_network_acl" "main" {
     Name = "nacl-${aws_vpc.main.id}-default"
   }
 
+  # HTTP from Anywhere
+  # Use only for redirecting HTTPS (443)
   ingress {
     protocol   = "tcp"
     rule_no    = 10
@@ -15,6 +17,7 @@ resource "aws_default_network_acl" "main" {
     to_port    = 80
   }
 
+  # HTTPS from Anywhere
   ingress {
     protocol   = "tcp"
     rule_no    = 20
@@ -24,7 +27,7 @@ resource "aws_default_network_acl" "main" {
     to_port    = 443
   }
 
-  # For VPN
+  # VPN Connections from Anywhere
   ingress {
     protocol   = "udp"
     rule_no    = 30
@@ -34,7 +37,7 @@ resource "aws_default_network_acl" "main" {
     to_port    = 443
   }
 
-  # For SSH in VPC
+  # SSH (Linux) from VPC CIDR
   ingress {
     protocol   = "tcp"
     rule_no    = 40
@@ -44,17 +47,17 @@ resource "aws_default_network_acl" "main" {
     to_port    = 22
   }
 
-  # For ELB/EC2/ECS in VPC
+  # Remote Desktop (Windows) from VPC CIDR
   ingress {
     protocol   = "tcp"
     rule_no    = 50
     action     = "allow"
     cidr_block = aws_vpc.main.cidr_block
-    from_port  = 8080
-    to_port    = 8080
+    from_port  = 3389
+    to_port    = 3389
   }
 
-  # For Return-Traffic
+  # Return-Traffic TCP
   ingress {
     protocol   = "tcp"
     rule_no    = 60
@@ -64,6 +67,17 @@ resource "aws_default_network_acl" "main" {
     to_port    = 65535
   }
 
+  # For Return-Traffic UDP
+  ingress {
+    protocol   = "udp"
+    rule_no    = 70
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 4096
+    to_port    = 65535
+  }
+
+  # All Outbound IPv4 Allowed
   egress {
     protocol   = -1
     rule_no    = 10
@@ -71,15 +85,6 @@ resource "aws_default_network_acl" "main" {
     cidr_block = "0.0.0.0/0"
     from_port  = 0
     to_port    = 0
-  }
-
-  egress {
-    protocol        = -1
-    rule_no         = 20
-    action          = "allow"
-    ipv6_cidr_block = "::/0"
-    from_port       = 0
-    to_port         = 0
   }
 
   # TODO: Refine

@@ -1,19 +1,18 @@
 data "aws_region" "current" {}
 
-# Set this to your IP
-# https://whatismyipaddress.com/
-variable "allowed_cidrs" {
-  type = list(string)
-  default = [
-    "YOURIPHERE/32"
-  ]
-}
+# # Using the VPN? Set this to your IP(s)
+# # https://whatismyipaddress.com/
+# variable "vpn_cidrs" {
+#   type = list(string)
+#   default = ["YOURIPHERE/32"]
+# }
 
-# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/key_pair
-resource "aws_key_pair" "main" {
-  key_name   = "main"
-  public_key = "ssh-rsa ...REPLACE ME..."
-}
+# Disabled. You should use the AWS Console Web SSH interface instead
+# # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/key_pair
+# resource "aws_key_pair" "main" {
+#   key_name   = "main"
+#   public_key = "ssh-rsa ...REPLACE ME..."
+# }
 
 # This is used to make S3 bucket names more unique
 # It will be appended to the end of the name
