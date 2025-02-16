@@ -1,9 +1,11 @@
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_task_definition
 resource "aws_ecs_task_definition" "main" {
-  family             = var.name
-  network_mode       = "awsvpc" # none, bridge, awsvpc, host
+  family       = var.name
+  network_mode = "awsvpc" # none, bridge, awsvpc, host
+  # TODO: Split These
   execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
+  task_role_arn      = aws_iam_role.ecs_task_execution_role.arn
 
   requires_compatibilities = [var.type]
   cpu                      = var.cpu
