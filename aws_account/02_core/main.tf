@@ -169,7 +169,7 @@ module "ec2_machine_al2023_x86_64" {
   ssh_key              = aws_key_pair.main.key_name
   security_groups      = [module.myvpc.security_group.id]
   iam_instance_profile = aws_iam_instance_profile.ec2
-  userdata             = "userdata/userdata_rhel.sh"
+  userdata             = "../../userdata/userdata_rhel.sh"
   kms_key              = data.aws_kms_key.main
   tags                 = var.tags
 }
@@ -184,7 +184,7 @@ module "ec2_machine_al2023_arm64" {
   ssh_key              = aws_key_pair.main.key_name
   security_groups      = [module.myvpc.security_group.id]
   iam_instance_profile = aws_iam_instance_profile.ec2
-  userdata             = "userdata/userdata_rhel.sh"
+  userdata             = "../../userdata/userdata_rhel.sh"
   kms_key              = data.aws_kms_key.main
   tags                 = var.tags
 }
@@ -279,12 +279,12 @@ module "asg_ec2" {
   # RHEL Example
   # al2023-ami-2023.6.20250128.0-kernel-6.1-x86_64  2025/01/28
   # ami           = "ami-018875e7376831abe"
-  # userdata_file = file("./userdata/userdata_rhel.sh")
+  # userdata_file = file("../../userdata/userdata_rhel.sh")
   #
   # ECS Bottlerocket Example
   # bottlerocket-aws-ecs-2-x86_64-v1.32.0-cacc4ce9  2025/01/27
   ami = "ami-06ca440d570381dfe"
-  userdata_file = templatefile("userdata/userdata_ecs_bottlerocket.sh.tpl", {
+  userdata_file = templatefile("../../userdata/userdata_ecs_bottlerocket.sh.tpl", {
     cluster_name = module.ecs_cluster_ec2.cluster.name
   })
 }
