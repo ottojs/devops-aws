@@ -15,6 +15,13 @@ module "sns" {
   tags    = var.tags
 }
 
+module "route53" {
+  source      = "../../modules/route53_root"
+  vpc         = module.myvpc.vpc
+  root_domain = var.root_domain
+  tags        = var.tags
+}
+
 # Create the VPC with:
 # - public and private subnets
 # - NAT gateway, Internet gateway, Network ACLs
@@ -78,7 +85,7 @@ module "alb_public" {
   public      = true
   vpc         = module.myvpc.vpc
   subnets     = module.myvpc.subnets_public
-  root_domain = var.root_domain
+  root_domain = module.route53.domain
   log_bucket  = data.aws_s3_bucket.logging
   tags        = var.tags
 }
@@ -90,7 +97,7 @@ module "alb_private" {
   public      = false
   vpc         = module.myvpc.vpc
   subnets     = module.myvpc.subnets_private
-  root_domain = var.root_domain
+  root_domain = module.route53.domain
   log_bucket  = data.aws_s3_bucket.logging
   tags        = var.tags
 }
@@ -210,7 +217,7 @@ module "ecs_service_api_fargate" {
   vpc           = module.myvpc.vpc
   subnets       = module.myvpc.subnets_private
   kms_key       = data.aws_kms_key.main
-  root_domain   = var.root_domain
+  root_domain   = module.route53.domain
   load_balancer = module.alb_public.load_balancer
   lb_listener   = module.alb_public.listener_https
   envvars = {
@@ -307,7 +314,7 @@ module "ecs_service_api_ec2" {
   vpc           = module.myvpc.vpc
   subnets       = module.myvpc.subnets_private
   kms_key       = data.aws_kms_key.main
-  root_domain   = var.root_domain
+  root_domain   = module.route53.domain
   load_balancer = module.alb_public.load_balancer
   lb_listener   = module.alb_public.listener_https
   envvars = {
@@ -319,7 +326,7 @@ module "ecs_service_api_ec2" {
 
 module "ses" {
   source      = "../../modules/ses"
-  root_domain = var.root_domain
+  root_domain = module.route53.domain
 }
 
 module "sqs" {
@@ -335,7 +342,7 @@ module "opensearch" {
   password    = var.opensearch_password
   vpc         = module.myvpc.vpc
   subnets     = module.myvpc.subnets_private
-  root_domain = var.root_domain
+  root_domain = module.route53.domain
   node_count  = 1
   node_size   = "t3.small.search"
   disk_size   = 20 # GB

@@ -1,7 +1,8 @@
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_zone
 resource "aws_route53_zone" "root_public" {
-  name = "${var.root_domain}."
+  name    = "${var.root_domain}."
+  comment = "IaC"
   tags = merge(var.tags, {
     Public = "true"
   })
@@ -9,9 +10,10 @@ resource "aws_route53_zone" "root_public" {
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_zone
 resource "aws_route53_zone" "root_private" {
-  name = "${var.root_domain}."
+  name    = "${var.root_domain}."
+  comment = "IaC"
   vpc {
-    vpc_id = module.myvpc.vpc.id
+    vpc_id = var.vpc.id
   }
   tags = merge(var.tags, {
     Public = "false"
