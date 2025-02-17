@@ -12,6 +12,7 @@ resource "aws_subnet" "public" {
   map_public_ip_on_launch = false
   tags = merge(var.tags, {
     Name = "subnet-${var.name}-public-${each.value.az}-${each.value.name}"
+    Public = true
   })
 }
 
@@ -24,5 +25,6 @@ resource "aws_subnet" "private" {
   map_public_ip_on_launch = false
   tags = merge(var.tags, {
     Name = "subnet-${var.name}-private-${each.value.az}-${each.value.name}"
+    Public = false
   })
 }
