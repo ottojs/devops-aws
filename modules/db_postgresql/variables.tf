@@ -23,7 +23,7 @@ variable "name" {
 # aws rds describe-db-engine-versions  --engine postgres | jq '.DBEngineVersions[].EngineVersion'
 variable "engine_version" {
   type    = string
-  default = "17.2"
+  default = "17.4"
 }
 
 # https://aws.amazon.com/rds/instance-types/
