@@ -102,6 +102,11 @@ variable "health_check_path" {
   default = "/"
 }
 
+variable "fault_injection" {
+  type    = bool
+  default = false
+}
+
 variable "tags" {
   type = map(string)
 }

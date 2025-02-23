@@ -17,11 +17,12 @@ resource "aws_ecs_task_definition" "main" {
 
   container_definitions = jsonencode([
     {
-      name      = var.name
-      image     = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com/${var.name}:${var.tag}"
-      cpu       = var.cpu
-      memory    = var.ram
-      essential = true
+      name                   = var.name
+      image                  = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com/${var.name}:${var.tag}"
+      cpu                    = var.cpu
+      memory                 = var.ram
+      essential              = true
+      enable_fault_injection = var.fault_injection
       # Environment Variables are (almost) always passed as strings
       environment = [for k, v in merge(var.envvars, {
         PORT = "8080"
