@@ -7,6 +7,13 @@ data "aws_s3_bucket" "logging" {
   bucket = "devops-log-bucket-${var.random_id}"
 }
 
+module "route53" {
+  source      = "../../modules/route53_root"
+  vpc         = module.myvpc.vpc
+  root_domain = var.root_domain
+  tags        = var.tags
+}
+
 module "sns" {
   source  = "../../modules/sns"
   name    = "devops"
@@ -15,11 +22,17 @@ module "sns" {
   tags    = var.tags
 }
 
-module "route53" {
-  source      = "../../modules/route53_root"
-  vpc         = module.myvpc.vpc
-  root_domain = var.root_domain
-  tags        = var.tags
+module "ses" {
+  source      = "../../modules/ses"
+  root_domain = module.route53.domain
+  depends_on  = [module.route53]
+}
+
+module "sqs" {
+  source  = "../../modules/sqs"
+  name    = "devops"
+  kms_key = data.aws_kms_key.main
+  tags    = var.tags
 }
 
 # Create the VPC with:
@@ -123,18 +136,6 @@ module "alb_private" {
 #   tags               = var.tags
 # }
 
-# # Redis In-Memory Cache
-# # WARNING: You should use Valkey instead
-# # More info: https://valkey.io/blog/valkey-8-ga/
-# module "db_redis" {
-#   source    = "../../modules/db_redis"
-#   name      = "my-redis"
-#   passwords = ["letsusevalkeyinstead2025"]
-#   vpc       = module.myvpc.vpc
-#   subnets   = module.myvpc.subnets_private
-#   tags      = var.tags
-# }
-
 ###################
 ##### FARGATE #####
 ###################
@@ -168,8 +169,8 @@ module "asg_ec2" {
   count_max            = 2
   tags                 = var.tags
   # RHEL Example
-  # al2023-ami-2023.6.20250211.0-kernel-6.1-x86_64  2025/02/11
-  # ami           = "ami-0604f27d956d83a4d"
+  # al2023-ami-2023.6.20250218.2-kernel-6.1-x86_64  2025/02/18
+  # ami           = "ami-0fc82f4dabc05670b"
   # userdata_file = file("../../userdata/userdata_rhel.sh")
   #
   # ECS Bottlerocket Example
@@ -188,17 +189,4 @@ module "ecs_cluster_ec2" {
   kms_key            = data.aws_kms_key.main
   log_retention_days = var.log_retention_days
   tags               = var.tags
-}
-
-module "ses" {
-  source      = "../../modules/ses"
-  root_domain = module.route53.domain
-  depends_on  = [module.route53]
-}
-
-module "sqs" {
-  source  = "../../modules/sqs"
-  name    = "devops"
-  kms_key = data.aws_kms_key.main
-  tags    = var.tags
 }
