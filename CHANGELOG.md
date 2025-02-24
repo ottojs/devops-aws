@@ -1,5 +1,21 @@
 # Releases
 
+## 2025-02-23 v0.5.0
+
+Fourth release for testing!
+It is still _not recommended_ to use this in production (yet).
+
+- New: 03_apps directory
+- New: ECS Service option fault_injection
+- New: VPC Endpoints option (experimental, untested)
+- Edit: VPC Default Network ACL to have individual rules (idempotency)
+- Edit: Merge module ecs_cron into ecs_service
+- Edit: Security Group names
+- Upgrade: PostgreSQL default version to v17.4
+- Upgrade: Amazon Linux 2023 AMI to v20250218
+- Upgrade: Container image node to v22.14.0
+- Upgrade: Provider aws to v5.88.0
+
 ## 2025-02-16 v0.4.0
 
 Third release for testing!
