@@ -50,8 +50,8 @@ resource "aws_elasticache_subnet_group" "redis" {
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group
 resource "aws_security_group" "redis" {
-  name        = "secgrp-db-${var.name}}"
-  description = "Database Redis"
+  name        = "db-rd-${var.name}"
+  description = "Database Redis ${var.name}"
   vpc_id      = var.vpc.id
 
   ingress {
@@ -71,6 +71,6 @@ resource "aws_security_group" "redis" {
   #   }
 
   tags = merge(var.tags, {
-    Name = "secgrp-db-${var.name}"
+    Name = "db-rd-${var.name}"
   })
 }

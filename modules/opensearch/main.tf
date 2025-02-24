@@ -1,9 +1,9 @@
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group
 resource "aws_security_group" "opensearch" {
-  name        = "secgrp-db-${var.name}"
+  name        = "db-os-${var.name}"
   vpc_id      = var.vpc.id
-  description = "Database OpenSearch"
+  description = "Database OpenSearch ${var.name}"
 
   ingress {
     description = "HTTPS from VPC"
@@ -14,7 +14,7 @@ resource "aws_security_group" "opensearch" {
   }
 
   tags = merge(var.tags, {
-    Name = "secgrp-db-${var.name}"
+    Name = "db-os-${var.name}"
   })
 }
 

@@ -15,12 +15,12 @@ resource "aws_default_security_group" "default" {
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group
 resource "aws_security_group" "main" {
-  name        = "secgrp-main"
+  name        = "main"
   description = "Main"
   vpc_id      = aws_vpc.main.id
 
   tags = merge(var.tags, {
-    Name = "secgrp-main"
+    Name = "main"
   })
 
   # HTTP from Anywhere

@@ -77,8 +77,8 @@ resource "aws_elasticache_subnet_group" "valkey" {
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group
 resource "aws_security_group" "valkey" {
-  name        = "secgrp-db-${var.name}"
-  description = "Database Valkey"
+  name        = "db-vk-${var.name}"
+  description = "Database Valkey ${var.name}"
   vpc_id      = var.vpc.id
 
   ingress {
@@ -90,6 +90,6 @@ resource "aws_security_group" "valkey" {
   }
 
   tags = merge(var.tags, {
-    Name = "secgrp-db-${var.name}"
+    Name = "db-vk-${var.name}"
   })
 }

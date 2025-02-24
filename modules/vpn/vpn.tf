@@ -73,8 +73,8 @@ resource "aws_ec2_client_vpn_network_association" "vpn" {
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group
 resource "aws_security_group" "entry" {
-  name        = "secgrp-cvpn-${var.name}-entry"
-  description = "VPN Entry"
+  name        = "cvpn-${var.name}-entry"
+  description = "Client VPN Entry ${var.name}"
   vpc_id      = var.vpc.id
 
   ingress {
@@ -94,14 +94,14 @@ resource "aws_security_group" "entry" {
   }
 
   tags = merge(var.tags, {
-    Name = "secgrp-cvpn-${var.name}-entry"
+    Name = "cvpn-${var.name}-entry"
   })
 }
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group
 resource "aws_security_group" "machine" {
-  name        = "secgrp-cvpn-${var.name}-machine"
-  description = "VPN Machine"
+  name        = "cvpn-${var.name}-machine"
+  description = "Client VPN Machine ${var.name}"
   vpc_id      = var.vpc.id
 
   ingress {
@@ -113,6 +113,6 @@ resource "aws_security_group" "machine" {
   }
 
   tags = merge(var.tags, {
-    Name = "secgrp-cvpn-${var.name}-machine"
+    Name = "cvpn-${var.name}-machine"
   })
 }

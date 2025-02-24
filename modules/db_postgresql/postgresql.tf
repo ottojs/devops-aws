@@ -72,12 +72,12 @@ resource "aws_db_subnet_group" "main" {
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group
 resource "aws_security_group" "postgresql" {
-  name        = "secgrp-rds-postgresql"
-  description = "PostgreSQL Security Group"
+  name        = "db-pg-${var.name}"
+  description = "Database PostgreSQL ${var.name}"
   vpc_id      = var.vpc.id
 
   tags = merge(var.tags, {
-    Name = "secgrp-rds-postgresql"
+    Name = "db-pg-${var.name}"
   })
 
   ingress {
