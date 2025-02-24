@@ -135,37 +135,6 @@ module "alb_private" {
 #   tags      = var.tags
 # }
 
-# x86_64 EC2 Machine - Amazon Linux 2023 (RedHat-based)
-module "ec2_machine_al2023_x86_64" {
-  source               = "../../modules/ec2"
-  name                 = "al2023-machine-x86_64"
-  access               = "private"
-  subnet_id            = module.myvpc.subnets_private[0].id
-  os                   = "al2023_250218"
-  arch                 = "x86_64"
-  machine              = "t3.small"
-  security_groups      = [module.myvpc.security_group.id]
-  iam_instance_profile = aws_iam_instance_profile.ec2
-  userdata             = "../../userdata/userdata_rhel.sh"
-  kms_key              = data.aws_kms_key.main
-  tags                 = var.tags
-}
-# ARM64 EC2 Machine - Amazon Linux 2023 (RedHat-based)
-module "ec2_machine_al2023_arm64" {
-  source               = "../../modules/ec2"
-  name                 = "al2023-machine-arm64"
-  access               = "private"
-  subnet_id            = module.myvpc.subnets_private[0].id
-  os                   = "al2023_250218"
-  arch                 = "arm64"
-  machine              = "t4g.small"
-  security_groups      = [module.myvpc.security_group.id]
-  iam_instance_profile = aws_iam_instance_profile.ec2
-  userdata             = "../../userdata/userdata_rhel.sh"
-  kms_key              = data.aws_kms_key.main
-  tags                 = var.tags
-}
-
 ###################
 ##### FARGATE #####
 ###################
