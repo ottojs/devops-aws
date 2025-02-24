@@ -15,8 +15,7 @@ resource "aws_sns_topic" "main" {
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic_subscription
 resource "aws_sns_topic_subscription" "main" {
-  endpoint   = var.email
-  protocol   = "email"
-  topic_arn  = aws_sns_topic.main.arn
-  depends_on = [aws_sns_topic.main]
+  endpoint  = var.email
+  protocol  = "email"
+  topic_arn = aws_sns_topic.main.arn
 }

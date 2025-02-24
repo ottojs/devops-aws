@@ -231,30 +231,6 @@ module "ecs_cluster_ec2" {
   tags               = var.tags
 }
 
-# Your service MUST listen on port 8080
-module "ecs_service_api_ec2" {
-  source        = "../../modules/ecs_service"
-  type          = "EC2"
-  public        = true
-  name          = "api-ec2"
-  priority      = 2
-  tag           = "0.0.1"
-  arch          = "X86_64" # ARM64
-  ecs_cluster   = module.ecs_cluster_ec2.cluster
-  vpc           = module.myvpc.vpc
-  subnets       = module.myvpc.subnets_private
-  kms_key       = data.aws_kms_key.main
-  root_domain   = module.route53.domain
-  load_balancer = module.alb_public.load_balancer
-  lb_listener   = module.alb_public.listener_https
-  envvars = {
-    NODE_ENV = "production"
-  }
-  secrets = {}
-  tags    = var.tags
-  depends_on = [ module.route53 ]
-}
-
 module "ses" {
   source      = "../../modules/ses"
   root_domain = module.route53.domain

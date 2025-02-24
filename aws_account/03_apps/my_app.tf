@@ -31,13 +31,13 @@ module "opensearch" {
   tags        = var.tags
 }
 
-### SERVER ###
+### SERVER - FARGATE ###
 # Your service MUST listen on port 8080
-module "ecs_fargate_api" {
+module "ecs_fargate_api_server" {
   source      = "../../modules/ecs_service"
   mode        = "server"
   type        = "FARGATE"
-  name        = "api-fargate"
+  name        = "api-server-fargate"
   tag         = "0.0.1"
   arch        = "X86_64" # ARM64
   ecs_cluster = "ecs-cluster-fargate"
@@ -51,8 +51,8 @@ module "ecs_fargate_api" {
     # Secrets Manager Key
     # apps/APPNAME/SECRETNAME
     # so in this case...
-    # apps/api-fargate/bingo
-    THESECRET = "bingo"
+    # apps/api-server-fargate/MY_SECRET
+    MY_SECRET = "MY_SECRET"
   }
   tags = var.tags
   ### Server Only ###
@@ -61,14 +61,14 @@ module "ecs_fargate_api" {
   priority    = 1
 }
 
-### CRON JOB ###
+### CRON JOB - FARGATE ###
 # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 # https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-scheduled-rule-pattern.html
-module "ecs_fargate_cron" {
+module "ecs_fargate_api_cron" {
   source      = "../../modules/ecs_service"
   mode        = "server"
   type        = "FARGATE"
-  name        = "cron-fargate"
+  name        = "api-cron-fargate"
   tag         = "0.0.1"
   arch        = "X86_64" # ARM64
   ecs_cluster = "ecs-cluster-fargate"
@@ -82,8 +82,8 @@ module "ecs_fargate_cron" {
     # Secrets Manager Key
     # apps/APPNAME/SECRETNAME
     # so in this case...
-    # apps/api-fargate/bingo
-    THESECRET = "bingo"
+    # apps/api-cron-fargate/MY_SECRET
+    MY_SECRET = "MY_SECRET"
   }
   tags = var.tags
   ### Cron Job Only ###
@@ -91,4 +91,34 @@ module "ecs_fargate_cron" {
   schedule = "cron(0 * * * ? *)" # Every hour
   # Possible Bug, need this for now
   root_domain = var.root_domain
+}
+
+### SERVER - EC2 ###
+# Your service MUST listen on port 8080
+module "ecs_ec2_api_server" {
+  source      = "../../modules/ecs_service"
+  mode        = "server"
+  type        = "EC2"
+  name        = "api-server-ec2"
+  tag         = "0.0.1"
+  arch        = "X86_64" # ARM64
+  ecs_cluster = "ecs-cluster-ec2"
+  vpc         = data.aws_vpc.main
+  subnet_ids  = data.aws_subnets.private.ids
+  kms_key     = data.aws_kms_key.main
+  envvars = {
+    NODE_ENV = "production"
+  }
+  secrets = {
+    # Secrets Manager Key
+    # apps/APPNAME/SECRETNAME
+    # so in this case...
+    # apps/api-server-ec2/MY_SECRET
+    MY_SECRET = "MY_SECRET"
+  }
+  tags = var.tags
+  ### Server Only ###
+  public      = true
+  root_domain = var.root_domain
+  priority    = 2
 }
