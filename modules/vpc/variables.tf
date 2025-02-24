@@ -1,3 +1,4 @@
+data "aws_region" "current" {}
 
 variable "name" {
   type        = string
@@ -45,6 +46,11 @@ variable "subnets_private" {
 
 variable "log_retention_days" {
   type = number
+}
+
+variable "vpc_endpoints" {
+  type    = bool
+  default = false
 }
 
 variable "tags" {

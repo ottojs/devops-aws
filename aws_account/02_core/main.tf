@@ -36,6 +36,7 @@ module "myvpc" {
   cidr               = "10.2.0.0/16"
   log_bucket         = data.aws_s3_bucket.logging
   log_retention_days = var.log_retention_days
+  vpc_endpoints      = false
   subnets_public = [
     {
       name = "main"
