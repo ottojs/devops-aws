@@ -3,10 +3,6 @@ data "aws_sns_topic" "devops" {
   name = "devops"
 }
 
-locals {
-  subnet_ids = [for s in var.subnets : s.id]
-}
-
 variable "name" {
   type = string
 }
@@ -30,8 +26,8 @@ variable "vpc" {
   })
 }
 
-variable "subnets" {
-  type    = list(object({ id = string }))
+variable "subnet_ids" {
+  type    = list(string)
   default = []
 }
 

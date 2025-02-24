@@ -134,20 +134,7 @@ module "alb_private" {
 #   tags      = var.tags
 # }
 
-# # Valkey password requirements
-# # 16 to 128 alphanumeric characters or symbols (excluding @, ", and /)
-# # https://www.random.org/strings/?num=5&len=16&digits=on&upperalpha=on&loweralpha=on&unique=on&format=html&rnd=new
-# module "db_valkey" {
-#   source   = "../../modules/db_valkey"
-#   name     = "my-valkey"
-#   vpc      = module.myvpc.vpc
-#   subnets  = module.myvpc.subnets_public
-#   kms_key  = data.aws_kms_key.main
-#   password = "REPLACEME"
-#   tags     = var.tags
-# }
-
-# EC2 Machine - Amazon Linux 2023 (RedHat-based)
+# x86_64 EC2 Machine - Amazon Linux 2023 (RedHat-based)
 module "ec2_machine_al2023_x86_64" {
   source               = "../../modules/ec2"
   name                 = "al2023-machine-x86_64"
@@ -162,6 +149,7 @@ module "ec2_machine_al2023_x86_64" {
   kms_key              = data.aws_kms_key.main
   tags                 = var.tags
 }
+# ARM64 EC2 Machine - Amazon Linux 2023 (RedHat-based)
 module "ec2_machine_al2023_arm64" {
   source               = "../../modules/ec2"
   name                 = "al2023-machine-arm64"

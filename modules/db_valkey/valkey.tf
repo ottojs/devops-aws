@@ -15,7 +15,7 @@ resource "aws_elasticache_replication_group" "valkey" {
   engine_version             = var.engine_version
   final_snapshot_identifier  = "final-snapshot-${var.name}"
   ip_discovery               = "ipv4"
-  kms_key_id                 = var.kms_key.id
+  kms_key_id                 = var.kms_key.arn
   maintenance_window         = "sun:05:00-sun:09:00" # after snapshot
   multi_az_enabled           = true
   network_type               = "ipv4"
@@ -67,9 +67,9 @@ resource "aws_elasticache_replication_group" "valkey" {
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticache_subnet_group
 resource "aws_elasticache_subnet_group" "valkey" {
-  name        = "db-${var.name}"
-  description = "db-${var.name}"
-  subnet_ids  = local.subnet_ids
+  name        = "db-vk-${var.name}"
+  description = "db-vk-${var.name}"
+  subnet_ids  = var.subnet_ids
   tags = merge(var.tags, {
     Name = "db-${var.name}"
   })

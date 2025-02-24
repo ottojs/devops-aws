@@ -17,7 +17,18 @@ module "db_postgresql" {
   tags             = var.tags
 }
 
-# OpenSearch
+# Valkey - Redis Alternative
+module "db_valkey" {
+  source     = "../../modules/db_valkey"
+  name       = "my-valkey-8"
+  vpc        = data.aws_vpc.main
+  subnet_ids = data.aws_subnets.private.ids
+  kms_key    = data.aws_kms_key.main
+  password   = var.valkey_password
+  tags       = var.tags
+}
+
+# OpenSearch - ElasticSearch Alternative
 module "opensearch" {
   source      = "../../modules/opensearch"
   name        = "mysearch"
@@ -31,7 +42,7 @@ module "opensearch" {
   tags        = var.tags
 }
 
-### SERVER - FARGATE ###
+### API SERVER - FARGATE ###
 # Your service MUST listen on port 8080
 module "ecs_fargate_api_server" {
   source      = "../../modules/ecs_service"
@@ -61,7 +72,7 @@ module "ecs_fargate_api_server" {
   priority    = 1
 }
 
-### CRON JOB - FARGATE ###
+### API CRON JOB - FARGATE ###
 # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 # https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-scheduled-rule-pattern.html
 module "ecs_fargate_api_cron" {
@@ -89,11 +100,11 @@ module "ecs_fargate_api_cron" {
   ### Cron Job Only ###
   timezone = "US/Eastern"
   schedule = "cron(0 * * * ? *)" # Every hour
-  # Possible Bug, need this for now
+  # TODO: Possible bug, need this for now
   root_domain = var.root_domain
 }
 
-### SERVER - EC2 ###
+### API SERVER - EC2 ###
 # Your service MUST listen on port 8080
 module "ecs_ec2_api_server" {
   source      = "../../modules/ecs_service"
