@@ -77,7 +77,7 @@ module "ecs_fargate_api_server" {
 # https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-scheduled-rule-pattern.html
 module "ecs_fargate_api_cron" {
   source      = "../../modules/ecs_service"
-  mode        = "server"
+  mode        = "cron"
   type        = "FARGATE"
   name        = "api-cron-fargate"
   tag         = "0.0.1"
