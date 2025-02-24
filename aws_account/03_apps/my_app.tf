@@ -29,9 +29,9 @@ module "db_valkey" {
 }
 
 # OpenSearch - ElasticSearch Alternative
-module "opensearch" {
+module "db_opensearch" {
   source      = "../../modules/opensearch"
-  name        = "mysearch"
+  name        = "my-search"
   password    = var.opensearch_password
   vpc         = data.aws_vpc.main
   subnet_ids  = data.aws_subnets.private.ids
