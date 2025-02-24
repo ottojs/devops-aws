@@ -88,6 +88,7 @@ module "alb_public" {
   root_domain = module.route53.domain
   log_bucket  = data.aws_s3_bucket.logging
   tags        = var.tags
+  depends_on  = [module.route53]
 }
 
 # Internal Load Balancer (Private)
@@ -100,6 +101,7 @@ module "alb_private" {
   root_domain = module.route53.domain
   log_bucket  = data.aws_s3_bucket.logging
   tags        = var.tags
+  depends_on  = [module.route53]
 }
 
 # Setting up a VPN has a fairly high cost
