@@ -180,7 +180,7 @@ module "ec2_machine_al2023_arm64" {
 
 module "ecs_cluster_fargate" {
   source             = "../../modules/ecs_cluster"
-  name               = "tf-ecs-cluster-fargate"
+  name               = "ecs-cluster-fargate"
   type               = "FARGATE"
   kms_key            = data.aws_kms_key.main
   log_retention_days = var.log_retention_days
@@ -213,7 +213,8 @@ module "ecs_service_api_fargate" {
     # apps/api-fargate/bingo
     THESECRET = "bingo"
   }
-  tags = var.tags
+  tags       = var.tags
+  depends_on = [module.route53]
 }
 
 ### CRON JOB ###
@@ -252,7 +253,7 @@ module "ecs_cron_fargate_example" {
 # We may consider an alternative monitoring solution in the future
 module "asg_ec2" {
   source               = "../../modules/asg"
-  name                 = "tf-asg-ecs-x86_64"
+  name                 = "asg-ecs-x86_64"
   subnets              = module.myvpc.subnets_private
   security_groups      = [module.myvpc.security_group.id]
   iam_instance_profile = aws_iam_instance_profile.ec2
@@ -276,7 +277,7 @@ module "asg_ec2" {
 
 module "ecs_cluster_ec2" {
   source             = "../../modules/ecs_cluster"
-  name               = "tf-ecs-cluster-ec2"
+  name               = "ecs-cluster-ec2"
   type               = "EC2"
   asg                = module.asg_ec2.asg
   kms_key            = data.aws_kms_key.main
@@ -305,11 +306,13 @@ module "ecs_service_api_ec2" {
   }
   secrets = {}
   tags    = var.tags
+  depends_on = [ module.route53 ]
 }
 
 module "ses" {
   source      = "../../modules/ses"
   root_domain = module.route53.domain
+  depends_on  = [module.route53]
 }
 
 module "sqs" {

@@ -12,7 +12,7 @@ resource "aws_db_instance" "default" {
   instance_class                      = var.machine_type
   username                            = var.admin_username
   manage_master_user_password         = true # conflicts with parameter: password
-  parameter_group_name                = "tf-rds-postgresql-17"
+  parameter_group_name                = "rds-postgresql-17"
   apply_immediately                   = true
   allow_major_version_upgrade         = false
   auto_minor_version_upgrade          = false
@@ -46,7 +46,7 @@ resource "aws_db_instance" "default" {
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_parameter_group
 resource "aws_db_parameter_group" "postgresql17" {
-  name   = "tf-rds-postgresql-17"
+  name   = "rds-postgresql-17"
   family = "postgres17"
 
   parameter {
@@ -56,17 +56,17 @@ resource "aws_db_parameter_group" "postgresql17" {
   }
 
   tags = merge(var.tags, {
-    Name = "tf-rds-postgresql-17"
+    Name = "rds-postgresql-17"
   })
 }
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_subnet_group
 resource "aws_db_subnet_group" "main" {
-  name       = "tf-db-postgresql-subnets"
+  name       = "db-postgresql-subnets"
   subnet_ids = var.subnet_ids
 
   tags = merge(var.tags, {
-    Name = "tf-db-postgresql-subnets"
+    Name = "db-postgresql-subnets"
   })
 }
 

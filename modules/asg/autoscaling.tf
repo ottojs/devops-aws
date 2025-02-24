@@ -6,13 +6,12 @@
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/launch_template
 resource "aws_launch_template" "asg" {
   # name_prefix = "lt-${var.name}-"
-  name                                 = "tf-lt-${var.name}"
+  name                                 = "lt-${var.name}"
   disable_api_stop                     = false
   disable_api_termination              = false
   image_id                             = var.ami
   instance_initiated_shutdown_behavior = "terminate"
   instance_type                        = var.instance_type
-  vpc_security_group_ids               = var.security_groups
   # key_name = not needed, use the web shell instead
 
   iam_instance_profile {
@@ -35,6 +34,7 @@ resource "aws_launch_template" "asg" {
     associate_public_ip_address = false
     delete_on_termination       = true
     description                 = "asg-network"
+    # Don't specify this here in the Launch Template, use the ASG
     # subnet_id                 = var.subnet_id
     security_groups = var.security_groups
   }
@@ -70,8 +70,8 @@ resource "aws_launch_template" "asg" {
 }
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_policy
-resource "aws_autoscaling_policy" "example" {
-  name                      = "tf-asg-policy-${var.name}"
+resource "aws_autoscaling_policy" "main" {
+  name                      = "asg-policy-${var.name}"
   autoscaling_group_name    = aws_autoscaling_group.asg.name
   policy_type               = "TargetTrackingScaling"
   estimated_instance_warmup = var.seconds_warmup
@@ -90,8 +90,8 @@ resource "aws_autoscaling_policy" "example" {
 #
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_group
 resource "aws_autoscaling_group" "asg" {
-  # name_prefix        = "tf-asg-${var.name}-"
-  name                 = "tf-asg-${var.name}"
+  # name_prefix        = "asg-${var.name}-"
+  name                 = "asg-${var.name}"
   min_size             = var.count_min
   max_size             = var.count_max
   termination_policies = ["OldestInstance"]
