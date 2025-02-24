@@ -335,16 +335,3 @@ module "sqs" {
   kms_key = data.aws_kms_key.main
   tags    = var.tags
 }
-
-module "opensearch" {
-  source      = "../../modules/opensearch"
-  name        = "mysearch"
-  password    = var.opensearch_password
-  vpc         = module.myvpc.vpc
-  subnets     = module.myvpc.subnets_private
-  root_domain = module.route53.domain
-  node_count  = 1
-  node_size   = "t3.small.search"
-  disk_size   = 20 # GB
-  tags        = var.tags
-}

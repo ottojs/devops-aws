@@ -164,7 +164,7 @@ resource "aws_opensearch_domain" "main" {
   }
 
   vpc_options {
-    subnet_ids         = [local.subnet_ids[0]]
+    subnet_ids         = local.subnet_ids
     security_group_ids = [aws_security_group.opensearch.id]
   }
 

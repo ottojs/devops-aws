@@ -8,7 +8,8 @@ data "aws_acm_certificate" "main" {
 }
 
 locals {
-  subnet_ids = [for s in var.subnets : s.id]
+  # We need only one subnet, possibly because of the cluster number
+  subnet_ids = [var.subnet_ids[0]]
 }
 
 variable "name" {
@@ -22,8 +23,8 @@ variable "vpc" {
   })
 }
 
-variable "subnets" {
-  type    = list(any)
+variable "subnet_ids" {
+  type    = list(string)
   default = []
 }
 
