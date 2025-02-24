@@ -9,9 +9,8 @@ data "aws_sns_topic" "devops" {
 
 # MiB and GiB do not align well with console graphs
 locals {
-  subnet_ids = [for s in var.subnets : s.id]
-  mb         = 1000000    # 1048576 Mebibytes
-  gb         = 1000000000 # 1073741824 Gibibytes
+  mb = 1000000    # 1048576 Mebibytes
+  gb = 1000000000 # 1073741824 Gibibytes
 }
 
 variable "name" {
@@ -48,8 +47,8 @@ variable "vpc" {
   })
 }
 
-variable "subnets" {
-  type    = list(object({ id = string }))
+variable "subnet_ids" {
+  type    = list(string)
   default = []
 }
 

@@ -63,7 +63,7 @@ resource "aws_db_parameter_group" "postgresql17" {
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_subnet_group
 resource "aws_db_subnet_group" "main" {
   name       = "tf-db-postgresql-subnets"
-  subnet_ids = local.subnet_ids
+  subnet_ids = var.subnet_ids
 
   tags = merge(var.tags, {
     Name = "tf-db-postgresql-subnets"
