@@ -150,7 +150,7 @@ module "ec2_machine_al2023_x86_64" {
   name                 = "al2023-machine-x86_64"
   access               = "private"
   subnet_id            = module.myvpc.subnets_private[0].id
-  os                   = "al2023_250211"
+  os                   = "al2023_250218"
   arch                 = "x86_64"
   machine              = "t3.small"
   security_groups      = [module.myvpc.security_group.id]
@@ -164,7 +164,7 @@ module "ec2_machine_al2023_arm64" {
   name                 = "al2023-machine-arm64"
   access               = "private"
   subnet_id            = module.myvpc.subnets_private[0].id
-  os                   = "al2023_250211"
+  os                   = "al2023_250218"
   arch                 = "arm64"
   machine              = "t4g.small"
   security_groups      = [module.myvpc.security_group.id]
