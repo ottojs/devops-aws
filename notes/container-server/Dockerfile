@@ -20,7 +20,7 @@ RUN cat <<EOF > /home/node/package.json
   }
 }
 EOF
-RUN npm install
+RUN npm install --ignore-scripts
 RUN cat <<EOF > /home/node/index.js
 const express = require('express');
 const app = express();

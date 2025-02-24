@@ -8,9 +8,10 @@ resource "aws_acm_certificate" "vpn" {
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group
 resource "aws_cloudwatch_log_group" "vpn" {
-  name         = "vpn/cvpn-${var.name}"
-  kms_key_id   = var.kms_key.arn
-  skip_destroy = true
+  name              = "vpn/cvpn-${var.name}"
+  kms_key_id        = var.kms_key.arn
+  retention_in_days = var.log_retention_days
+  skip_destroy      = true
 }
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_stream

@@ -37,6 +37,10 @@ variable "vpc" {
   })
 }
 
+variable "log_retention_days" {
+  type = number
+}
+
 variable "tags" {
   type = map(string)
 }
