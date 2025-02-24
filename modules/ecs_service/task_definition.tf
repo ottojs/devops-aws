@@ -32,7 +32,8 @@ resource "aws_ecs_task_definition" "main" {
           value = v
         }
       ]
-      portMappings = [
+      # Only if mode is server
+      portMappings = var.mode != "server" ? [] : [
         {
           name = "http"
           # Both ports are required to be the same
@@ -72,7 +73,7 @@ resource "aws_ecs_task_definition" "main" {
           "awslogs-create-group"  = "true"
           "awslogs-group"         = "devops/aws/ecs/${var.ecs_cluster}"
           "awslogs-region"        = data.aws_region.current.name
-          "awslogs-stream-prefix" = "service"
+          "awslogs-stream-prefix" = var.mode
           "mode"                  = "non-blocking"
           "max-buffer-size"       = "1m"
         }

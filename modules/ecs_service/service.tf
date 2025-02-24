@@ -35,11 +35,15 @@ resource "aws_ecs_service" "main" {
     assign_public_ip = false
   }
 
-  load_balancer {
-    target_group_arn = aws_lb_target_group.main.id
-    # This needs to match the container definition names above
-    container_name = var.name
-    container_port = 8080
+  # Only if mode is server
+  dynamic "load_balancer" {
+    for_each = var.mode == "server" ? [1] : []
+    content {
+      target_group_arn = aws_lb_target_group.main[0].id
+      # This needs to match the container definition names above
+      container_name = var.name
+      container_port = 8080
+    }
   }
 
   # depends_on = [

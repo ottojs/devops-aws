@@ -31,21 +31,19 @@ module "opensearch" {
   tags        = var.tags
 }
 
+### SERVER ###
 # Your service MUST listen on port 8080
 module "ecs_fargate_api" {
-  source        = "../../modules/ecs_service"
-  type          = "FARGATE"
-  public        = true
-  name          = "api-fargate"
-  priority      = 1
-  tag           = "0.0.1"
-  arch          = "X86_64" # ARM64
-  ecs_cluster   = "ecs-cluster-fargate"
-  vpc           = data.aws_vpc.main
-  subnet_ids    = data.aws_subnets.private.ids
-  kms_key       = data.aws_kms_key.main
-  root_domain   = var.root_domain
-  load_balancer = data.aws_lb.public
+  source      = "../../modules/ecs_service"
+  mode        = "server"
+  type        = "FARGATE"
+  name        = "api-fargate"
+  tag         = "0.0.1"
+  arch        = "X86_64" # ARM64
+  ecs_cluster = "ecs-cluster-fargate"
+  vpc         = data.aws_vpc.main
+  subnet_ids  = data.aws_subnets.private.ids
+  kms_key     = data.aws_kms_key.main
   envvars = {
     NODE_ENV = "production"
   }
@@ -57,4 +55,40 @@ module "ecs_fargate_api" {
     THESECRET = "bingo"
   }
   tags = var.tags
+  ### Server Only ###
+  public      = true
+  root_domain = var.root_domain
+  priority    = 1
+}
+
+### CRON JOB ###
+# https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+# https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-scheduled-rule-pattern.html
+module "ecs_fargate_cron" {
+  source      = "../../modules/ecs_service"
+  mode        = "server"
+  type        = "FARGATE"
+  name        = "cron-fargate"
+  tag         = "0.0.1"
+  arch        = "X86_64" # ARM64
+  ecs_cluster = "ecs-cluster-fargate"
+  vpc         = data.aws_vpc.main
+  subnet_ids  = data.aws_subnets.private.ids
+  kms_key     = data.aws_kms_key.main
+  envvars = {
+    NODE_ENV = "production"
+  }
+  secrets = {
+    # Secrets Manager Key
+    # apps/APPNAME/SECRETNAME
+    # so in this case...
+    # apps/api-fargate/bingo
+    THESECRET = "bingo"
+  }
+  tags = var.tags
+  ### Cron Job Only ###
+  timezone = "US/Eastern"
+  schedule = "cron(0 * * * ? *)" # Every hour
+  # Possible Bug, need this for now
+  root_domain = var.root_domain
 }

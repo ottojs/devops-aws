@@ -6,9 +6,26 @@ data "aws_ecs_cluster" "main" {
   cluster_name = var.ecs_cluster
 }
 
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/lb
+data "aws_lb" "main" {
+  count = var.mode == "server" ? 1 : 0
+  name  = "alb-${var.public == true ? "public" : "private"}"
+}
+
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/lb_listener
 data "aws_lb_listener" "https" {
-  load_balancer_arn = var.load_balancer.arn
+  count             = var.mode == "server" ? 1 : 0
+  load_balancer_arn = data.aws_lb.main[0].arn
   port              = 443
+}
+
+#####
+#####
+
+# Valid Values
+# server, worker, cron
+variable "mode" {
+  type = string
 }
 
 variable "name" {
@@ -61,30 +78,9 @@ variable "tag" {
   default = "latest"
 }
 
-variable "root_domain" {
-  type = string
-}
-
-variable "load_balancer" {
-  type = object({
-    arn      = string
-    dns_name = string
-    zone_id  = string
-  })
-}
-
-variable "public" {
-  type    = bool
-  default = false
-}
-
 # FARGATE or EC2
 variable "type" {
   type = string
-}
-
-variable "priority" {
-  type = number
 }
 
 variable "envvars" {
@@ -95,11 +91,6 @@ variable "secrets" {
   type = map(string)
 }
 
-variable "health_check_path" {
-  type    = string
-  default = "/"
-}
-
 variable "fault_injection" {
   type    = bool
   default = false
@@ -107,4 +98,42 @@ variable "fault_injection" {
 
 variable "tags" {
   type = map(string)
+}
+
+#######################
+##### Server Only #####
+#######################
+
+variable "public" {
+  type    = bool
+  default = false
+}
+
+variable "root_domain" {
+  type    = string
+  default = "example.com"
+}
+
+variable "priority" {
+  type    = number
+  default = 1
+}
+
+variable "health_check_path" {
+  type    = string
+  default = "/"
+}
+
+#######################
+##### Cron Job Only ###
+#######################
+
+variable "timezone" {
+  type    = string
+  default = "UTC"
+}
+
+variable "schedule" {
+  type    = string
+  default = "cron(0 0 * * ? *)" # Every day at midnight
 }

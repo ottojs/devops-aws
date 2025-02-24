@@ -35,13 +35,3 @@ data "aws_subnets" "public" {
     values = ["true"]
   }
 }
-
-# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/lb
-data "aws_lb" "private" {
-  name = "alb-private"
-}
-
-# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/lb
-data "aws_lb" "public" {
-  name = "alb-public"
-}

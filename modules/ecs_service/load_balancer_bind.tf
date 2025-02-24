@@ -1,7 +1,8 @@
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener_rule
 resource "aws_lb_listener_rule" "default" {
-  listener_arn = data.aws_lb_listener.https.arn
+  count        = var.mode == "server" ? 1 : 0
+  listener_arn = data.aws_lb_listener.https[0].arn
   priority     = var.priority
   condition {
     host_header {
@@ -16,7 +17,7 @@ resource "aws_lb_listener_rule" "default" {
     # TODO: Multiple Blue/Green
     forward {
       target_group {
-        arn    = aws_lb_target_group.main.arn
+        arn    = aws_lb_target_group.main[0].arn
         weight = 80
       }
       # target_group {
@@ -32,7 +33,8 @@ resource "aws_lb_listener_rule" "default" {
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group
 resource "aws_lb_target_group" "main" {
-  name = "tg-${var.name}"
+  count = var.mode == "server" ? 1 : 0
+  name  = "tg-${var.name}"
   #name_prefix                   = var.name
   port                          = 8080
   protocol                      = "HTTP"

@@ -187,32 +187,6 @@ module "ecs_cluster_fargate" {
   tags               = var.tags
 }
 
-### CRON JOB ###
-# https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-# https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-scheduled-rule-pattern.html
-module "ecs_cron_fargate_example" {
-  source      = "../../modules/ecs_cron"
-  type        = "FARGATE"
-  name        = "cron-example"
-  tag         = "0.0.1"
-  arch        = "X86_64" # ARM64
-  ecs_cluster = module.ecs_cluster_fargate.cluster
-  vpc         = module.myvpc.vpc
-  subnets     = module.myvpc.subnets_private
-  kms_key     = data.aws_kms_key.main
-  timezone    = "US/Eastern"
-  schedule    = "cron(0 * * * ? *)" # Every hour
-  envvars     = {}
-  secrets = {
-    # Secrets Manager Key
-    # apps/APPNAME/SECRETNAME
-    # so in this case...
-    # apps/cron-example/balto
-    THESECRET = "balto"
-  }
-  tags = var.tags
-}
-
 ###########################
 ##### EC2 SELF-HOSTED #####
 ###########################

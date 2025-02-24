@@ -1,16 +1,20 @@
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group
 resource "aws_security_group" "main" {
-  name        = "secgrp-ecs-${var.name}"
+  name        = "ecs-${var.name}"
   description = "ECS Task: ${var.name}"
   vpc_id      = var.vpc.id
 
-  ingress {
-    from_port   = 8080
-    to_port     = 8080
-    protocol    = "tcp"
-    cidr_blocks = [var.vpc.cidr_block]
-    description = "ALLOW - HTTP ALT Inbound VPC"
+  # Only if mode is server
+  dynamic "ingress" {
+    for_each = var.mode == "server" ? [1] : []
+    content {
+      from_port   = 8080
+      to_port     = 8080
+      protocol    = "tcp"
+      cidr_blocks = [var.vpc.cidr_block]
+      description = "ALLOW - HTTP ALT Inbound VPC"
+    }
   }
 
   egress {
@@ -24,6 +28,6 @@ resource "aws_security_group" "main" {
   }
 
   tags = merge(var.tags, {
-    Name = "secgrp-ecs-${var.name}"
+    Name = "ecs-${var.name}"
   })
 }
