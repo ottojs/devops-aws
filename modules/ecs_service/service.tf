@@ -9,7 +9,7 @@ resource "aws_ecs_service" "main" {
     create_before_destroy = true
   }
   name             = var.name
-  cluster          = var.ecs_cluster.id
+  cluster          = data.aws_ecs_cluster.main.id
   task_definition  = aws_ecs_task_definition.main.arn
   desired_count    = 1
   launch_type      = var.type
@@ -30,7 +30,7 @@ resource "aws_ecs_service" "main" {
 
   # TODO: Dynamic Security Group
   network_configuration {
-    subnets          = local.subnet_ids
+    subnets          = var.subnet_ids
     security_groups  = [aws_security_group.main.id]
     assign_public_ip = false
   }
@@ -43,7 +43,6 @@ resource "aws_ecs_service" "main" {
   }
 
   # depends_on = [
-  #   aws_lb_listener.http_forward,
   #   aws_iam_role_policy_attachment.ecs_task_execution_role
   # ]
 

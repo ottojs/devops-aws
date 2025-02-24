@@ -1,8 +1,14 @@
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 
-locals {
-  subnet_ids = [for s in var.subnets : s.id]
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ecs_cluster
+data "aws_ecs_cluster" "main" {
+  cluster_name = var.ecs_cluster
+}
+
+data "aws_lb_listener" "https" {
+  load_balancer_arn = var.load_balancer.arn
+  port              = 443
 }
 
 variable "name" {
@@ -16,8 +22,8 @@ variable "vpc" {
   })
 }
 
-variable "subnets" {
-  type    = list(object({ id = string }))
+variable "subnet_ids" {
+  type    = list(string)
   default = []
 }
 
@@ -29,10 +35,7 @@ variable "kms_key" {
 }
 
 variable "ecs_cluster" {
-  type = object({
-    id   = string
-    name = string
-  })
+  type = string
 }
 
 # X86_64 or ARM64
@@ -64,14 +67,9 @@ variable "root_domain" {
 
 variable "load_balancer" {
   type = object({
+    arn      = string
     dns_name = string
     zone_id  = string
-  })
-}
-
-variable "lb_listener" {
-  type = object({
-    arn = string
   })
 }
 

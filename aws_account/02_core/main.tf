@@ -187,36 +187,6 @@ module "ecs_cluster_fargate" {
   tags               = var.tags
 }
 
-# Your service MUST listen on port 8080
-module "ecs_service_api_fargate" {
-  source        = "../../modules/ecs_service"
-  type          = "FARGATE"
-  public        = true
-  name          = "api-fargate"
-  priority      = 1
-  tag           = "0.0.1"
-  arch          = "X86_64" # ARM64
-  ecs_cluster   = module.ecs_cluster_fargate.cluster
-  vpc           = module.myvpc.vpc
-  subnets       = module.myvpc.subnets_private
-  kms_key       = data.aws_kms_key.main
-  root_domain   = module.route53.domain
-  load_balancer = module.alb_public.load_balancer
-  lb_listener   = module.alb_public.listener_https
-  envvars = {
-    NODE_ENV = "production"
-  }
-  secrets = {
-    # Secrets Manager Key
-    # apps/APPNAME/SECRETNAME
-    # so in this case...
-    # apps/api-fargate/bingo
-    THESECRET = "bingo"
-  }
-  tags       = var.tags
-  depends_on = [module.route53]
-}
-
 ### CRON JOB ###
 # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 # https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-scheduled-rule-pattern.html

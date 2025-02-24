@@ -1,7 +1,7 @@
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener_rule
 resource "aws_lb_listener_rule" "default" {
-  listener_arn = var.lb_listener.arn
+  listener_arn = data.aws_lb_listener.https.arn
   priority     = var.priority
   condition {
     host_header {

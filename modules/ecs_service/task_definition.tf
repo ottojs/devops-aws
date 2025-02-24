@@ -70,7 +70,7 @@ resource "aws_ecs_task_definition" "main" {
         logDriver = "awslogs"
         options = {
           "awslogs-create-group"  = "true"
-          "awslogs-group"         = "devops/aws/ecs/${var.ecs_cluster.name}"
+          "awslogs-group"         = "devops/aws/ecs/${var.ecs_cluster}"
           "awslogs-region"        = data.aws_region.current.name
           "awslogs-stream-prefix" = "service"
           "mode"                  = "non-blocking"
