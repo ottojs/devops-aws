@@ -7,7 +7,7 @@ resource "aws_instance" "ec2" {
   # TODO: Random Pick
   availability_zone           = "${data.aws_region.current.name}${element(var.azs, 0)}"
   subnet_id                   = var.subnet_id
-  associate_public_ip_address = var.access == "public"
+  associate_public_ip_address = var.public
   monitoring                  = false
   key_name                    = var.ssh_key
 

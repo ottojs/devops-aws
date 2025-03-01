@@ -26,7 +26,7 @@ variable "arch" {
 
 variable "os" {
   type    = string
-  default = "al2023_250218"
+  default = "al2023"
 }
 
 variable "azs" {
@@ -43,9 +43,9 @@ variable "subnet_id" {
   type = string
 }
 
-variable "access" {
-  type    = string
-  default = "private"
+variable "public" {
+  type    = bool
+  default = false
 }
 
 variable "userdata" {

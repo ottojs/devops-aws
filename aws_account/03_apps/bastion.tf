@@ -12,9 +12,8 @@ data "aws_iam_instance_profile" "ec2" {
 module "bastion_x86_64" {
   source               = "../../modules/ec2"
   name                 = "bastion"
-  access               = "private"
   subnet_id            = data.aws_subnets.private.ids[0]
-  os                   = "al2023_250218"
+  os                   = "al2023"
   arch                 = "x86_64"
   machine              = "t3.small"
   security_groups      = [data.aws_security_group.main.id]
@@ -28,9 +27,8 @@ module "bastion_x86_64" {
 module "bastion_arm64" {
   source               = "../../modules/ec2"
   name                 = "bastion"
-  access               = "private"
   subnet_id            = data.aws_subnets.private.ids[0]
-  os                   = "al2023_250218"
+  os                   = "al2023"
   arch                 = "arm64"
   machine              = "t4g.small"
   security_groups      = [data.aws_security_group.main.id]
