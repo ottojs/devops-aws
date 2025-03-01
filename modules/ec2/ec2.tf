@@ -1,12 +1,4 @@
 
-locals {
-  # https://aws.amazon.com/ec2/instance-types/t4/
-  instance_type = {
-    x86_64 = "t3a.micro"
-    arm64  = "t4g.micro"
-  }
-}
-
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance
 resource "aws_instance" "ec2" {
   count         = 1
@@ -34,7 +26,7 @@ resource "aws_instance" "ec2" {
     volume_size           = 16
     volume_type           = "gp3"
     tags = merge(var.tags, {
-      Name = "${var.name}-disk"
+      Name = "${local.name}-disk"
     })
   }
   vpc_security_group_ids      = var.security_groups
@@ -45,6 +37,6 @@ resource "aws_instance" "ec2" {
   iam_instance_profile = var.iam_instance_profile.name
 
   tags = merge(var.tags, {
-    Name = var.name
+    Name = local.name
   })
 }

@@ -1,5 +1,15 @@
 data "aws_region" "current" {}
 
+locals {
+  name = "${var.name}-${var.os}-${var.arch}"
+  # https://aws.amazon.com/ec2/instance-types/t3/
+  # https://aws.amazon.com/ec2/instance-types/t4/
+  instance_type = {
+    x86_64 = "t3a.micro"
+    arm64  = "t4g.micro"
+  }
+}
+
 variable "name" {
   type = string
 }

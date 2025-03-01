@@ -9,9 +9,9 @@ data "aws_iam_instance_profile" "ec2" {
 }
 
 # EC2 Machine - Amazon Linux 2023 (RedHat-based, x86_64)
-module "ec2_machine_al2023_x86_64" {
+module "bastion_x86_64" {
   source               = "../../modules/ec2"
-  name                 = "al2023-machine-x86_64"
+  name                 = "bastion"
   access               = "private"
   subnet_id            = data.aws_subnets.private.ids[0]
   os                   = "al2023_250218"
@@ -25,9 +25,9 @@ module "ec2_machine_al2023_x86_64" {
 }
 
 # EC2 Machine - Amazon Linux 2023 (RedHat-based, ARM64)
-module "ec2_machine_al2023_arm64" {
+module "bastion_arm64" {
   source               = "../../modules/ec2"
-  name                 = "al2023-machine-arm64"
+  name                 = "bastion"
   access               = "private"
   subnet_id            = data.aws_subnets.private.ids[0]
   os                   = "al2023_250218"
