@@ -2,7 +2,7 @@
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance
 resource "aws_instance" "ec2" {
   count         = 1
-  ami           = local.os[var.os][var.arch][data.aws_region.current.name]
+  ami           = var.ami == "" ? local.os[var.os][var.arch][data.aws_region.current.name] : var.ami
   instance_type = var.machine == "" ? local.instance_type[var.arch] : var.machine
   # TODO: Random Pick
   availability_zone           = "${data.aws_region.current.name}${element(var.azs, 0)}"

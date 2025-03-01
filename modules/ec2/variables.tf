@@ -24,6 +24,11 @@ variable "arch" {
   default = "x86_64"
 }
 
+variable "ami" {
+  type    = string
+  default = ""
+}
+
 variable "os" {
   type    = string
   default = "al2023"
