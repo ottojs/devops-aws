@@ -25,7 +25,8 @@ resource "aws_ecs_task_definition" "main" {
       enable_fault_injection = var.fault_injection
       # Environment Variables are (almost) always passed as strings
       environment = [for k, v in merge(var.envvars, {
-        PORT = "8080"
+        PORT        = "8080",
+        APP_VERSION = var.tag,
         }) :
         {
           name  = k
