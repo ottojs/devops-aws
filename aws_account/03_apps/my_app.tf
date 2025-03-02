@@ -5,6 +5,7 @@ module "db_postgresql" {
   name             = "my-postgresql-17"
   vpc              = data.aws_vpc.main
   subnet_ids       = data.aws_subnets.private.ids
+  root_domain      = var.root_domain
   kms_key          = data.aws_kms_key.main
   admin_username   = "customadmin"
   db_name          = "myapp"

@@ -1,6 +1,6 @@
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_instance
-resource "aws_db_instance" "default" {
+resource "aws_db_instance" "main" {
   allocated_storage                   = 20
   max_allocated_storage               = var.storage_max
   identifier                          = var.name
@@ -42,6 +42,15 @@ resource "aws_db_instance" "default" {
   tags = merge(var.tags, {
     Name = var.name
   })
+}
+
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record
+resource "aws_route53_record" "main" {
+  zone_id = data.aws_route53_zone.root.zone_id
+  name    = "db-${var.name}.${var.root_domain}"
+  type    = "CNAME"
+  ttl     = "60"
+  records = [aws_db_instance.main.address]
 }
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_parameter_group
