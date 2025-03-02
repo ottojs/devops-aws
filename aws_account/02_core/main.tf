@@ -153,40 +153,40 @@ module "ecs_cluster_fargate" {
 ##### EC2 SELF-HOSTED #####
 ###########################
 
-# WARNING: You want to underestimate the autoscaling CPU threshold
-# We want this to scale at 80% but put in 60% due to reporting challenges
-# Even when CPU was pinned at 100% in the OS, only 80% was reported
-# We may consider an alternative monitoring solution in the future
-module "asg_ec2" {
-  source               = "../../modules/asg"
-  name                 = "asg-ecs-x86_64"
-  subnets              = module.myvpc.subnets_private
-  security_groups      = [module.myvpc.security_group.id]
-  iam_instance_profile = aws_iam_instance_profile.ec2
-  instance_type        = "t3.small"
-  scale_up_cpu         = 60
-  count_min            = 1
-  count_max            = 2
-  tags                 = var.tags
-  # RHEL Example
-  # al2023-ami-2023.6.20250218.2-kernel-6.1-x86_64  2025/02/18
-  # ami           = "ami-0fc82f4dabc05670b"
-  # userdata_file = file("../../userdata/userdata_rhel.sh")
-  #
-  # ECS Bottlerocket Example
-  # bottlerocket-aws-ecs-2-x86_64-v1.32.0-cacc4ce9  2025/01/27
-  ami = "ami-06ca440d570381dfe"
-  userdata_file = templatefile("../../userdata/userdata_ecs_bottlerocket.sh.tpl", {
-    cluster_name = module.ecs_cluster_ec2.cluster.name
-  })
-}
+# # WARNING: You want to underestimate the autoscaling CPU threshold
+# # We want this to scale at 80% but put in 60% due to reporting challenges
+# # Even when CPU was pinned at 100% in the OS, only 80% was reported
+# # We may consider an alternative monitoring solution in the future
+# module "asg_ec2" {
+#   source               = "../../modules/asg"
+#   name                 = "asg-ecs-x86_64"
+#   subnets              = module.myvpc.subnets_private
+#   security_groups      = [module.myvpc.security_group.id]
+#   iam_instance_profile = aws_iam_instance_profile.ec2
+#   instance_type        = "t3.small"
+#   scale_up_cpu         = 60
+#   count_min            = 1
+#   count_max            = 2
+#   tags                 = var.tags
+#   # RHEL Example
+#   # al2023-ami-2023.6.20250218.2-kernel-6.1-x86_64  2025/02/18
+#   # ami           = "ami-0fc82f4dabc05670b"
+#   # userdata_file = file("../../userdata/userdata_rhel.sh")
+#   #
+#   # ECS Bottlerocket Example
+#   # bottlerocket-aws-ecs-2-x86_64-v1.32.0-cacc4ce9  2025/01/27
+#   ami = "ami-06ca440d570381dfe"
+#   userdata_file = templatefile("../../userdata/userdata_ecs_bottlerocket.sh.tpl", {
+#     cluster_name = module.ecs_cluster_ec2.cluster.name
+#   })
+# }
 
-module "ecs_cluster_ec2" {
-  source             = "../../modules/ecs_cluster"
-  name               = "ecs-cluster-ec2"
-  type               = "EC2"
-  asg                = module.asg_ec2.asg
-  kms_key            = data.aws_kms_key.main
-  log_retention_days = var.log_retention_days
-  tags               = var.tags
-}
+# module "ecs_cluster_ec2" {
+#   source             = "../../modules/ecs_cluster"
+#   name               = "ecs-cluster-ec2"
+#   type               = "EC2"
+#   asg                = module.asg_ec2.asg
+#   kms_key            = data.aws_kms_key.main
+#   log_retention_days = var.log_retention_days
+#   tags               = var.tags
+# }

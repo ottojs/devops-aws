@@ -44,19 +44,41 @@ module "db_opensearch" {
   tags        = var.tags
 }
 
-### API SERVER - FARGATE ###
+### Note ###
+# The below examples use Fargate
+# You can use self-hosted EC2s instead if
+# you enable the EC2 cluster in 02_core
+#
+# Then, replace the following
+# type = "FARGATE" change to "EC2"
+# ecs_cluster = "ecs-cluster-fargate" change to "ecs-cluster-ec2"
+#
+# You can run Fargate and EC2 side-by-side but note that
+# the "name" must be unique as it's used for DNS
+# If you use the same name, results may change randomly based on DNS responses
+#
+# You will want to create your own ECR registry for each application or 
+# set "create_registry" to false shortly after creation and remove it from state
+# tofu state list; tofu state rm ID_HERE;
+#
+# Ensure to publish your container to the AWS container registry (ECR) and match the tag version
+# Also be sure to create your secrets in AWS Secrets Manager using the patterns below
+# Otherwise, your service will fail to launch. You can check status in ECS console
+
+### API SERVER ###
 # Your service MUST listen on port 8080
-module "ecs_fargate_api_server" {
-  source      = "../../modules/ecs_service"
-  mode        = "server"
-  type        = "FARGATE"
-  name        = "api-server-fargate"
-  tag         = "0.0.1"
-  arch        = "X86_64" # ARM64
-  ecs_cluster = "ecs-cluster-fargate"
-  vpc         = data.aws_vpc.main
-  subnet_ids  = data.aws_subnets.private.ids
-  kms_key     = data.aws_kms_key.main
+module "api_server" {
+  source          = "../../modules/ecs_service"
+  mode            = "server"
+  type            = "FARGATE"
+  create_registry = true
+  name            = "api-server"
+  tag             = "0.0.1"
+  arch            = "X86_64" # ARM64
+  ecs_cluster     = "ecs-cluster-fargate"
+  vpc             = data.aws_vpc.main
+  subnet_ids      = data.aws_subnets.private.ids
+  kms_key         = data.aws_kms_key.main
   envvars = {
     NODE_ENV = "production"
   }
@@ -64,7 +86,7 @@ module "ecs_fargate_api_server" {
     # Secrets Manager Key
     # apps/APPNAME/SECRETNAME
     # so in this case...
-    # apps/api-server-fargate/MY_SECRET
+    # apps/api-server/MY_SECRET
     MY_SECRET = "MY_SECRET"
   }
   tags = var.tags
@@ -74,20 +96,19 @@ module "ecs_fargate_api_server" {
   priority    = 1
 }
 
-### API CRON JOB - FARGATE ###
-# https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-# https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-scheduled-rule-pattern.html
-module "ecs_fargate_api_cron" {
-  source      = "../../modules/ecs_service"
-  mode        = "cron"
-  type        = "FARGATE"
-  name        = "api-cron-fargate"
-  tag         = "0.0.1"
-  arch        = "X86_64" # ARM64
-  ecs_cluster = "ecs-cluster-fargate"
-  vpc         = data.aws_vpc.main
-  subnet_ids  = data.aws_subnets.private.ids
-  kms_key     = data.aws_kms_key.main
+### API WORKER ###
+module "api_worker" {
+  source          = "../../modules/ecs_service"
+  mode            = "worker"
+  type            = "FARGATE"
+  create_registry = true
+  name            = "api-worker"
+  tag             = "0.0.1"
+  arch            = "X86_64" # ARM64
+  ecs_cluster     = "ecs-cluster-fargate"
+  vpc             = data.aws_vpc.main
+  subnet_ids      = data.aws_subnets.private.ids
+  kms_key         = data.aws_kms_key.main
   envvars = {
     NODE_ENV = "production"
   }
@@ -95,7 +116,37 @@ module "ecs_fargate_api_cron" {
     # Secrets Manager Key
     # apps/APPNAME/SECRETNAME
     # so in this case...
-    # apps/api-cron-fargate/MY_SECRET
+    # apps/api-worker/MY_SECRET
+    MY_SECRET = "MY_SECRET"
+  }
+  tags = var.tags
+  # TODO: Possible bug, need this for now
+  root_domain = var.root_domain
+}
+
+### API CRON JOB ###
+# https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+# https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-scheduled-rule-pattern.html
+module "api_cron" {
+  source          = "../../modules/ecs_service"
+  mode            = "cron"
+  type            = "FARGATE"
+  create_registry = true
+  name            = "api-cron"
+  tag             = "0.0.1"
+  arch            = "X86_64" # ARM64
+  ecs_cluster     = "ecs-cluster-fargate"
+  vpc             = data.aws_vpc.main
+  subnet_ids      = data.aws_subnets.private.ids
+  kms_key         = data.aws_kms_key.main
+  envvars = {
+    NODE_ENV = "production"
+  }
+  secrets = {
+    # Secrets Manager Key
+    # apps/APPNAME/SECRETNAME
+    # so in this case...
+    # apps/api-cron/MY_SECRET
     MY_SECRET = "MY_SECRET"
   }
   tags = var.tags
@@ -104,61 +155,4 @@ module "ecs_fargate_api_cron" {
   schedule = "cron(0 * * * ? *)" # Every hour
   # TODO: Possible bug, need this for now
   root_domain = var.root_domain
-}
-
-### API WORKER - FARGATE ###
-module "api_worker_fargate" {
-  source      = "../../modules/ecs_service"
-  mode        = "worker"
-  type        = "FARGATE"
-  name        = "api-worker-fargate"
-  tag         = "0.0.1"
-  arch        = "X86_64" # ARM64
-  ecs_cluster = "ecs-cluster-fargate"
-  vpc         = data.aws_vpc.main
-  subnet_ids  = data.aws_subnets.private.ids
-  kms_key     = data.aws_kms_key.main
-  envvars = {
-    NODE_ENV = "production"
-  }
-  secrets = {
-    # Secrets Manager Key
-    # apps/APPNAME/SECRETNAME
-    # so in this case...
-    # apps/api-worker-fargate/MY_SECRET
-    MY_SECRET = "MY_SECRET"
-  }
-  tags = var.tags
-  # TODO: Possible bug, need this for now
-  root_domain = var.root_domain
-}
-
-### API SERVER - EC2 ###
-# Your service MUST listen on port 8080
-module "ecs_ec2_api_server" {
-  source      = "../../modules/ecs_service"
-  mode        = "server"
-  type        = "EC2"
-  name        = "api-server-ec2"
-  tag         = "0.0.1"
-  arch        = "X86_64" # ARM64
-  ecs_cluster = "ecs-cluster-ec2"
-  vpc         = data.aws_vpc.main
-  subnet_ids  = data.aws_subnets.private.ids
-  kms_key     = data.aws_kms_key.main
-  envvars = {
-    NODE_ENV = "production"
-  }
-  secrets = {
-    # Secrets Manager Key
-    # apps/APPNAME/SECRETNAME
-    # so in this case...
-    # apps/api-server-ec2/MY_SECRET
-    MY_SECRET = "MY_SECRET"
-  }
-  tags = var.tags
-  ### Server Only ###
-  public      = true
-  root_domain = var.root_domain
-  priority    = 2
 }
