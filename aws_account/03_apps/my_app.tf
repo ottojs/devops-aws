@@ -106,6 +106,33 @@ module "ecs_fargate_api_cron" {
   root_domain = var.root_domain
 }
 
+### API WORKER - FARGATE ###
+module "api_worker_fargate" {
+  source      = "../../modules/ecs_service"
+  mode        = "worker"
+  type        = "FARGATE"
+  name        = "api-worker-fargate"
+  tag         = "0.0.1"
+  arch        = "X86_64" # ARM64
+  ecs_cluster = "ecs-cluster-fargate"
+  vpc         = data.aws_vpc.main
+  subnet_ids  = data.aws_subnets.private.ids
+  kms_key     = data.aws_kms_key.main
+  envvars = {
+    NODE_ENV = "production"
+  }
+  secrets = {
+    # Secrets Manager Key
+    # apps/APPNAME/SECRETNAME
+    # so in this case...
+    # apps/api-worker-fargate/MY_SECRET
+    MY_SECRET = "MY_SECRET"
+  }
+  tags = var.tags
+  # TODO: Possible bug, need this for now
+  root_domain = var.root_domain
+}
+
 ### API SERVER - EC2 ###
 # Your service MUST listen on port 8080
 module "ecs_ec2_api_server" {

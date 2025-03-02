@@ -9,6 +9,7 @@ console.log("UNIX:", Date.now());
 console.log("Date:", new Date().toLocaleString());
 console.log("TZ Offset:", new Date().getTimezoneOffset());
 console.log("Secret Value:", process.env.MY_SECRET);
+console.log("DONE!");
 EOF
 
 CMD ["node", "index.js"]
