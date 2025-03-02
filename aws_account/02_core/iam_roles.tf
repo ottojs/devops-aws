@@ -17,7 +17,7 @@ data "aws_iam_policy_document" "ec2_assume_role" {
 # Role - EC2/SSM
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role
 resource "aws_iam_role" "ec2" {
-  name               = "tf-role-ec2"
+  name               = "ec2-ssm"
   assume_role_policy = data.aws_iam_policy_document.ec2_assume_role.json
 }
 
@@ -55,6 +55,6 @@ resource "aws_iam_role_policy_attachment" "ec2_ecs" {
 # Instance Profile (from Role)
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_instance_profile
 resource "aws_iam_instance_profile" "ec2" {
-  name = "tf-EC2-Instance-Profile"
+  name = "ec2-ssm-profile"
   role = aws_iam_role.ec2.name
 }

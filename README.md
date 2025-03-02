@@ -92,7 +92,7 @@ Due to limitations with Load Balancer logging, we cannot use a KMS key on the lo
   Sid    = "Allow use of the key by EC2 for SSM"
   Effect = "Allow"
   Principal = {
-    AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/tf-role-ec2"
+    AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/ec2-ssm"
   },
   Action = [
     "kms:DescribeKey",

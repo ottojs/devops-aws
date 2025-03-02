@@ -4,7 +4,7 @@
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role
 resource "aws_iam_role" "cron" {
   count              = var.mode == "cron" ? 1 : 0
-  name               = "tf-role-ecs-cron-${var.name}"
+  name               = "ecs-cron-${var.name}"
   assume_role_policy = data.aws_iam_policy_document.cron_assume_role[0].json
 }
 
@@ -46,7 +46,7 @@ data "aws_iam_policy_document" "cron" {
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy
 resource "aws_iam_policy" "cron" {
   count       = var.mode == "cron" ? 1 : 0
-  name        = "tf-policy-ecs-cron-${var.name}"
+  name        = "ecs-cron-${var.name}"
   description = "Allow EventBridge Scheduler (Cron) to run ECS"
   policy      = data.aws_iam_policy_document.cron[0].json
 }

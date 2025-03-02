@@ -31,7 +31,7 @@ data "aws_iam_policy_document" "assume_role" {
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role
 resource "aws_iam_role" "flowlogs" {
-  name               = "tf-role-vpc-flow-logs-${aws_vpc.main.id}"
+  name               = "vpc-flow-logs-${aws_vpc.main.id}"
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
@@ -59,7 +59,7 @@ data "aws_iam_policy_document" "flowlogs" {
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy
 resource "aws_iam_role_policy" "flowlogs" {
-  name   = "tf-policy-vpc-flow-logs-${aws_vpc.main.id}"
+  name   = "vpc-flow-logs-${aws_vpc.main.id}"
   role   = aws_iam_role.flowlogs.id
   policy = data.aws_iam_policy_document.flowlogs.json
 }

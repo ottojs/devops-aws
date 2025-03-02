@@ -5,7 +5,7 @@ data "aws_security_group" "main" {
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_instance_profile
 data "aws_iam_instance_profile" "ec2" {
-  name = "tf-EC2-Instance-Profile"
+  name = "ec2-ssm-profile"
 }
 
 # EC2 Machine - Amazon Linux 2023 (RedHat-based, x86_64)

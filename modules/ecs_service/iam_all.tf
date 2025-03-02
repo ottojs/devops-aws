@@ -17,7 +17,7 @@ data "aws_iam_policy_document" "ecs_task_execution_role" {
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role
 resource "aws_iam_role" "ecs_task_execution_role" {
-  name               = "tf-role-ecs-execution-${var.name}"
+  name               = "ecs-execution-${var.name}"
   assume_role_policy = data.aws_iam_policy_document.ecs_task_execution_role.json
 }
 
@@ -68,7 +68,7 @@ data "aws_iam_policy_document" "ecs_secrets" {
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy
 resource "aws_iam_policy" "ecs_secrets" {
-  name        = "tf-policy-ecs-secretsmanager-${var.name}"
+  name        = "ecs-secretsmanager-${var.name}"
   description = "Allow ECS to access Secrets Manager"
   policy      = data.aws_iam_policy_document.ecs_secrets.json
 }
