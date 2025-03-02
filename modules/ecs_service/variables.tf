@@ -96,6 +96,11 @@ variable "fault_injection" {
   default = false
 }
 
+variable "create_registry" {
+  type    = bool
+  default = true
+}
+
 variable "tags" {
   type = map(string)
 }

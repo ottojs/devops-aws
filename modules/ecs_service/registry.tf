@@ -1,10 +1,10 @@
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_repository
 resource "aws_ecr_repository" "main" {
+  count                = var.create_registry == true ? 1 : 0
   name                 = var.name
   image_tag_mutability = "IMMUTABLE" # or MUTABLE (not recommended)
-  # TODO: Review
-  force_delete = true
+  force_delete         = false
 
   image_scanning_configuration {
     # TODO: Review
