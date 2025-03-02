@@ -20,13 +20,14 @@ module "db_postgresql" {
 
 # Valkey - Redis Alternative
 module "db_valkey" {
-  source     = "../../modules/db_valkey"
-  name       = "my-valkey-8"
-  vpc        = data.aws_vpc.main
-  subnet_ids = data.aws_subnets.private.ids
-  kms_key    = data.aws_kms_key.main
-  password   = var.valkey_password
-  tags       = var.tags
+  source      = "../../modules/db_valkey"
+  name        = "my-valkey-8"
+  vpc         = data.aws_vpc.main
+  subnet_ids  = data.aws_subnets.private.ids
+  root_domain = var.root_domain
+  kms_key     = data.aws_kms_key.main
+  password    = var.valkey_password
+  tags        = var.tags
 }
 
 # OpenSearch - ElasticSearch Alternative

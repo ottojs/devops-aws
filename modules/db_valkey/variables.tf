@@ -3,6 +3,12 @@ data "aws_sns_topic" "devops" {
   name = "devops"
 }
 
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/route53_zone
+data "aws_route53_zone" "root" {
+  name         = "${var.root_domain}."
+  private_zone = true
+}
+
 variable "name" {
   type = string
 }
@@ -29,6 +35,10 @@ variable "vpc" {
 variable "subnet_ids" {
   type    = list(string)
   default = []
+}
+
+variable "root_domain" {
+  type = string
 }
 
 variable "kms_key" {
