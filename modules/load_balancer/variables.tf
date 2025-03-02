@@ -36,6 +36,10 @@ variable "log_bucket" {
   description = "S3 Log Bucket Object"
 }
 
+variable "log_retention_days" {
+  type = number
+}
+
 variable "tags" {
   type = map(string)
 }

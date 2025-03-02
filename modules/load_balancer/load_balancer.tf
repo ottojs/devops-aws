@@ -97,12 +97,12 @@ resource "aws_lb_listener" "https" {
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group
 resource "aws_security_group" "alb" {
-  name        = "alb-${var.name}"
+  name        = var.name
   description = "ALB ${var.name}"
   vpc_id      = var.vpc.id
 
   tags = merge(var.tags, {
-    Name   = "alb-${var.name}"
+    Name   = var.name
     Public = var.public ? "true" : "false"
   })
 

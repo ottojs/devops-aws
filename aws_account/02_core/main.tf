@@ -94,28 +94,30 @@ module "myvpc" {
 
 # External Load Balancer (Public)
 module "alb_public" {
-  source      = "../../modules/load_balancer"
-  name        = "alb-public"
-  public      = true
-  vpc         = module.myvpc.vpc
-  subnets     = module.myvpc.subnets_public
-  root_domain = module.route53.domain
-  log_bucket  = data.aws_s3_bucket.logging
-  tags        = var.tags
-  depends_on  = [module.route53]
+  source             = "../../modules/load_balancer"
+  name               = "alb-public" # Keep this name
+  public             = true
+  vpc                = module.myvpc.vpc
+  subnets            = module.myvpc.subnets_public
+  root_domain        = module.route53.domain
+  log_bucket         = data.aws_s3_bucket.logging
+  log_retention_days = var.log_retention_days
+  tags               = var.tags
+  depends_on         = [module.route53]
 }
 
 # Internal Load Balancer (Private)
 module "alb_private" {
-  source      = "../../modules/load_balancer"
-  name        = "alb-private"
-  public      = false
-  vpc         = module.myvpc.vpc
-  subnets     = module.myvpc.subnets_private
-  root_domain = module.route53.domain
-  log_bucket  = data.aws_s3_bucket.logging
-  tags        = var.tags
-  depends_on  = [module.route53]
+  source             = "../../modules/load_balancer"
+  name               = "alb-private" # Keep this name
+  public             = false
+  vpc                = module.myvpc.vpc
+  subnets            = module.myvpc.subnets_private
+  root_domain        = module.route53.domain
+  log_bucket         = data.aws_s3_bucket.logging
+  log_retention_days = var.log_retention_days
+  tags               = var.tags
+  depends_on         = [module.route53]
 }
 
 # Setting up a VPN has a fairly high cost
