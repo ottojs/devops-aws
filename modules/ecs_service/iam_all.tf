@@ -69,7 +69,7 @@ data "aws_iam_policy_document" "ecs_secrets" {
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy
 resource "aws_iam_policy" "ecs_secrets" {
   name        = "ecs-secretsmanager-${var.name}"
-  description = "Allow ECS to access Secrets Manager"
+  description = "Allow ECS to access Secrets Manager and KMS"
   policy      = data.aws_iam_policy_document.ecs_secrets.json
 }
 
@@ -77,4 +77,16 @@ resource "aws_iam_policy" "ecs_secrets" {
 resource "aws_iam_role_policy_attachment" "secrets" {
   role       = aws_iam_role.ecs_task_execution_role.name
   policy_arn = aws_iam_policy.ecs_secrets.arn
+}
+
+#####
+#####
+
+# Inline Policy
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy.html
+resource "aws_iam_role_policy" "inline" {
+  count = var.inline_policy == "" ? 0 : 1
+  name = "inline"
+  role = aws_iam_role.ecs_task_execution_role.id
+  policy = var.inline_policy
 }

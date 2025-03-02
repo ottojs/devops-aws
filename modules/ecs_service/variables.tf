@@ -101,6 +101,11 @@ variable "create_registry" {
   default = true
 }
 
+variable "inline_policy" {
+  type = string
+  default = ""
+}
+
 variable "tags" {
   type = map(string)
 }

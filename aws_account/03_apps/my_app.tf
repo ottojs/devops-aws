@@ -79,6 +79,22 @@ module "api_server" {
   vpc             = data.aws_vpc.main
   subnet_ids      = data.aws_subnets.private.ids
   kms_key         = data.aws_kms_key.main
+  # Example to add an inline policy for this service
+  # inline_policy = jsonencode({
+  #   Version = "2012-10-17"
+  #   Statement = [
+  #     {
+  #       Action = [
+  #         "s3:ListBucketMultipartUploads",
+	# 			  "s3:ListBucket",
+	# 			  "s3:ListMultipartUploadParts",
+  #         "...more...",
+  #       ]
+  #       Effect   = "Allow"
+  #       Resource = "*"
+  #     },
+  #   ]
+  # })
   envvars = {
     NODE_ENV = "production"
   }
