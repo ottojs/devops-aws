@@ -23,7 +23,7 @@ resource "aws_instance" "ec2" {
     delete_on_termination = true
     encrypted             = true
     kms_key_id            = var.kms_key.arn
-    volume_size           = 16
+    volume_size           = var.disk_size
     volume_type           = "gp3"
     tags = merge(var.tags, {
       Name = "${local.name}-disk"

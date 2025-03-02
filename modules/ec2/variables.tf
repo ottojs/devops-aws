@@ -34,6 +34,11 @@ variable "os" {
   default = "al2023"
 }
 
+variable "disk_size" {
+  type    = number
+  default = 16 # in GiB
+}
+
 variable "azs" {
   type    = list(string)
   default = ["a", "b", "c"]
