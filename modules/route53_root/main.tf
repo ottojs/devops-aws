@@ -58,3 +58,17 @@ resource "aws_route53_record" "root_public_acm" {
   ttl     = 60
   records = [each.value.record]
 }
+
+#############
+### DMARC ###
+#############
+
+# Tool: https://easydmarc.com/tools/dmarc-record-generator
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record
+resource "aws_route53_record" "root_public_dmarc" {
+  zone_id = aws_route53_zone.root_public.zone_id
+  name    = "_dmarc.${var.root_domain}."
+  type    = "TXT"
+  ttl     = 3600
+  records = ["v=DMARC1; p=reject;"]
+}
