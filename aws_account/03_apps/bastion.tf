@@ -9,6 +9,9 @@ data "aws_iam_instance_profile" "ec2" {
 }
 
 # EC2 Machine - Amazon Linux 2023 (RedHat-based, x86_64)
+# If you don't want the underlying os to rebuild you
+# need to pin the AMI version with the following:
+# ami = "ami-xxxxxxxxxxxxxxxxx"
 module "bastion_x86_64" {
   source               = "../../modules/ec2"
   name                 = "bastion"
@@ -24,6 +27,9 @@ module "bastion_x86_64" {
 }
 
 # EC2 Machine - Amazon Linux 2023 (RedHat-based, ARM64)
+# If you don't want the underlying os to rebuild you
+# need to pin the AMI version with the following:
+# ami = "ami-xxxxxxxxxxxxxxxxx"
 module "bastion_arm64" {
   source               = "../../modules/ec2"
   name                 = "bastion"

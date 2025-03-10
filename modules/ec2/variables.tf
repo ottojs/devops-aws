@@ -8,6 +8,10 @@ locals {
     x86_64 = "t3a.micro"
     arm64  = "t4g.micro"
   }
+  ami_filters = {
+    # https://docs.aws.amazon.com/linux/al2023/ug/what-is-amazon-linux.html
+    al2023 = "al2023-ami-2023.*"
+  }
 }
 
 variable "name" {
