@@ -178,7 +178,7 @@ module "ecs_cluster_fargate" {
 #   # ECS Bottlerocket Example
 #   # bottlerocket-aws-ecs-2-x86_64-v1.32.0-cacc4ce9  2025/01/27
 #   ami = "ami-06ca440d570381dfe"
-#   userdata_file = templatefile("../../userdata/userdata_ecs_bottlerocket.sh.tpl", {
+#   userdata_file = templatefile("../../userdata/ecs_bottlerocket.sh.tpl", {
 #     cluster_name = module.ecs_cluster_ec2.cluster.name
 #   })
 # }
