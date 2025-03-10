@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
 
+# Prerequisites (RHEL9)
+if grep redhat:enterprise_linux:9::baseos /etc/os-release; then
+  yum install -y awscli2 wget;
+fi
+
 # Settings
+# aws is not installed on RHEL9, is installed on AL2023
+# wget is not installed on RHEL9, is installed on AL2023
 AWS_ACCOUNT_ID=$(aws sts get-caller-identity --output text --query 'Account');
 AWS_REGION=$(aws ec2 describe-availability-zones --output text --query 'AvailabilityZones[0].[RegionName]');
 ARCH=$(arch); # x86_64 or aarch64
@@ -13,10 +20,6 @@ fi
 
 # Working Directory
 cd /root || exit 1;
-
-# Upgrade Packages
-echo "=> UPGRADE PACKAGES";
-yum update -y;
 
 ######################
 ##### Amazon SSM #####
@@ -104,6 +107,12 @@ rm ./amazon-ssm-agent.rpm.sig;
 # It's core to connecting and may be useful for debugging
 amazon-ssm-agent --version > /root/amazon-ssm-agent.upgraded.txt; # 3.3.1802.0 (2025-03-09)
 
+############################
+##### Upgrade Packages #####
+############################
+echo "=> UPGRADE PACKAGES";
+yum update -y;
+
 #########################
 ##### Node.js v22.x #####
 #########################
@@ -133,7 +142,11 @@ npm --version;
 ##### Container Builder #####
 #############################
 yum install -y docker git;
-systemctl enable docker --now;
+if grep redhat:enterprise_linux:9::baseos /etc/os-release; then
+  systemctl enable podman --now;
+else
+  systemctl enable docker --now;
+fi
 cat << EOF > /root/container_build.sh;
 #!/usr/bin/env bash
 
