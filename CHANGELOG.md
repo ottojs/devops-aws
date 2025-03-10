@@ -1,5 +1,30 @@
 # Releases
 
+## 2025-03-09 v0.6.0
+
+It is still _not recommended_ to use this in production (yet).
+
+- New: WAF on Public Load Balancer(s)
+- New: RHEL 9 Support (v9.4)
+- New: APP_VERSION environment variable for ECS to match container image tag
+- New: EC2 Machine parameter AMI
+- New: EC2 Machine parameter disk_size
+- New: EC2 Machine dynamic AMI
+- New: AWS Certificate Manager automatic wildcard certificate (incl DNS validation in Route53)
+- New: DNS Record for DMARC
+- New: DNS Record for Valkey (internal/private)
+- New: DNS Record for PostgreSQL (internal/private)
+- New: Account High Password Requirements
+- New: ECS Example Service Worker
+- New: ECS Service parameter to specify inline IAM policy
+- New: ECS Service parameter "create_registry"
+- New: IAM Policy to block non-US regions (not attached)
+- New: Self-signed TLS/SSL Certificate Script
+- Edit: EC2 Machine Naming Pattern
+- Edit: EC2 Machine "access" ("private"/"public") has been changed to "public" (true/false)
+- Upgrade: Provider aws to v5.90.0
+- Remove: ECS EC2 Example (Commented Out)
+
 ## 2025-02-23 v0.5.0
 
 Fourth release for testing!
