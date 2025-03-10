@@ -86,8 +86,8 @@ module "api_server" {
   #     {
   #       Action = [
   #         "s3:ListBucketMultipartUploads",
-	# 			  "s3:ListBucket",
-	# 			  "s3:ListMultipartUploadParts",
+  # 			  "s3:ListBucket",
+  # 			  "s3:ListMultipartUploadParts",
   #         "...more...",
   #       ]
   #       Effect   = "Allow"

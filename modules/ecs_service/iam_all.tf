@@ -85,8 +85,8 @@ resource "aws_iam_role_policy_attachment" "secrets" {
 # Inline Policy
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy.html
 resource "aws_iam_role_policy" "inline" {
-  count = var.inline_policy == "" ? 0 : 1
-  name = "inline"
-  role = aws_iam_role.ecs_task_execution_role.id
+  count  = var.inline_policy == "" ? 0 : 1
+  name   = "inline"
+  role   = aws_iam_role.ecs_task_execution_role.id
   policy = var.inline_policy
 }

@@ -102,7 +102,7 @@ variable "create_registry" {
 }
 
 variable "inline_policy" {
-  type = string
+  type    = string
   default = ""
 }
 
