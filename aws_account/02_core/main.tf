@@ -173,7 +173,7 @@ module "ecs_cluster_fargate" {
 #   # RHEL Example
 #   # al2023-ami-2023.6.20250218.2-kernel-6.1-x86_64  2025/02/18
 #   # ami           = "ami-0fc82f4dabc05670b"
-#   # userdata_file = file("../../userdata/userdata_rhel.sh")
+#   # userdata_file = file("../../userdata/rhel.sh")
 #   #
 #   # ECS Bottlerocket Example
 #   # bottlerocket-aws-ecs-2-x86_64-v1.32.0-cacc4ce9  2025/01/27

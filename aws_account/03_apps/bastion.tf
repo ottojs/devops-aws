@@ -21,7 +21,7 @@ module "bastion_x86_64" {
   machine              = "t3.small"
   security_groups      = [data.aws_security_group.main.id]
   iam_instance_profile = data.aws_iam_instance_profile.ec2
-  userdata             = "../../userdata/userdata_rhel.sh"
+  userdata             = "../../userdata/rhel.sh"
   kms_key              = data.aws_kms_key.main
   tags                 = var.tags
 }
@@ -39,7 +39,7 @@ module "bastion_arm64" {
   machine              = "t4g.small"
   security_groups      = [data.aws_security_group.main.id]
   iam_instance_profile = data.aws_iam_instance_profile.ec2
-  userdata             = "../../userdata/userdata_rhel.sh"
+  userdata             = "../../userdata/rhel.sh"
   kms_key              = data.aws_kms_key.main
   tags                 = var.tags
 }
