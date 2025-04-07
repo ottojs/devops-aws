@@ -8,8 +8,8 @@ data "aws_region" "current" {}
 # al2023-ami-2023.6.YYYYMMDD.2-kernel-6.1-arm64
 
 # RHEL 9
-# RHEL-9.4.0_HVM-20250218-arm64-0-Hourly2-GP3
-# RHEL-9.4.0_HVM-20250218-x86_64-0-Hourly2-GP3
+# RHEL-9.5.0_HVM-20250313-arm64-0-Hourly2-GP3
+# RHEL-9.5.0_HVM-20250313-x86_64-0-Hourly2-GP3
 
 locals {
   name = "${var.name}-${var.os}-${var.arch}"
@@ -23,7 +23,7 @@ locals {
     # https://docs.aws.amazon.com/linux/al2023/ug/what-is-amazon-linux.html
     al2023 = "al2023-ami-2023.*"
     # https://aws.amazon.com/partners/redhat/
-    rhel9 = "RHEL-9.4.0_HVM-*"
+    rhel9 = "RHEL-9.5.0_HVM-*"
   }
 }
 

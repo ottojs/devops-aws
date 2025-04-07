@@ -5,6 +5,7 @@
 - Fix: module bucket_private to stay current
 - Add: Cloudflare Security Group for HTTP/HTTPS
 - Edit: Switching default region from us-east-2 to us-east-1
+- Edit: Upgrading RHEL9 AMI from v9.4.x to v9.5.x
 - Dependencies: Upgrade provider aws to v5.94.1
 
 ## 2025-03-09 v0.6.0
