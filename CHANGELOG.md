@@ -3,6 +3,7 @@
 ## Next
 
 - Fix: module bucket_private to stay current
+- Add: Cloudflare Security Group for HTTP/HTTPS
 - Edit: Switching default region from us-east-2 to us-east-1
 - Dependencies: Upgrade provider aws to v5.94.1
 
