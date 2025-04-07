@@ -15,7 +15,7 @@ terraform {
   }
   backend "s3" {
     bucket         = "devops-terraform-state-bucket-${var.random_id}"
-    region         = "us-east-2"
+    region         = "us-east-1"
     key            = "core/terraform.tfstate"
     dynamodb_table = "devops-terraform-state"
   }

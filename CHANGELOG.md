@@ -3,6 +3,7 @@
 ## Next
 
 - Fix: module bucket_private to stay current
+- Edit: Switching default region from us-east-2 to us-east-1
 - Dependencies: Upgrade provider aws to v5.94.1
 
 ## 2025-03-09 v0.6.0
