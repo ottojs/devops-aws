@@ -3,6 +3,7 @@
 ## Next
 
 - Fix: module bucket_private to stay current
+- Dependencies: Upgrade provider aws to v5.94.1
 
 ## 2025-03-09 v0.6.0
 
