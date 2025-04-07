@@ -1,6 +1,6 @@
 # Releases
 
-## Next
+## 2025-04-06 v0.7.0
 
 - Fix: Module "bucket_private" to stay current
 - Add: Module "security" with AWS Config, Security Hub, GuardDuty, Inspector, Detective, etc.
