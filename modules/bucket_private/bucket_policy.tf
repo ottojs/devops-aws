@@ -89,6 +89,7 @@ data "aws_iam_policy_document" "normal" {
   }
 }
 
+# Policy
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy
 resource "aws_s3_bucket_policy" "main" {
   bucket = aws_s3_bucket.bucket_private.id
@@ -99,15 +100,26 @@ resource "aws_s3_bucket_policy" "main" {
 
 # Lifecycle
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_lifecycle_configuration
-resource "aws_s3_bucket_lifecycle_configuration" "versioning-bucket-config" {
+resource "aws_s3_bucket_lifecycle_configuration" "main" {
   # Must have bucket versioning enabled first
   depends_on = [aws_s3_bucket_versioning.bucket_private]
   bucket     = aws_s3_bucket.bucket_private.id
+
   rule {
-    id     = "expire-old"
+    id     = "lifecycle-policy"
     status = "Enabled"
+    filter {
+      # Empty filter applies rule to entire bucket
+      prefix = ""
+    }
+    abort_incomplete_multipart_upload {
+      days_after_initiation = var.delete_days_multipart
+    }
     noncurrent_version_expiration {
-      noncurrent_days = 90
+      noncurrent_days = var.delete_days_old_versions
+    }
+    expiration {
+      days = var.delete_days_files
     }
   }
 }

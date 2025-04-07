@@ -30,6 +30,21 @@ variable "log_bucket_disabled" {
   default = false
 }
 
+variable "delete_days_files" {
+  type    = number
+  default = 0 # Disabled
+}
+
+variable "delete_days_old_versions" {
+  type    = number
+  default = 90
+}
+
+variable "delete_days_multipart" {
+  type    = number
+  default = 3
+}
+
 variable "tags" {
   type = map(string)
 }

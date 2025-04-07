@@ -1,5 +1,9 @@
 # Releases
 
+## Next
+
+- Fix: module bucket_private to stay current
+
 ## 2025-03-09 v0.6.0
 
 It is still _not recommended_ to use this in production (yet).
