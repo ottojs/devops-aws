@@ -1,4 +1,14 @@
 
+# Private Bucket
+# module "bucket_example_private" {
+#   source        = "../../modules/bucket_private"
+#   name          = "bucket-example-private"
+#   random_id     = var.random_id
+#   kms_key       = data.aws_kms_key.main
+#   log_bucket_id = data.aws_s3_bucket.logging.id
+#   tags          = var.tags
+# }
+
 # PostgreSQL Database
 module "db_postgresql" {
   source           = "../../modules/db_postgresql"

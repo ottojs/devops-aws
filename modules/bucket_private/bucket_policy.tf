@@ -96,6 +96,7 @@ resource "aws_s3_bucket_policy" "main" {
   policy = var.log_bucket_disabled ? data.aws_iam_policy_document.log_bucket.json : data.aws_iam_policy_document.normal.json
   # You can also direct-attach
   # policy = jsonencode({})
+  depends_on = [aws_s3_bucket_public_access_block.bucket_private]
 }
 
 # Lifecycle

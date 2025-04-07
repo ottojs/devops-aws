@@ -15,14 +15,23 @@ resource "aws_s3_bucket" "bucket_private" {
   tags          = var.tags
 }
 
+# Ensure Bucket Owner
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_ownership_controls
+resource "aws_s3_bucket_ownership_controls" "bucket_private" {
+  bucket = aws_s3_bucket.bucket_private.id
+  rule {
+    object_ownership = "BucketOwnerEnforced"
+  }
+}
+
 # Block Public Access
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_public_access_block
 resource "aws_s3_bucket_public_access_block" "bucket_private" {
   bucket                  = aws_s3_bucket.bucket_private.id
-  restrict_public_buckets = true
-  ignore_public_acls      = true
   block_public_acls       = true
   block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
 }
 
 # Encryption
