@@ -7,6 +7,15 @@ data "aws_s3_bucket" "logging" {
   bucket = "devops-log-bucket-${var.random_id}"
 }
 
+# WARNING: For production, set cost_savings to false or remove it
+module "security" {
+  source       = "../../modules/security"
+  cost_savings = true
+  random_id    = var.random_id
+  kms_key      = data.aws_kms_key.main
+  tags         = var.tags
+}
+
 module "route53" {
   source      = "../../modules/route53_root"
   vpc         = module.myvpc.vpc
