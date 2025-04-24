@@ -24,6 +24,16 @@ locals {
     al2023 = "al2023-ami-2023.*"
     # https://aws.amazon.com/partners/redhat/
     rhel9 = "RHEL-9.5.0_HVM-*"
+    # https://www.debian.org/releases/
+    debian           = "debian-12-*"
+    debian12         = "debian-12-*"
+    debian-12        = "debian-12-*"
+    debian-bookworm  = "debian-12-*"
+    debian-stable    = "debian-12-*"
+    debian11         = "debian-11-*"
+    debian-11        = "debian-11-*"
+    debian-bullseye  = "debian-11-*"
+    debian-oldstable = "debian-11-*"
   }
 }
 

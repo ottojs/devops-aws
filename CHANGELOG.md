@@ -3,6 +3,7 @@
 ## Next v0.8.0
 
 - Add: Module db_mariadb for MariaDB instance
+- Add: Support for Debian 11 (bullseye) and 12 (bookworm)
 - Add: Module bucket_private log bucket can now receive CloudWatch logs
 - Dependencies: Upgrade provider aws to v5.95.0
 
