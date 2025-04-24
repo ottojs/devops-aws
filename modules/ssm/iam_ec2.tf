@@ -8,7 +8,7 @@ data "aws_iam_policy_document" "ec2_assume_role" {
     effect = "Allow"
     principals {
       type        = "Service"
-      identifiers = ["ec2.amazonaws.com"]
+      identifiers = ["ec2.amazonaws.com", "rds.amazonaws.com"]
     }
     actions = ["sts:AssumeRole"]
   }
@@ -57,4 +57,30 @@ resource "aws_iam_role_policy_attachment" "ec2_ecs" {
 resource "aws_iam_instance_profile" "ec2" {
   name = "ec2-ssm-profile"
   role = aws_iam_role.ec2.name
+}
+
+# Inline Policy
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy.html
+resource "aws_iam_role_policy" "inline" {
+  name = "custom-inline"
+  role = aws_iam_role.ec2.name
+  policy = jsonencode({
+    Version = "2012-10-17"
+
+    Statement = [
+      {
+        Sid = "CustomizedBastion"
+        Action = [
+          "iam:PassRole",
+          "kafka-cluster:*",
+          "kms:*",
+          "rds:*",
+          "secretsmanager:*",
+          "sts:*"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
+  })
 }

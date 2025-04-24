@@ -5,6 +5,7 @@
 - Add: Module db_mariadb for MariaDB instance
 - Add: Support for Debian 11 (bullseye) and 12 (bookworm)
 - Add: Module bucket_private log bucket can now receive CloudWatch logs
+- Edit: Moving SSM settings out of VPC to its own module to prevent conflicts
 - Dependencies: Upgrade provider aws to v5.95.0
 
 ## 2025-04-06 v0.7.0

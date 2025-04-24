@@ -7,6 +7,16 @@ data "aws_s3_bucket" "logging" {
   bucket = "devops-log-bucket-${var.random_id}"
 }
 
+# Allows SSM Connection (WebShell)
+# Also contains EC2 Bastion role (ec2-ssm)
+module "ssm" {
+  source       = "../../modules/ssm"
+    kms_key        = data.aws_kms_key.main
+  log_bucket         = data.aws_s3_bucket.logging
+  log_retention_days = var.log_retention_days
+  tags         = var.tags
+}
+
 # WARNING: For production, set cost_savings to false or remove it
 module "security" {
   source       = "../../modules/security"
