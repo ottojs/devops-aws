@@ -2,6 +2,7 @@
 
 ## Next v0.8.0
 
+- Add: Module db_mariadb for MariaDB instance
 - Add: Module bucket_private log bucket can now receive CloudWatch logs
 - Dependencies: Upgrade provider aws to v5.95.0
 
