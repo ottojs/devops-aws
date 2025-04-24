@@ -33,9 +33,10 @@ module "bucket_tf_state" {
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/dynamodb_table
 resource "aws_dynamodb_table" "tf_state" {
-  name         = "devops-terraform-state"
-  billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "LockID"
+  name                        = "devops-terraform-state"
+  billing_mode                = "PAY_PER_REQUEST"
+  deletion_protection_enabled = true
+  hash_key                    = "LockID"
   attribute {
     name = "LockID"
     type = "S"
@@ -48,6 +49,6 @@ resource "aws_dynamodb_table" "tf_state" {
     kms_key_arn = module.kms_main.key.arn
   }
   tags = merge(var.tags, {
-    Name = "terraform-state"
+    Name = "devops-terraform-state"
   })
 }

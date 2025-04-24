@@ -8,7 +8,7 @@ resource "aws_resourceexplorer2_index" "main" {
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/resourceexplorer2_view
 resource "aws_resourceexplorer2_view" "main" {
-  name = "everything"
+  name         = "everything"
   default_view = true
 
   included_property {
