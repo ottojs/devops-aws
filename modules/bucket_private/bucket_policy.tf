@@ -63,6 +63,28 @@ data "aws_iam_policy_document" "log_bucket" {
       values   = ["bucket-owner-full-control"]
     }
   }
+
+  statement {
+    sid       = "AllowLogExport1"
+    effect    = "Allow"
+    actions   = ["s3:GetBucketAcl"]
+    resources = [aws_s3_bucket.bucket_private.arn]
+    principals {
+      type        = "Service"
+      identifiers = ["logs.${data.aws_region.current.name}.amazonaws.com"]
+    }
+  }
+
+  statement {
+    sid       = "AllowLogExport2"
+    effect    = "Allow"
+    actions   = ["s3:PutObject"]
+    resources = ["${aws_s3_bucket.bucket_private.arn}/*"]
+    principals {
+      type        = "Service"
+      identifiers = ["logs.${data.aws_region.current.name}.amazonaws.com"]
+    }
+  }
 }
 
 # Normal Bucket
