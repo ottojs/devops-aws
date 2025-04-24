@@ -1,5 +1,9 @@
 # Releases
 
+## Next v0.8.0
+
+- Dependencies: Upgrade provider aws to v5.95.0
+
 ## 2025-04-06 v0.7.0
 
 - Fix: Module "bucket_private" to stay current
