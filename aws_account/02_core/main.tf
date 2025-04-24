@@ -184,7 +184,7 @@ module "ecs_cluster_fargate" {
 #   subnets              = module.myvpc.subnets_private
 #   security_groups      = [module.myvpc.security_group.id]
 #   iam_instance_profile = aws_iam_instance_profile.ec2
-#   instance_type        = "t3.small"
+#   instance_type        = "t3a.small"
 #   scale_up_cpu         = 60
 #   count_min            = 1
 #   count_max            = 2

@@ -18,7 +18,7 @@ module "bastion_x86_64" {
   subnet_id            = data.aws_subnets.private.ids[0]
   os                   = "al2023"
   arch                 = "x86_64"
-  machine              = "t3.small"
+  machine              = "t3a.small"
   security_groups      = [data.aws_security_group.main.id]
   iam_instance_profile = data.aws_iam_instance_profile.ec2
   userdata             = "../../userdata/rhel.sh"
