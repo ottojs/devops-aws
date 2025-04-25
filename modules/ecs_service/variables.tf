@@ -88,7 +88,7 @@ variable "envvars" {
 }
 
 variable "secrets" {
-  type = map(string)
+  type = list(string)
 }
 
 variable "fault_injection" {

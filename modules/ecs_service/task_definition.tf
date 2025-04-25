@@ -53,10 +53,10 @@ resource "aws_ecs_task_definition" "main" {
       ]
       # https://docs.aws.amazon.com/AmazonECS/latest/developerguide/secrets-envvar-secrets-manager.html
       # https://docs.aws.amazon.com/secretsmanager/latest/userguide/auth-and-access_iam-policies.html
-      secrets = [for k, v in var.secrets :
+      secrets = [for secret in var.secrets :
         {
-          name      = k
-          valueFrom = "arn:aws:secretsmanager:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:secret:apps/${var.name}/${v}"
+          name      = secret
+          valueFrom = "arn:aws:secretsmanager:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:secret:apps/${var.name}/${secret}"
         }
       ]
       # requiresAttributes = [

@@ -2,6 +2,7 @@
 
 ## Next v0.8.0
 
+- Breaking: Module ecs_service now passes secrets as a list/array
 - Add: Module db_mariadb for MariaDB instance
 - Add: Support for Debian 11 (bullseye) and 12 (bookworm)
 - Add: Security Module - ResourceExplorer
