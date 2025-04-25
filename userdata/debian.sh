@@ -32,6 +32,11 @@ systemctl enable amazon-ssm-agent;
 systemctl start amazon-ssm-agent;
 systemctl status amazon-ssm-agent;
 
+########################
+##### Common Tools #####
+########################
+apt-get install -y tree nmap ncat;
+
 ############################
 ##### Database Clients #####
 ############################

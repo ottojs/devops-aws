@@ -113,6 +113,11 @@ amazon-ssm-agent --version > /root/amazon-ssm-agent.upgraded.txt; # 3.3.1802.0 (
 echo "=> UPGRADE PACKAGES";
 yum update -y;
 
+########################
+##### Common Tools #####
+########################
+yum install -y tree nmap nmap-ncat;
+
 ############################
 ##### Database Clients #####
 ############################
