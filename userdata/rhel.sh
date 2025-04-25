@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
 # Prerequisites (RHEL9)
+# awscli2 (aws) is not installed on RHEL9, is installed on AL2023
+# wget is not installed on RHEL9, is installed on AL2023
 if grep redhat:enterprise_linux:9::baseos /etc/os-release; then
   yum install -y awscli2 wget;
 fi
 
 # Settings
-# aws is not installed on RHEL9, is installed on AL2023
-# wget is not installed on RHEL9, is installed on AL2023
 AWS_ACCOUNT_ID=$(aws sts get-caller-identity --output text --query 'Account');
 AWS_REGION=$(aws ec2 describe-availability-zones --output text --query 'AvailabilityZones[0].[RegionName]');
 ARCH=$(arch); # x86_64 or aarch64
@@ -112,6 +112,12 @@ amazon-ssm-agent --version > /root/amazon-ssm-agent.upgraded.txt; # 3.3.1802.0 (
 ############################
 echo "=> UPGRADE PACKAGES";
 yum update -y;
+
+############################
+##### Database Clients #####
+############################
+# AL2023
+yum install -y postgresql17 mariadb105 valkey;
 
 #########################
 ##### Node.js v22.x #####

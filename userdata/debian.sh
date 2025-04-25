@@ -31,3 +31,14 @@ dpkg -i ./amazon-ssm-agent.deb;
 systemctl enable amazon-ssm-agent;
 systemctl start amazon-ssm-agent;
 systemctl status amazon-ssm-agent;
+
+############################
+##### Database Clients #####
+############################
+# Debian 11 and 12
+apt-get install -y postgresql-client default-mysql-client;
+# Debian 12 only
+DEBIAN_RELVER=$(head -c 2 /etc/debian_version);
+if [ "${DEBIAN_RELVER}" == "12" ]; then
+  apt-get install -y valkey-tools;
+fi
