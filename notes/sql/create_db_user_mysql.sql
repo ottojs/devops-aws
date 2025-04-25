@@ -1,0 +1,4 @@
+CREATE DATABASE my_database;
+CREATE USER 'my_user'@'192.168.1.0/24' IDENTIFIED BY 'secure_password' REQUIRE SSL;
+GRANT ALL PRIVILEGES ON my_database.* TO 'my_user'@'192.168.1.0/24';
+FLUSH PRIVILEGES;
