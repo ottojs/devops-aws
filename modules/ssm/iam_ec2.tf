@@ -8,7 +8,7 @@ data "aws_iam_policy_document" "ec2_assume_role" {
     effect = "Allow"
     principals {
       type        = "Service"
-      identifiers = ["ec2.amazonaws.com", "rds.amazonaws.com"]
+      identifiers = ["ec2.amazonaws.com"]
     }
     actions = ["sts:AssumeRole"]
   }
@@ -19,6 +19,7 @@ data "aws_iam_policy_document" "ec2_assume_role" {
 resource "aws_iam_role" "ec2" {
   name               = "ec2-ssm"
   assume_role_policy = data.aws_iam_policy_document.ec2_assume_role.json
+  tags               = var.tags
 }
 
 # Policy - EC2/SSM
@@ -57,6 +58,7 @@ resource "aws_iam_role_policy_attachment" "ec2_ecs" {
 resource "aws_iam_instance_profile" "ec2" {
   name = "ec2-ssm-profile"
   role = aws_iam_role.ec2.name
+  tags = var.tags
 }
 
 # Inline Policy

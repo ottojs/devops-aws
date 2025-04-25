@@ -12,6 +12,7 @@
 - Add: Module ecs_service supports replicas (default 1)
 - Add: Database tools to the bastion hosts init scripts (debian/al2023)
 - Add: Common tools to the bastion hosts init scripts (debian/al2023)
+- Add: Tags to VPC Flow Logs, VPC IAM Roles, and SSM IAM Roles
 - Edit: Moving SSM settings out of VPC to its own module to prevent conflicts
 - Edit: Terraform State Bucket Name tag and deletion protection
 - Edit: Changing default Bastion machine type from "t3" to "t3a" for small cost savings

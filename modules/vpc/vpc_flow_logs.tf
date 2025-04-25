@@ -5,6 +5,7 @@ resource "aws_flow_log" "flowlogs" {
   log_destination = aws_cloudwatch_log_group.flowlogs.arn
   traffic_type    = "ALL"
   vpc_id          = aws_vpc.main.id
+  tags            = var.tags
 }
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group
@@ -13,6 +14,7 @@ resource "aws_cloudwatch_log_group" "flowlogs" {
   kms_key_id        = var.kms_key.arn
   skip_destroy      = true
   retention_in_days = var.log_retention_days
+  tags              = var.tags
 }
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document
@@ -33,6 +35,7 @@ data "aws_iam_policy_document" "assume_role" {
 resource "aws_iam_role" "flowlogs" {
   name               = "vpc-flow-logs-${aws_vpc.main.id}"
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
+  tags               = var.tags
 }
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document
