@@ -18,7 +18,7 @@ resource "aws_ecs_task_definition" "main" {
   container_definitions = jsonencode([
     {
       name                   = var.name
-      image                  = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com/${var.name}:${var.tag}"
+      image                  = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com/${var.use_registry != "" ? var.use_registry : var.name}:${var.tag}"
       cpu                    = var.cpu
       memory                 = var.ram
       essential              = true

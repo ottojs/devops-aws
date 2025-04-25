@@ -109,6 +109,13 @@ variable "create_registry" {
   default = true
 }
 
+# Allows you to use another app's registry
+# Use this with caution
+variable "use_registry" {
+  type = string
+  default = ""
+}
+
 variable "inline_policy" {
   type    = string
   default = ""
