@@ -9,6 +9,7 @@
 - Add: Module bucket_private log bucket can now receive CloudWatch logs
 - Add: Module ecs_service supports skeleton creation
 - Add: Module ecs_service supports use_registry to re-use another container registry
+- Add: Module ecs_service supports replicas (default 1)
 - Add: Database tools to the bastion hosts init scripts (debian/al2023)
 - Add: Common tools to the bastion hosts init scripts (debian/al2023)
 - Edit: Moving SSM settings out of VPC to its own module to prevent conflicts

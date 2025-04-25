@@ -73,6 +73,11 @@ variable "ram" {
   default = 512
 }
 
+variable "replicas" {
+  type    = number
+  default = 1
+}
+
 variable "tag" {
   type    = string
   default = "latest"
