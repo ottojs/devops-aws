@@ -2,7 +2,7 @@
 # Please uncomment the pieces you want to use
 # Remember to enable the services (Load Balancers, ECS Clusters) in 02_main if you need them
 
-# Private Bucket
+# # Private Bucket
 # module "bucket_example_private" {
 #   source        = "../../modules/bucket_private"
 #   name          = "bucket-example-private"
@@ -23,7 +23,7 @@
 #   root_domain      = var.root_domain
 #   kms_key          = data.aws_kms_key.main
 #   admin_username   = "customadmin"
-#   db_name          = "myapp"
+#   db_name          = "defaultdb"
 #   backup_days      = 30
 #   alert_cpu        = 60  # Percent
 #   alert_memory     = 256 # MB
@@ -45,6 +45,27 @@
 #   kms_key     = data.aws_kms_key.main
 #   password    = var.valkey_password
 #   tags        = var.tags
+# }
+
+# # MariaDB
+# # Takes about 18 minutes to create
+# # Takes about  7 minutes to destroy, may need multiple runs
+# module "db_mariadb" {
+#   source           = "../../modules/db_mariadb"
+#   name             = "my-mariadb-11"
+#   vpc              = data.aws_vpc.main
+#   subnet_ids       = data.aws_subnets.private.ids
+#   root_domain      = var.root_domain
+#   kms_key          = data.aws_kms_key.main
+#   admin_username   = "customadmin"
+#   db_name          = "defaultdb"
+#   backup_days      = 30
+#   alert_cpu        = 60  # Percent
+#   alert_memory     = 256 # MB
+#   alert_disk_space = 5   # GB
+#   alert_write_iops = 20
+#   alert_read_iops  = 100
+#   tags             = var.tags
 # }
 
 # # OpenSearch - ElasticSearch Fork/Alternative
