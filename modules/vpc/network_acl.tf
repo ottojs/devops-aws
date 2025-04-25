@@ -70,6 +70,19 @@ resource "aws_network_acl_rule" "default_tcp_22" {
   to_port        = 22
 }
 
+# Database MySQL/MariaDB from VPC CIDR
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl_rule
+resource "aws_network_acl_rule" "default_tcp_3306" {
+  network_acl_id = aws_default_network_acl.main.id
+  rule_number    = 49
+  egress         = false
+  rule_action    = "allow"
+  protocol       = "tcp"
+  cidr_block     = aws_vpc.main.cidr_block
+  from_port      = 3306
+  to_port        = 3306
+}
+
 # Remote Desktop (Windows) from VPC CIDR
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl_rule
 resource "aws_network_acl_rule" "default_tcp_3389" {
