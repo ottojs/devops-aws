@@ -1,5 +1,5 @@
 # === Welcome! ==
-# Please uncomment the pieces you'd like to use
+# Please uncomment the pieces you want to use
 # Remember to enable the services (Load Balancers, ECS Clusters) in 02_main if you need them
 
 # Private Bucket
@@ -13,6 +13,8 @@
 # }
 
 # # PostgreSQL Database
+# # Takes about 17 minutes to create
+# # Takes about  7 minutes to destroy, may need multiple runs
 # module "db_postgresql" {
 #   source           = "../../modules/db_postgresql"
 #   name             = "my-postgresql-17"
@@ -31,7 +33,9 @@
 #   tags             = var.tags
 # }
 
-# # Valkey - Redis Alternative
+# # Valkey - Redis Fork/Alternative
+# # Takes about 19 minutes to create
+# # Takes about 9  minutes to destroy
 # module "db_valkey" {
 #   source      = "../../modules/db_valkey"
 #   name        = "my-valkey-8"
@@ -43,7 +47,9 @@
 #   tags        = var.tags
 # }
 
-# # OpenSearch - ElasticSearch Alternative
+# # OpenSearch - ElasticSearch Fork/Alternative
+# # Takes about 18 minutes to create
+# # Takes about 15 minutes to delete
 # module "db_opensearch" {
 #   source      = "../../modules/opensearch"
 #   name        = "my-search"
@@ -99,8 +105,8 @@
 #   #     {
 #   #       Action = [
 #   #         "s3:ListBucketMultipartUploads",
-#   # 			  "s3:ListBucket",
-#   # 			  "s3:ListMultipartUploadParts",
+#   #         "s3:ListBucket",
+#   #         "s3:ListMultipartUploadParts",
 #   #         "...more...",
 #   #       ]
 #   #       Effect   = "Allow"
@@ -111,13 +117,13 @@
 #   envvars = {
 #     NODE_ENV = "production"
 #   }
-#   secrets = {
+#   secrets = [
 #     # Secrets Manager Key
 #     # apps/APPNAME/SECRETNAME
 #     # so in this case...
 #     # apps/api-server/MY_SECRET
-#     MY_SECRET = "MY_SECRET"
-#   }
+#     "MY_SECRET",
+#   ]
 #   tags = var.tags
 #   ### Server Only ###
 #   public      = true
@@ -141,13 +147,13 @@
 #   envvars = {
 #     NODE_ENV = "production"
 #   }
-#   secrets = {
+#   secrets = [
 #     # Secrets Manager Key
 #     # apps/APPNAME/SECRETNAME
 #     # so in this case...
 #     # apps/api-worker/MY_SECRET
-#     MY_SECRET = "MY_SECRET"
-#   }
+#     "MY_SECRET",
+#   ]
 #   tags = var.tags
 #   # TODO: Possible bug, need this for now
 #   root_domain = var.root_domain
@@ -171,13 +177,13 @@
 #   envvars = {
 #     NODE_ENV = "production"
 #   }
-#   secrets = {
+#   secrets = [
 #     # Secrets Manager Key
 #     # apps/APPNAME/SECRETNAME
 #     # so in this case...
 #     # apps/api-cron/MY_SECRET
-#     MY_SECRET = "MY_SECRET"
-#   }
+#     "MY_SECRET",
+#   ]
 #   tags = var.tags
 #   ### Cron Job Only ###
 #   timezone = "US/Eastern"
