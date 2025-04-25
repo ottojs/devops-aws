@@ -1,7 +1,7 @@
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener_rule
 resource "aws_lb_listener_rule" "default" {
-  count        = var.mode == "server" ? 1 : 0
+  count        = var.mode == "server" && var.skeleton == false ? 1 : 0
   listener_arn = data.aws_lb_listener.https[0].arn
   priority     = var.priority
   condition {
