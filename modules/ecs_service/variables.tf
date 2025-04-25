@@ -96,6 +96,14 @@ variable "fault_injection" {
   default = false
 }
 
+# Will not deploy to ECS when true
+# Ideal for creating a registry and IAM roles first
+variable "skeleton" {
+  type = bool
+  default = false
+}
+
+# Creates a registry for this app in ECR
 variable "create_registry" {
   type    = bool
   default = true

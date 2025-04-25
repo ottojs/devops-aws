@@ -4,7 +4,7 @@
 #
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_service
 resource "aws_ecs_service" "main" {
-  count = var.mode != "cron" ? 1 : 0
+  count = var.mode != "cron" && var.skeleton == false ? 1 : 0
   # TODO: Review
   lifecycle {
     create_before_destroy = true

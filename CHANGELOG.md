@@ -6,6 +6,7 @@
 - Add: Support for Debian 11 (bullseye) and 12 (bookworm)
 - Add: Security Module - ResourceExplorer
 - Add: Module bucket_private log bucket can now receive CloudWatch logs
+- Add: Module ecs_service supports skeleton creation
 - Edit: Moving SSM settings out of VPC to its own module to prevent conflicts
 - Edit: Terraform State Bucket Name tag and deletion protection
 - Edit: Changing default Bastion machine type from "t3" to "t3a" for small cost savings
