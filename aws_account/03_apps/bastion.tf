@@ -1,6 +1,7 @@
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/security_group
 data "aws_security_group" "main" {
-  name = "main"
+  name   = "main"
+  vpc_id = data.aws_vpc.main.id
 }
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_instance_profile
@@ -8,7 +9,10 @@ data "aws_iam_instance_profile" "ec2" {
   name = "ec2-ssm-profile"
 }
 
-# Important Notes:
+# === Important Notes ===
+#
+# To use a machine, set count = 1
+# You may delete or comment any you don't want to use
 #
 # EC2 Machine - Amazon Linux 2023 (RedHat-based, x86_64)
 # If you don't want the underlying os to rebuild you
@@ -21,6 +25,7 @@ data "aws_iam_instance_profile" "ec2" {
 
 # Bastion - AL2023 x86_64
 module "bastion_al2023_x86_64" {
+  count                = 0
   source               = "../../modules/ec2"
   name                 = "bastion"
   subnet_id            = data.aws_subnets.private.ids[0]
@@ -36,6 +41,7 @@ module "bastion_al2023_x86_64" {
 
 # Bastion - AL2023 ARM64
 module "bastion_al2023_arm64" {
+  count                = 0
   source               = "../../modules/ec2"
   name                 = "bastion"
   subnet_id            = data.aws_subnets.private.ids[0]
@@ -50,12 +56,28 @@ module "bastion_al2023_arm64" {
 }
 
 # Bastion - Debian 12 Bookworm
-# You can also use Debian 11 Bullseye
-module "bastion_debian_x86_64" {
+module "bastion_debian12_x86_64" {
+  count                = 0
   source               = "../../modules/ec2"
   name                 = "bastion"
   subnet_id            = data.aws_subnets.private.ids[0]
   os                   = "debian12"
+  arch                 = "x86_64"
+  machine              = "t3a.small"
+  security_groups      = [data.aws_security_group.main.id]
+  iam_instance_profile = data.aws_iam_instance_profile.ec2
+  userdata             = "../../userdata/debian.sh"
+  kms_key              = data.aws_kms_key.main
+  tags                 = var.tags
+}
+
+# Bastion - Debian 11 Bullseye
+module "bastion_debian11_x86_64" {
+  count                = 0
+  source               = "../../modules/ec2"
+  name                 = "bastion"
+  subnet_id            = data.aws_subnets.private.ids[0]
+  os                   = "debian11"
   arch                 = "x86_64"
   machine              = "t3a.small"
   security_groups      = [data.aws_security_group.main.id]

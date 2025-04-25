@@ -99,7 +99,7 @@ variable "fault_injection" {
 # Will not deploy to ECS when true
 # Ideal for creating a registry and IAM roles first
 variable "skeleton" {
-  type = bool
+  type    = bool
   default = false
 }
 
@@ -112,7 +112,7 @@ variable "create_registry" {
 # Allows you to use another app's registry
 # Use this with caution
 variable "use_registry" {
-  type = string
+  type    = string
   default = ""
 }
 
