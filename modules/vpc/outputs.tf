@@ -14,3 +14,7 @@ output "subnets_private" {
 output "subnets_public" {
   value = values(aws_subnet.public)[*]
 }
+
+output "nat_ip" {
+  value = aws_eip.nat
+}
