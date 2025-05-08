@@ -19,7 +19,7 @@
 - Edit: Moving SSM settings out of VPC to its own module to prevent conflicts
 - Edit: Terraform State Bucket Name tag and deletion protection
 - Edit: Changing default Bastion machine type from "t3" to "t3a" for small cost savings
-- Dependencies: Upgrade provider aws to v5.95.0
+- Dependencies: Upgrade provider aws to v5.97.0
 
 ## 2025-04-06 v0.7.0
 
