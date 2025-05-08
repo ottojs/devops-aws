@@ -24,6 +24,11 @@ variable "subnets" {
   default = []
 }
 
+variable "security_group_ids" {
+  type    = list(string)
+  default = []
+}
+
 variable "root_domain" {
   type = string
 }

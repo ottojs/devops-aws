@@ -15,6 +15,8 @@
 - Add: Common tools to the bastion hosts init scripts (debian/al2023)
 - Add: Tags to VPC Flow Logs, VPC IAM Roles, and SSM IAM Roles
 - Add: Variable for container command to execute in ECS
+- Add: VPC outputs NAT EIP
+- Add: Load Balancer now accepts security group IDs
 - Add: Bastion RHEL9 Golang
 - Add: Bastion RHEL9 Docker Compose Plugin
 - Add: Bastion Debian 11/12 Golang 1.24.3 and Node.js v22.x
