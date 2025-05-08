@@ -16,6 +16,7 @@
 - Add: Tags to VPC Flow Logs, VPC IAM Roles, and SSM IAM Roles
 - Add: Variable for container command to execute in ECS
 - Add: VPC outputs NAT EIP
+- Add: Valkey module outputs endpoint address
 - Add: Load Balancer now accepts security group IDs
 - Add: Bastion RHEL9 Golang
 - Add: Bastion RHEL9 Docker Compose Plugin
