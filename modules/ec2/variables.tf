@@ -25,15 +25,16 @@ locals {
     # https://aws.amazon.com/partners/redhat/
     rhel9 = "RHEL-9.5.0_HVM-*"
     # https://www.debian.org/releases/
-    debian           = "debian-12-*"
-    debian12         = "debian-12-*"
-    debian-12        = "debian-12-*"
-    debian-bookworm  = "debian-12-*"
-    debian-stable    = "debian-12-*"
-    debian11         = "debian-11-*"
-    debian-11        = "debian-11-*"
-    debian-bullseye  = "debian-11-*"
-    debian-oldstable = "debian-11-*"
+    # We add "a" at the end to catch "amd64" and "arm64", and avoid "backports"
+    debian           = "debian-12-a*"
+    debian12         = "debian-12-a*"
+    debian-12        = "debian-12-a*"
+    debian-bookworm  = "debian-12-a*"
+    debian-stable    = "debian-12-a*"
+    debian11         = "debian-11-a*"
+    debian-11        = "debian-11-a*"
+    debian-bullseye  = "debian-11-a*"
+    debian-oldstable = "debian-11-a*"
   }
 }
 
