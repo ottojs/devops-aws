@@ -35,7 +35,7 @@ systemctl status amazon-ssm-agent;
 ########################
 ##### Common Tools #####
 ########################
-apt-get install -y tree nmap ncat;
+apt-get install -y gpg tree nmap ncat htop;
 
 ############################
 ##### Database Clients #####
@@ -47,3 +47,34 @@ DEBIAN_RELVER=$(head -c 2 /etc/debian_version);
 if [ "${DEBIAN_RELVER}" == "12" ]; then
   apt-get install -y valkey-tools;
 fi
+
+#########################
+##### Node.js v22.x #####
+#########################
+# https://github.com/nodesource/distributions/blob/master/scripts/deb/setup_22.x
+echo "=> INSTALL NODEJS";
+NODE_VERSION="22.x";
+curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /usr/share/keyrings/nodesource.gpg;
+chmod 644 /usr/share/keyrings/nodesource.gpg
+cat << NODEJS > /etc/apt/sources.list.d/nodesource.list;
+deb [arch=${ARCH2} signed-by=/usr/share/keyrings/nodesource.gpg] https://deb.nodesource.com/node_${NODE_VERSION} nodistro main
+NODEJS
+apt-get update;
+sleep 10;
+apt-get install -y nodejs;
+echo "Node.js Version";
+node --version;
+echo "npm Version";
+npm --version;
+
+##################
+##### Golang #####
+##################
+GO_VERSION="1.24.3";
+echo "=> INSTALL GOLANG";
+echo "https://go.dev/dl/go${GO_VERSION}.linux-${ARCH2}.tar.gz";
+wget --quiet -O golang.tar.gz "https://go.dev/dl/go${GO_VERSION}.linux-${ARCH2}.tar.gz";
+tar -C /usr/local -xzf golang.tar.gz;
+rm ./golang.tar.gz;
+echo 'export PATH="${PATH}:/usr/local/go/bin";' >> /etc/profile;
+/usr/local/go/bin/go version;
