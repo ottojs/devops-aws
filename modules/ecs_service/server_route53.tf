@@ -15,7 +15,7 @@ data "aws_route53_zone" "root_public" {
 
 # There will always be a private record for internal systems to resolve (bastion)
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record
-resource "aws_route53_record" "main" {
+resource "aws_route53_record" "private" {
   count   = var.mode == "server" && var.skeleton == false ? 1 : 0
   zone_id = data.aws_route53_zone.root_private[0].zone_id
   name    = "${var.name}.${var.root_domain}"
