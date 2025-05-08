@@ -10,7 +10,7 @@ fi
 # Settings
 AWS_ACCOUNT_ID=$(aws sts get-caller-identity --output text --query 'Account');
 AWS_REGION=$(aws ec2 describe-availability-zones --output text --query 'AvailabilityZones[0].[RegionName]');
-ARCH=$(arch); # x86_64 or aarch64
+ARCH=$(arch); # x86_64 or aarch64, uname -m
 ARCH2=""
 if [ "${ARCH}" == "x86_64" ]; then
   ARCH2="amd64";
@@ -118,6 +118,11 @@ yum update -y;
 ########################
 yum install -y tree nmap nmap-ncat;
 
+# Remove Annoying Prompts
+sed -i '/^alias rm=/d' /root/.bashrc;
+sed -i '/^alias cp=/d' /root/.bashrc;
+sed -i '/^alias mv=/d' /root/.bashrc;
+
 ############################
 ##### Database Clients #####
 ############################
@@ -130,11 +135,10 @@ yum install -y postgresql17 mariadb105 valkey;
 # https://github.com/nodesource/distributions/blob/master/scripts/rpm/setup_22.x
 echo "=> INSTALL NODEJS";
 NODE_VERSION="22.x";
-SYS_ARCH=$(uname -m);
 cat << NODEJS > /etc/yum.repos.d/nodesource-nodejs.repo;
 [nodesource-nodejs]
-name=Node.js Packages for Linux RPM based distros - ${SYS_ARCH}
-baseurl=https://rpm.nodesource.com/pub_${NODE_VERSION}/nodistro/nodejs/${SYS_ARCH}
+name=Node.js Packages for Linux RPM based distros - ${ARCH}
+baseurl=https://rpm.nodesource.com/pub_${NODE_VERSION}/nodistro/nodejs/${ARCH}
 priority=9
 enabled=1
 gpgcheck=1
