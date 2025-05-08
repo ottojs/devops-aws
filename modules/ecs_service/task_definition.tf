@@ -23,6 +23,8 @@ resource "aws_ecs_task_definition" "main" {
       memory                 = var.ram
       essential              = true
       enable_fault_injection = var.fault_injection
+      // entryPoint = []
+      command = var.command
       # Environment Variables are (almost) always passed as strings
       environment = [for k, v in merge(var.envvars, {
         PORT        = "8080",

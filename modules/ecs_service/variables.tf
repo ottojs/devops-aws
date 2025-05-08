@@ -88,6 +88,11 @@ variable "type" {
   type = string
 }
 
+variable "command" {
+  type    = list(string)
+  default = null
+}
+
 variable "envvars" {
   type = map(string)
 }
