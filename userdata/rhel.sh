@@ -153,6 +153,18 @@ node --version;
 echo "npm Version";
 npm --version;
 
+##################
+##### Golang #####
+##################
+GO_VERSION="1.24.3";
+echo "=> INSTALL GOLANG";
+echo "https://go.dev/dl/go${GO_VERSION}.linux-${ARCH2}.tar.gz";
+wget --quiet -O golang.tar.gz "https://go.dev/dl/go${GO_VERSION}.linux-${ARCH2}.tar.gz";
+tar -C /usr/local -xzf golang.tar.gz;
+rm ./golang.tar.gz;
+echo 'export PATH="${PATH}:/usr/local/go/bin";' >> /etc/profile;
+/usr/local/go/bin/go version;
+
 #############################
 ##### Container Builder #####
 #############################
