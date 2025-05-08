@@ -195,6 +195,21 @@ docker push "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/\${1}:\${2}";
 EOF
 chmod +x /root/container_build.sh;
 
+##########################
+##### Docker Compose #####
+##########################
+# Alternative Path: /usr/local/lib/docker/cli-plugins
+# https://github.com/docker/compose/releases
+DOCKER_COMPOSE_VERSION="v2.36.0";
+if grep redhat:enterprise_linux:9::baseos /etc/os-release; then
+  echo "=> INSTALL DOCKER COMPOSE - SKIP ON RHEL9";
+else
+  echo "=> INSTALL DOCKER COMPOSE ${DOCKER_COMPOSE_VERSION}";
+  mkdir -p /usr/libexec/docker/cli-plugins/;
+  wget --quiet -O /usr/libexec/docker/cli-plugins/docker-compose "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-linux-${ARCH}";
+  chmod +x /usr/libexec/docker/cli-plugins/docker-compose;
+fi
+
 # # Optional - Used for Testing
 # yum install nginx -y;
 # systemctl enable nginx --now;
