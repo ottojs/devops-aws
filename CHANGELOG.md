@@ -1,6 +1,6 @@
 # Releases
 
-## Next v0.8.0
+## 2025-05-21 v0.8.0
 
 - Breaking: Module ecs_service now passes secrets as a list/array
 - Fix: Upgrade EC2 SSM policy from AmazonEC2RoleforSSM to AmazonSSMManagedInstanceCore
