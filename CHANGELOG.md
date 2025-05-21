@@ -3,6 +3,7 @@
 ## Next v0.8.0
 
 - Breaking: Module ecs_service now passes secrets as a list/array
+- Fix: Upgrade EC2 SSM policy from AmazonEC2RoleforSSM to AmazonSSMManagedInstanceCore
 - Fix: Refine Debian AMI name filter to avoid backports
 - Add: Module db_mariadb for MariaDB instance
 - Add: Support for Debian 11 (bullseye) and 12 (bookworm)

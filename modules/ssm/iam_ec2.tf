@@ -27,8 +27,23 @@ resource "aws_iam_role" "ec2" {
 resource "aws_iam_role_policy_attachment" "ec2_session_manager" {
   role = aws_iam_role.ec2.name
   # This is too lightweight and does not support encrypted CloudWatch/S3 Encrypted Logs
-  # policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM"
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+  # This is deprecated / unusable
+  # policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM"
+}
+
+# Policy - EC2/SSM access S3
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment
+resource "aws_iam_role_policy_attachment" "ec2_s3" {
+  role       = aws_iam_role.ec2.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+}
+
+# Policy - EC2/SSM access CloudWatch Logs
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment
+resource "aws_iam_role_policy_attachment" "ec2_cloudwatch_logs" {
+  role       = aws_iam_role.ec2.name
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
 }
 
 # Policy - EC2/SSM access ECR
