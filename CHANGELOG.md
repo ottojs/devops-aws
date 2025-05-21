@@ -21,6 +21,7 @@
 - Add: Bastion RHEL9 Golang
 - Add: Bastion RHEL9 Docker Compose Plugin
 - Add: Bastion Debian 11/12 Golang 1.24.3 and Node.js v22.x
+- Add: Bastion Rocky Linux 9 (RHEL9 base)
 - Edit: Always adding private DNS record for ECS service
 - Edit: Moving SSM settings out of VPC to its own module to prevent conflicts
 - Edit: Terraform State Bucket Name tag and deletion protection

@@ -35,6 +35,11 @@ locals {
     debian-11        = "debian-11-a*"
     debian-bullseye  = "debian-11-a*"
     debian-oldstable = "debian-11-a*"
+    # Rocky Linux
+    # https://rockylinux.org/download
+    # Rocky-9-EC2-Base-9.5-YYYYMMDD.0.x86_64
+    # Rocky-9-EC2-LVM-9.5-YYYYMMDD.0.x86_64 (Preferred)
+    rocky9 = "Rocky-9-EC2-LVM-9.5-*"
   }
 }
 

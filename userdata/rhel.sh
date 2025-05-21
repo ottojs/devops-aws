@@ -3,15 +3,16 @@
 # Prerequisites (RHEL9)
 # awscli2 (aws) is not installed on RHEL9, is installed on AL2023
 # wget is not installed on RHEL9, is installed on AL2023
-if grep redhat:enterprise_linux:9::baseos /etc/os-release; then
+#
+# redhat:enterprise_linux:9::baseos
+# rocky:rocky:9::baseos
+if ! grep amazon:amazon_linux:2023 /etc/os-release; then
   yum install -y awscli2 wget;
 fi
 
 # Settings
-AWS_ACCOUNT_ID=$(aws sts get-caller-identity --output text --query 'Account');
-AWS_REGION=$(aws ec2 describe-availability-zones --output text --query 'AvailabilityZones[0].[RegionName]');
 ARCH=$(arch); # x86_64 or aarch64, uname -m
-ARCH2=""
+ARCH2="";
 if [ "${ARCH}" == "x86_64" ]; then
   ARCH2="amd64";
 elif [ "${ARCH}" == "aarch64" ]; then
@@ -28,7 +29,7 @@ cd /root || exit 1;
 # https://docs.aws.amazon.com/systems-manager/latest/userguide/verify-agent-signature.html
 # We hardcode this for security purposes, because a dynamic URI download could change
 echo "=> INSTALL AMAZON SSM";
-amazon-ssm-agent --version > /root/amazon-ssm-agent.default.txt; # 3.3.1957.0 (2025-05-07)
+amazon-ssm-agent --version > /root/amazon-ssm-agent.default.txt || echo "NO-SSM-AGENT"; # 3.3.1957.0 (2025-05-07)
 cat << EOF > ./amazon-ssm-agent.gpg;
 -----BEGIN PGP PUBLIC KEY BLOCK-----
 Version: GnuPG v2.0.22 (GNU/Linux)
@@ -116,7 +117,7 @@ yum update -y;
 ########################
 ##### Common Tools #####
 ########################
-yum install -y tree nmap nmap-ncat;
+yum install -y git tree nmap nmap-ncat;
 
 # Remove Annoying Prompts
 sed -i '/^alias rm=/d' /root/.bashrc;
@@ -127,7 +128,11 @@ sed -i '/^alias mv=/d' /root/.bashrc;
 ##### Database Clients #####
 ############################
 # AL2023
-yum install -y postgresql17 mariadb105 valkey;
+if grep amazon:amazon_linux:2023 /etc/os-release; then
+  yum install -y postgresql17 mariadb1011 valkey;
+else
+  yum install -y postgresql mysql redis;
+fi
 
 #########################
 ##### Node.js v22.x #####
@@ -168,12 +173,16 @@ echo 'export PATH="${PATH}:/usr/local/go/bin";' >> /etc/profile;
 #############################
 ##### Container Builder #####
 #############################
-yum install -y docker git;
-if grep redhat:enterprise_linux:9::baseos /etc/os-release; then
+if ! grep amazon:amazon_linux:2023 /etc/os-release; then
+  yum install -y podman podman-docker;
   systemctl enable podman --now;
+  touch /etc/containers/nodocker;
 else
+  yum install -y docker;
   systemctl enable docker --now;
 fi
+AWS_ACCOUNT_ID=$(aws sts get-caller-identity --output text --query 'Account');
+AWS_REGION=$(aws ec2 describe-availability-zones --output text --query 'AvailabilityZones[0].[RegionName]');
 cat << EOF > /root/container_build.sh;
 #!/usr/bin/env bash
 
@@ -201,14 +210,11 @@ chmod +x /root/container_build.sh;
 # Alternative Path: /usr/local/lib/docker/cli-plugins
 # https://github.com/docker/compose/releases
 DOCKER_COMPOSE_VERSION="v2.36.0";
-if grep redhat:enterprise_linux:9::baseos /etc/os-release; then
-  echo "=> INSTALL DOCKER COMPOSE - SKIP ON RHEL9";
-else
-  echo "=> INSTALL DOCKER COMPOSE ${DOCKER_COMPOSE_VERSION}";
-  mkdir -p /usr/libexec/docker/cli-plugins/;
-  wget --quiet -O /usr/libexec/docker/cli-plugins/docker-compose "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-linux-${ARCH}";
-  chmod +x /usr/libexec/docker/cli-plugins/docker-compose;
-fi
+# if grep amazon:amazon_linux:2023 /etc/os-release; then
+echo "=> INSTALL DOCKER COMPOSE ${DOCKER_COMPOSE_VERSION} on AL2023";
+mkdir -p /usr/libexec/docker/cli-plugins/;
+wget --quiet -O /usr/libexec/docker/cli-plugins/docker-compose "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-linux-${ARCH}";
+chmod +x /usr/libexec/docker/cli-plugins/docker-compose;
 
 # # Optional - Used for Testing
 # yum install nginx -y;

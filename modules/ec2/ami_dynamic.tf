@@ -6,7 +6,9 @@ data "aws_ami" "main" {
   #executable_users = ["self"]
   most_recent = true
   #name_regex       = "^name"
-  owners = ["amazon"]
+  # Amazon, Rocky
+  # AlmaLinux (and more in Marketplace, not good) 679593333241
+  owners = ["amazon", "792107900819"]
 
   filter {
     name   = "name"
