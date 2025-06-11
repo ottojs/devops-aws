@@ -196,6 +196,34 @@ resource "aws_wafv2_web_acl" "main" {
       sampled_requests_enabled   = true
     }
   }
+
+  dynamic "rule" {
+    for_each = var.waf_geo_blocking_enabled ? [1] : []
+    content {
+      name     = "GeoBlockingRule"
+      priority = 9
+      action {
+        dynamic "block" {
+          for_each = var.waf_geo_blocking_action == "block" ? [1] : []
+          content {}
+        }
+        dynamic "count" {
+          for_each = var.waf_geo_blocking_action == "count" ? [1] : []
+          content {}
+        }
+      }
+      statement {
+        geo_match_statement {
+          country_codes = var.waf_blocked_countries
+        }
+      }
+      visibility_config {
+        cloudwatch_metrics_enabled = true
+        metric_name                = "${var.name}-waf-geo-blocking"
+        sampled_requests_enabled   = true
+      }
+    }
+  }
 }
 
 # Link to Load Balancer

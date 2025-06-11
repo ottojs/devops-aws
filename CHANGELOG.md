@@ -10,7 +10,7 @@
 - Edit: ASG EBS Optimized, Dynamic AMI Lookup, Encrypted Disk, Health Check, KMS Encryption, Dev Mode
 - Edit: ECS Cluster to better utilize resources, Dev Mode, CloudWatch Log Group
 - Edit: Load Balancer, more restrictive TLS/ciphers, cross-zone load balancing
-- Edit: WAF: rate limits, SQLi/Unix/Linux rule sets
+- Edit: WAF: rate limits, SQLi/Unix/Linux rule sets, Geo Blocking
 - Add: VPC Endpoints to modules/vpc
 - Add: Module for AMI Lookup
 - Add: Enable switches for IGW/NAT to modules/vpc (default: false)

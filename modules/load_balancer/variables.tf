@@ -88,3 +88,37 @@ variable "waf_rate_limit_action" {
     error_message = "waf_rate_limit_action must be either 'block' or 'count'"
   }
 }
+
+variable "waf_geo_blocking_enabled" {
+  type        = bool
+  default     = true
+  description = "Enable geo-blocking for sanctioned and high-risk countries"
+}
+
+variable "waf_blocked_countries" {
+  type = list(string)
+  default = [
+    "CU", # Cuba
+    "IR", # Iran
+    "KP", # North Korea
+    "SY", # Syria
+    "RU", # Russia
+    "BY", # Belarus
+    "VE", # Venezuela
+    "CN", # China
+    "MM"  # Myanmar/Burma
+  ]
+  # https://www.iban.com/country-codes
+  description = "List of country codes to block (ISO 3166-1 alpha-2)"
+}
+
+variable "waf_geo_blocking_action" {
+  type        = string
+  default     = "block"
+  description = "Action to take for geo-blocked countries: block or count"
+  validation {
+    condition     = contains(["block", "count"], var.waf_geo_blocking_action)
+    error_message = "waf_geo_blocking_action must be either 'block' or 'count'"
+  }
+}
+
