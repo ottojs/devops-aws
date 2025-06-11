@@ -21,12 +21,15 @@ locals {
   ami_filters = {
     # Bottlerocket
     bottlerocket_ecs          = "bottlerocket-aws-ecs-2-${var.arch}-*"
+    bottlerocket_ecs_fips     = "bottlerocket-aws-ecs-2-fips-${var.arch}-*"
     bottlerocket_k8s_133      = "bottlerocket-aws-k8s-1.33-${var.arch}-*"
     bottlerocket_k8s_133_fips = "bottlerocket-aws-k8s-1.33-fips-${var.arch}-*"
     # https://docs.aws.amazon.com/linux/al2023/ug/what-is-amazon-linux.html
-    al2023 = "al2023-ami-2023.*"
+    al2023      = "al2023-ami-2023.*"
+    al2023_fips = "al2023-ami-fips-2023.*"
     # https://aws.amazon.com/partners/redhat/
-    rhel9 = "RHEL-9.5.0_HVM-*"
+    # Only datestamps are stable
+    rhel9 = "RHEL-9.5.0_HVM-2*"
     # https://www.debian.org/releases/
     # We add "a" at the end to catch "amd64" and "arm64", and avoid "backports"
     debian           = "debian-12-a*"
@@ -43,6 +46,48 @@ locals {
     # Rocky-9-EC2-Base-9.5-YYYYMMDD.0.x86_64
     # Rocky-9-EC2-LVM-9.5-YYYYMMDD.0.x86_64 (Preferred)
     rocky9 = "Rocky-9-EC2-LVM-9.5-*"
+  }
+  # Note: We only use owner alias "amazon" and official Account IDs for safety purposes
+  # AlmaLinux, SUSE, and more are only available in AWS Marketplace 679593333241
+  # This can be an attack vector as anyone can publish there, so we are not enabling AWS Marketplace
+  owners = {
+    # Amazon Provided
+    bottlerocket_ecs          = "amazon"
+    bottlerocket_ecs_fips     = "amazon"
+    bottlerocket_k8s_133      = "amazon"
+    bottlerocket_k8s_133_fips = "amazon"
+    al2023                    = "amazon"
+    al2023_fips               = "amazon"
+    rhel9                     = "amazon"
+    debian                    = "amazon"
+    debian12                  = "amazon"
+    debian_12                 = "amazon"
+    debian_bookworm           = "amazon"
+    debian_stable             = "amazon"
+    debian11                  = "amazon"
+    debian_11                 = "amazon"
+    debian_bullseye           = "amazon"
+    debian_oldstable          = "amazon"
+    # Rocky Linux
+    # https://rockylinux.org/download
+    rocky9 = "792107900819"
+    #
+    # IBM / RHEL
+    # Regular:  309956199498
+    # GovCloud: 219670896067
+    # https://access.redhat.com/solutions/15356
+    #
+    # IBM / CentOS / Fedora
+    # 125523088429
+    # https://www.centos.org/download/aws-images/
+    #
+    # Debian
+    # 136693071363
+    # https://wiki.debian.org/Cloud/AmazonEC2Image
+    #
+    # Canonical / Ubuntu
+    # 099720109477
+    # https://cloud-images.ubuntu.com/locator/ec2/
   }
 }
 

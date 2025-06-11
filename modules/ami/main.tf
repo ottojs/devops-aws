@@ -5,10 +5,7 @@ data "aws_ami" "main" {
   #executable_users = ["self"]
   most_recent = true
   #name_regex       = "^name"
-  # Note: We only use owner alias "amazon" for safety purposes
-  # Amazon, Rocky (Account ID)
-  # AlmaLinux (and more in Marketplace, not good) 679593333241
-  owners = ["amazon", "792107900819"]
+  owners = [local.owners[var.os]]
 
   filter {
     name   = "name"
@@ -34,4 +31,10 @@ data "aws_ami" "main" {
     name   = "virtualization-type"
     values = ["hvm"]
   }
+
+  filter {
+    name   = "state"
+    values = ["available"]
+  }
+
 }
