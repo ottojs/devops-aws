@@ -1,15 +1,22 @@
 
+# AMI Lookup
+module "ami_lookup" {
+  source = "../ami"
+  os     = var.os
+  arch   = var.arch
+}
+
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance
 resource "aws_instance" "ec2" {
-  count         = 1
-  ami           = var.ami == "" ? data.aws_ami.main.image_id : var.ami
-  instance_type = var.machine == "" ? local.instance_type[var.arch] : var.machine
-  # TODO: Random Pick
-  availability_zone           = "${data.aws_region.current.region}${element(var.azs, 0)}"
+  ami           = var.ami == "" ? module.ami_lookup.ami_id : var.ami
+  instance_type = var.machine == "" ? module.ami_lookup.default_instance_type : var.machine
+  #availability_zone = determined by subnet
   subnet_id                   = var.subnet_id
   associate_public_ip_address = var.public
-  monitoring                  = false
+  monitoring                  = true
   key_name                    = var.ssh_key
+  ebs_optimized               = true
+  disable_api_termination     = !var.dev_mode
 
   # IMDSv2
   metadata_options {
@@ -30,7 +37,7 @@ resource "aws_instance" "ec2" {
     })
   }
   vpc_security_group_ids      = var.security_groups
-  user_data                   = filebase64(var.userdata)
+  user_data_base64            = filebase64(var.userdata)
   user_data_replace_on_change = true
 
   # TODO: null does not clear
