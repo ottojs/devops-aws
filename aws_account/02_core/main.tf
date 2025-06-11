@@ -201,17 +201,19 @@ module "myvpc" {
 #   scale_up_cpu         = 60
 #   count_min            = 3
 #   count_max            = 3
+#   kms_key              = data.aws_kms_key.main
 #   sns_topic_arn        = module.sns.topic_arn
+#   dev_mode             = true
 #   tags                 = var.tags
-#   # # RHEL Example
-#   # os            = "al2023"
-#   # userdata_file = file("../../userdata/rhel.sh")
+#   # RHEL Example
+#   os            = "al2023"
+#   userdata_file = file("../../userdata/rhel.sh")
 #   #
-#   # ECS Bottlerocket Example
-#   os = "bottlerocket_ecs"
-#   userdata_file = templatefile("../../userdata/ecs_bottlerocket.sh.tpl", {
-#     cluster_name = module.ecs_cluster_ec2.cluster_name
-#   })
+#   # # ECS Bottlerocket Example
+#   # os = "bottlerocket_ecs"
+#   # userdata_file = templatefile("../../userdata/ecs_bottlerocket.sh.tpl", {
+#   #   cluster_name = module.ecs_cluster_ec2.cluster_name
+#   # })
 # }
 
 # module "ecs_cluster_ec2" {

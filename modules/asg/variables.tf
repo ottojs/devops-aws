@@ -95,10 +95,12 @@ variable "root_volume_size" {
   description = "Size of the root EBS volume in GB"
 }
 
-variable "kms_key_id" {
-  type        = string
-  default     = null
-  description = "KMS key ID for EBS volume encryption. If null, AWS managed key is used"
+variable "kms_key" {
+  type = object({
+    id  = string
+    arn = string
+  })
+  description = "KMS Key Object for encrypting EBS"
 }
 
 variable "instance_refresh_min_healthy_percentage" {
@@ -123,17 +125,53 @@ variable "force_refresh_trigger" {
   default     = "v1"
 }
 
-variable "sns_topic_arn" {
-  type        = string
-  description = "SNS topic ARN for ASG notifications. If null, notifications are disabled"
-}
-
 variable "dev_mode" {
   type        = bool
-  default     = true
+  default     = false
   description = "Enable development mode (disables termination protection and conservative scaling)"
 }
 
 variable "tags" {
   type = map(string)
+}
+
+variable "enable_warm_pool" {
+  type        = bool
+  default     = false
+  description = "Enable warm pool for faster scaling"
+}
+
+variable "warm_pool_size" {
+  type        = number
+  default     = 2
+  description = "Maximum number of instances to maintain in the warm pool"
+}
+
+variable "sns_topic_arn" {
+  type        = string
+  description = "SNS topic ARN for CloudWatch alarm notifications"
+}
+
+variable "cpu_high_threshold" {
+  type        = number
+  default     = 80
+  description = "CPU utilization threshold for high CPU alarm"
+}
+
+variable "cpu_low_threshold" {
+  type        = number
+  default     = 20
+  description = "CPU utilization threshold for low CPU alarm"
+}
+
+variable "memory_high_threshold" {
+  type        = number
+  default     = 80
+  description = "Memory utilization threshold for high memory alarm"
+}
+
+variable "enable_memory_monitoring" {
+  type        = bool
+  default     = false
+  description = "Enable memory monitoring (requires CloudWatch agent)"
 }

@@ -38,6 +38,11 @@ resource "aws_launch_template" "asg" {
     enabled = true
   }
 
+  # default or disabled
+  maintenance_options {
+    auto_recovery = "default"
+  }
+
   network_interfaces {
     associate_public_ip_address = false
     delete_on_termination       = true
@@ -64,7 +69,7 @@ resource "aws_launch_template" "asg" {
     device_name = "/dev/xvda"
     ebs {
       encrypted             = true
-      kms_key_id            = var.kms_key_id
+      #kms_key_id            = var.kms_key.arn
       delete_on_termination = true
       volume_type           = "gp3"
       volume_size           = var.root_volume_size
@@ -172,6 +177,38 @@ resource "aws_autoscaling_group" "asg" {
     triggers = ["tag"]
   }
 
+  # Warm pool configuration for faster scaling
+  dynamic "warm_pool" {
+    for_each = var.enable_warm_pool ? [1] : []
+    content {
+      pool_state                  = "Stopped"
+      min_size                    = 1
+      max_group_prepared_capacity = var.warm_pool_size
+      instance_reuse_policy {
+        reuse_on_scale_in = true
+      }
+    }
+  }
+
+}
+
+# Lifecycle hook for security scanning on instance launch
+resource "aws_autoscaling_lifecycle_hook" "security_scan_launch" {
+  name                   = "asg-${var.name}-security-scan-launch"
+  autoscaling_group_name = aws_autoscaling_group.asg.name
+  default_result         = "ABANDON"
+  heartbeat_timeout      = 300
+  lifecycle_transition   = "autoscaling:EC2_INSTANCE_LAUNCHING"
+
+  notification_metadata = jsonencode({
+    action = "security-scan",
+    asg    = var.name
+  })
+
+  # TODO
+  # Send notifications to SNS topic for processing
+  #notification_target_arn = var.sns_topic_arn
+  #notification_target_arn = todo
 }
 
 # SNS notifications for ASG events

@@ -17,7 +17,8 @@ variable "random_id" {
 
 variable "kms_key" {
   type = object({
-    id = string
+    id  = string
+    arn = string
   })
   description = "KMS Key Object"
 }
