@@ -14,11 +14,11 @@ data "aws_acm_certificate" "main" {
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb
 resource "aws_lb" "main" {
-  name               = var.name
-  load_balancer_type = "application"
-  internal           = !var.public
-  security_groups    = length(var.security_group_ids) != 0 ? var.security_group_ids : [aws_security_group.alb.id]
-  subnets            = local.subnet_ids
+  name                                        = var.name
+  load_balancer_type                          = "application"
+  internal                                    = !var.public
+  security_groups                             = length(var.security_group_ids) != 0 ? var.security_group_ids : [aws_security_group.alb.id]
+  subnets                                     = local.subnet_ids
   client_keep_alive                           = 3600 # default
   desync_mitigation_mode                      = "strictest"
   dns_record_client_routing_policy            = "any_availability_zone" # default

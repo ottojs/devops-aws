@@ -72,3 +72,19 @@ variable "dev_mode" {
 variable "tags" {
   type = map(string)
 }
+
+variable "waf_rate_limit" {
+  type        = number
+  default     = 250
+  description = "Maximum number of requests from a single IP in a 5-minute period"
+}
+
+variable "waf_rate_limit_action" {
+  type        = string
+  default     = "block"
+  description = "Action to take when rate limit is exceeded: block or count"
+  validation {
+    condition     = contains(["block", "count"], var.waf_rate_limit_action)
+    error_message = "waf_rate_limit_action must be either 'block' or 'count'"
+  }
+}

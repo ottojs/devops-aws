@@ -113,6 +113,32 @@ resource "aws_wafv2_web_acl" "main" {
       sampled_requests_enabled   = true
     }
   }
+
+  rule {
+    name     = "RateLimitRule"
+    priority = 5
+    action {
+      dynamic "block" {
+        for_each = var.waf_rate_limit_action == "block" ? [1] : []
+        content {}
+      }
+      dynamic "count" {
+        for_each = var.waf_rate_limit_action == "count" ? [1] : []
+        content {}
+      }
+    }
+    statement {
+      rate_based_statement {
+        limit              = var.waf_rate_limit
+        aggregate_key_type = "IP"
+      }
+    }
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${var.name}-waf-rate-limit"
+      sampled_requests_enabled   = true
+    }
+  }
 }
 
 # Link to Load Balancer
