@@ -3,6 +3,7 @@
 ## Unreleased v0.9.0
 
 - Edit: Improve module sns
+- Edit: Default log retention changed from 365 days to 400 days
 - Add: Module security_global
 - Dependencies: Upgrade provider aws to 6.0.0-beta3
 
