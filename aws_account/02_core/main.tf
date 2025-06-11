@@ -17,6 +17,13 @@ module "sns" {
   tags    = var.tags
 }
 
+# Once per account
+module "security_global" {
+  source        = "../../modules/security_global"
+  sns_topic_arn = module.sns.topic_arn
+  tags          = var.tags
+}
+
 # # Allows SSM Connection (WebShell)
 # # Also contains EC2 Bastion role (ec2-ssm)
 # module "ssm" {
