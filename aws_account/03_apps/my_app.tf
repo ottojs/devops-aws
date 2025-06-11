@@ -12,6 +12,18 @@
 #   tags          = var.tags
 # }
 
+# Public Bucket
+# Creation: 7 minutes
+# Deletion: 7 minutes
+module "bucket_test_public" {
+  source        = "../../modules/bucket_public"
+  name          = "static.${var.root_domain}"
+  log_bucket_id = data.aws_s3_bucket.logging.id
+  root_domain   = var.root_domain
+  domain_record = "static"
+  tags          = var.tags
+}
+
 # # PostgreSQL Database
 # # Takes about 17 minutes to create
 # # Takes about  7 minutes to destroy, may need multiple runs
