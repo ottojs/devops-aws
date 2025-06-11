@@ -7,6 +7,16 @@ data "aws_s3_bucket" "logging" {
   bucket = "devops-log-bucket-${var.random_id}"
 }
 
+# Main Notification Topic
+# This is needed to send alerts for overall account health
+module "sns" {
+  source  = "../../modules/sns"
+  name    = "devops"
+  email   = var.email
+  kms_key = data.aws_kms_key.main
+  tags    = var.tags
+}
+
 # # Allows SSM Connection (WebShell)
 # # Also contains EC2 Bastion role (ec2-ssm)
 # module "ssm" {
@@ -32,14 +42,6 @@ data "aws_s3_bucket" "logging" {
 #   root_domain = var.root_domain
 #   tags        = var.tags
 # }
-
-module "sns" {
-  source  = "../../modules/sns"
-  name    = "devops"
-  email   = var.email
-  kms_key = data.aws_kms_key.main
-  tags    = var.tags
-}
 
 # module "ses" {
 #   source      = "../../modules/ses"

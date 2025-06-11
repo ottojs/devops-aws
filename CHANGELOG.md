@@ -1,6 +1,8 @@
 # Releases
 
 ## Unreleased v0.9.0
+
+- Edit: Improve module sns
 - Dependencies: Upgrade provider aws to 6.0.0-beta3
 
 ## 2025-05-21 v0.8.0
