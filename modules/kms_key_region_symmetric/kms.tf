@@ -75,7 +75,7 @@ resource "aws_kms_key" "main" {
         Sid    = "Allow use of the key by VPC Flow Logs"
         Effect = "Allow"
         Principal = {
-          Service = "logs.${data.aws_region.current.name}.amazonaws.com"
+          Service = "logs.${data.aws_region.current.region}.amazonaws.com"
         },
         Action = [
           "kms:Describe*",
@@ -89,7 +89,7 @@ resource "aws_kms_key" "main" {
         Condition = {
           ArnEquals = {
             # arn:aws:logs:region:account-id:log-group:log-group-name
-            "kms:EncryptionContext:aws:logs:arn" = "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:*:*"
+            "kms:EncryptionContext:aws:logs:arn" = "arn:aws:logs:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:*:*"
           }
         }
       },

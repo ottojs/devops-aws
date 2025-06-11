@@ -6,7 +6,7 @@
 resource "aws_vpc_endpoint" "gateways" {
   for_each          = toset(var.vpc_endpoints == true ? ["s3", "dynamodb"] : [])
   vpc_id            = aws_vpc.main.id
-  service_name      = "com.amazonaws.${data.aws_region.current.name}.${each.value}"
+  service_name      = "com.amazonaws.${data.aws_region.current.region}.${each.value}"
   vpc_endpoint_type = "Gateway"
   route_table_ids   = [aws_default_route_table.private.id, aws_route_table.public.id]
   tags = merge(var.tags, {
@@ -18,7 +18,7 @@ resource "aws_vpc_endpoint" "gateways" {
 resource "aws_vpc_endpoint" "interfaces" {
   for_each            = toset(var.vpc_endpoints == true ? ["kms", "logs", "secretsmanager", "ssm", "ec2messages", "ec2", "ssmmessages"] : [])
   vpc_id              = aws_vpc.main.id
-  service_name        = "com.amazonaws.${data.aws_region.current.name}.${each.value}"
+  service_name        = "com.amazonaws.${data.aws_region.current.region}.${each.value}"
   vpc_endpoint_type   = "Interface"
   subnet_ids          = [for s in aws_subnet.private : s.id]
   private_dns_enabled = true

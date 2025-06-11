@@ -1,5 +1,8 @@
 # Releases
 
+## Unreleased v0.9.0
+- Dependencies: Upgrade provider aws to 6.0.0-beta3
+
 ## 2025-05-21 v0.8.0
 
 - Breaking: Module ecs_service now passes secrets as a list/array

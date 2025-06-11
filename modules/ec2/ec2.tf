@@ -5,7 +5,7 @@ resource "aws_instance" "ec2" {
   ami           = var.ami == "" ? data.aws_ami.main.image_id : var.ami
   instance_type = var.machine == "" ? local.instance_type[var.arch] : var.machine
   # TODO: Random Pick
-  availability_zone           = "${data.aws_region.current.name}${element(var.azs, 0)}"
+  availability_zone           = "${data.aws_region.current.region}${element(var.azs, 0)}"
   subnet_id                   = var.subnet_id
   associate_public_ip_address = var.public
   monitoring                  = false

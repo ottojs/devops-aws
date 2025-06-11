@@ -40,7 +40,7 @@ resource "aws_launch_template" "asg" {
   }
 
   # placement {
-  #   availability_zone = "${data.aws_region.current.name}a"
+  #   availability_zone = "${data.aws_region.current.region}a"
   #   # group_name = aws_placement_group.main.name
   # }
 
@@ -97,7 +97,7 @@ resource "aws_autoscaling_group" "asg" {
   termination_policies = ["OldestInstance"]
 
   # DO NOT USE
-  # availability_zones      = ["${data.aws_region.current.name}a"]
+  # availability_zones      = ["${data.aws_region.current.region}a"]
   vpc_zone_identifier       = local.subnet_ids
   default_cooldown          = var.seconds_cooldown
   default_instance_warmup   = var.seconds_warmup

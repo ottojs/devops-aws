@@ -18,7 +18,7 @@ resource "aws_ecs_task_definition" "main" {
   container_definitions = jsonencode([
     {
       name                   = var.name
-      image                  = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com/${var.use_registry != "" ? var.use_registry : var.name}:${var.tag}"
+      image                  = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${data.aws_region.current.region}.amazonaws.com/${var.use_registry != "" ? var.use_registry : var.name}:${var.tag}"
       cpu                    = var.cpu
       memory                 = var.ram
       essential              = true
@@ -58,7 +58,7 @@ resource "aws_ecs_task_definition" "main" {
       secrets = [for secret in var.secrets :
         {
           name      = secret
-          valueFrom = "arn:aws:secretsmanager:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:secret:apps/${var.name}/${secret}"
+          valueFrom = "arn:aws:secretsmanager:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:secret:apps/${var.name}/${secret}"
         }
       ]
       # requiresAttributes = [
@@ -75,7 +75,7 @@ resource "aws_ecs_task_definition" "main" {
         options = {
           "awslogs-create-group"  = "true"
           "awslogs-group"         = "devops/aws/ecs/${var.ecs_cluster}"
-          "awslogs-region"        = data.aws_region.current.name
+          "awslogs-region"        = data.aws_region.current.region
           "awslogs-stream-prefix" = var.mode
           "mode"                  = "non-blocking"
           "max-buffer-size"       = "1m"
