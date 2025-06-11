@@ -8,11 +8,11 @@ output "security_group" {
 }
 
 output "subnets_private" {
-  value = values(aws_subnet.private)[*]
+  value = [for i, subnet in var.subnets_private : aws_subnet.private[i]]
 }
 
 output "subnets_public" {
-  value = values(aws_subnet.public)[*]
+  value = [for i, subnet in var.subnets_public : aws_subnet.public[i]]
 }
 
 output "nat_ip" {
