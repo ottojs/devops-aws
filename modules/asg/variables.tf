@@ -95,6 +95,12 @@ variable "root_volume_size" {
   description = "Size of the root EBS volume in GB"
 }
 
+variable "kms_key_id" {
+  type        = string
+  default     = null
+  description = "KMS key ID for EBS volume encryption. If null, AWS managed key is used"
+}
+
 variable "instance_refresh_min_healthy_percentage" {
   type        = number
   default     = 66

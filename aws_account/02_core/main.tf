@@ -192,25 +192,24 @@ module "myvpc" {
 # # We may consider an alternative monitoring solution in the future
 # module "asg_ec2" {
 #   source               = "../../modules/asg"
-#   name                 = "asg-ecs-x86_64"
+#   name                 = "ecs-x86_64"
 #   subnets              = module.myvpc.subnets_private
 #   security_groups      = [module.myvpc.security_group.id]
-#   iam_instance_profile = aws_iam_instance_profile.ec2
+#   iam_instance_profile = module.ssm.instance_profile
 #   instance_type        = "t3a.small"
 #   scale_up_cpu         = 60
-#   count_min            = 1
-#   count_max            = 2
+#   count_min            = 3
+#   count_max            = 3
+#   sns_topic_arn        = module.sns.topic_arn
 #   tags                 = var.tags
-#   # RHEL Example
-#   # al2023-ami-2023.6.20250218.2-kernel-6.1-x86_64  2025/02/18
-#   # ami           = "ami-0fc82f4dabc05670b"
+#   # # RHEL Example
+#   # os            = "al2023"
 #   # userdata_file = file("../../userdata/rhel.sh")
 #   #
 #   # ECS Bottlerocket Example
-#   # bottlerocket-aws-ecs-2-x86_64-v1.32.0-cacc4ce9  2025/01/27
-#   ami = "ami-06ca440d570381dfe"
+#   os = "bottlerocket_ecs"
 #   userdata_file = templatefile("../../userdata/ecs_bottlerocket.sh.tpl", {
-#     cluster_name = module.ecs_cluster_ec2.cluster.name
+#     cluster_name = module.ecs_cluster_ec2.cluster_name
 #   })
 # }
 
