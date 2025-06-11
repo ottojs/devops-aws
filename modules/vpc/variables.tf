@@ -61,6 +61,18 @@ variable "dev_mode" {
   default = false
 }
 
+variable "enable_nat" {
+  type        = bool
+  default     = false
+  description = "Enable NAT Gateway for private subnets"
+}
+
+variable "enable_igw" {
+  type        = bool
+  default     = false
+  description = "Enable Internet Gateway for public subnets"
+}
+
 # List Available Endpoints
 # aws ec2 describe-vpc-endpoint-services --region us-east-1 | jq '.ServiceDetails[] | .Owner,.PrivateDnsName'
 variable "vpc_endpoints_interface" {

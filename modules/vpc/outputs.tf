@@ -16,5 +16,5 @@ output "subnets_public" {
 }
 
 output "nat_ip" {
-  value = aws_eip.nat
+  value = var.enable_nat ? aws_eip.nat[0] : null
 }
