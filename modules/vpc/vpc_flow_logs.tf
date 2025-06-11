@@ -40,23 +40,53 @@ resource "aws_iam_role" "flowlogs" {
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document
 data "aws_iam_policy_document" "flowlogs" {
+  # CloudWatch Logs permissions
   statement {
+    sid    = "CloudWatchLogsPermissions"
     effect = "Allow"
     actions = [
-      "logs:CreateLogGroup",
       "logs:CreateLogStream",
       "logs:PutLogEvents",
-      "logs:DescribeLogGroups",
-      "logs:DescribeLogStreams",
-      "kms:DescribeKey",
+      "logs:DescribeLogStreams"
+    ]
+    resources = [
+      aws_cloudwatch_log_group.flowlogs.arn,
+      "${aws_cloudwatch_log_group.flowlogs.arn}:*"
+    ]
+  }
+
+  # KMS permissions for encrypting logs
+  statement {
+    sid    = "KMSPermissions"
+    effect = "Allow"
+    actions = [
       "kms:Encrypt",
       "kms:Decrypt",
       "kms:ReEncrypt*",
-      "kms:GenerateDataKey",
-      "kms:GenerateDataKeyWithoutPlaintext",
-      "kms:AssociateKmsKey",
+      "kms:GenerateDataKey*",
+      "kms:DescribeKey"
     ]
-    resources = ["*"]
+    resources = [
+      var.kms_key.arn
+    ]
+  }
+
+  # KMS permissions via service
+  statement {
+    sid    = "KMSServicePermissions"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:GenerateDataKey"
+    ]
+    resources = [
+      var.kms_key.arn
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["logs.${var.region}.amazonaws.com"]
+    }
   }
 }
 
