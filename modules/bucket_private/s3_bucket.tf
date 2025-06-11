@@ -20,8 +20,20 @@ resource "aws_s3_bucket" "bucket_private" {
 resource "aws_s3_bucket_ownership_controls" "bucket_private" {
   bucket = aws_s3_bucket.bucket_private.id
   rule {
-    object_ownership = "BucketOwnerEnforced"
+    # Use BucketOwnerPreferred for log buckets to allow CloudFront logging
+    # CloudFront requires ACL access to write logs
+    object_ownership = var.log_bucket_disabled ? "BucketOwnerPreferred" : "BucketOwnerEnforced"
   }
+}
+
+# Bucket ACL for CloudFront logging
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_acl
+resource "aws_s3_bucket_acl" "bucket_private" {
+  count  = var.log_bucket_disabled ? 1 : 0
+  bucket = aws_s3_bucket.bucket_private.id
+  acl    = "log-delivery-write"
+
+  depends_on = [aws_s3_bucket_ownership_controls.bucket_private]
 }
 
 # Block Public Access
