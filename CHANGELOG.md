@@ -6,7 +6,7 @@
 - Edit: Improve module sns
 - Edit: Default log retention changed from 365 days to 400 days
 - Edit: Refine VPC Flow Logs IAM Role/Policy
-- Edit: EC2 Monitoring enabled, EBS Optimization enabled, Dev Mode, remove AZ
+- Edit: EC2 Monitoring enabled, EBS Optimization enabled, Dev Mode, remove AZ, Add Recovery Alarm
 - Edit: ASG EBS Optimized, Dynamic AMI Lookup, Encrypted Disk, Health Check, KMS Encryption, Dev Mode
 - Edit: ECS Cluster to better utilize resources, Dev Mode, CloudWatch Log Group
 - Add: VPC Endpoints to modules/vpc
