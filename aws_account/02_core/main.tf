@@ -133,6 +133,7 @@ module "myvpc" {
 #   root_domain        = module.route53.domain
 #   log_bucket         = data.aws_s3_bucket.logging
 #   log_retention_days = var.log_retention_days
+#   sns_topic_arn      = module.sns.topic_arn
 #   tags               = var.tags
 #   depends_on         = [module.route53]
 # }
@@ -147,6 +148,7 @@ module "myvpc" {
 #   root_domain        = module.route53.domain
 #   log_bucket         = data.aws_s3_bucket.logging
 #   log_retention_days = var.log_retention_days
+#   sns_topic_arn      = module.sns.topic_arn
 #   tags               = var.tags
 #   depends_on         = [module.route53]
 # }

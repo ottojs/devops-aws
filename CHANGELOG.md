@@ -9,7 +9,7 @@
 - Edit: EC2 Monitoring enabled, EBS Optimization enabled, Dev Mode, remove AZ, Add Recovery Alarm
 - Edit: ASG EBS Optimized, Dynamic AMI Lookup, Encrypted Disk, Health Check, KMS Encryption, Dev Mode
 - Edit: ECS Cluster to better utilize resources, Dev Mode, CloudWatch Log Group
-- Edit: Load Balancer, more restrictive TLS/ciphers, cross-zone load balancing
+- Edit: Load Balancer, more restrictive TLS/ciphers, cross-zone load balancing, CloudWatch alarms
 - Edit: WAF: rate limits, SQLi/Unix/Linux rule sets, Geo Blocking
 - Add: VPC Endpoints to modules/vpc
 - Add: Module for AMI Lookup

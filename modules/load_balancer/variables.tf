@@ -1,3 +1,4 @@
+data "aws_region" "current" {}
 
 locals {
   subnet_ids = [for s in var.subnets : s.id]
@@ -122,3 +123,31 @@ variable "waf_geo_blocking_action" {
   }
 }
 
+variable "sns_topic_arn" {
+  type        = string
+  description = "SNS topic ARN for CloudWatch alarm notifications. If empty, no alarms will be created."
+}
+
+variable "alarm_request_count_threshold" {
+  type        = number
+  default     = 10000
+  description = "Threshold for request count alarm (requests per 5 minutes)"
+}
+
+variable "alarm_4xx_error_rate_threshold" {
+  type        = number
+  default     = 10
+  description = "Threshold for 4xx error rate alarm (percentage)"
+}
+
+variable "alarm_5xx_error_rate_threshold" {
+  type        = number
+  default     = 5
+  description = "Threshold for 5xx error rate alarm (percentage)"
+}
+
+variable "alarm_target_response_time_threshold" {
+  type        = number
+  default     = 3
+  description = "Threshold for target response time alarm (seconds)"
+}
