@@ -68,7 +68,7 @@ resource "aws_launch_template" "asg" {
   block_device_mappings {
     device_name = "/dev/xvda"
     ebs {
-      encrypted             = true
+      encrypted = true
       #kms_key_id            = var.kms_key.arn
       delete_on_termination = true
       volume_type           = "gp3"

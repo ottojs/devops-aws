@@ -160,7 +160,7 @@ variable "cpu_high_threshold" {
 
 variable "cpu_low_threshold" {
   type        = number
-  default     = 20
+  default     = 5
   description = "CPU utilization threshold for low CPU alarm"
 }
 

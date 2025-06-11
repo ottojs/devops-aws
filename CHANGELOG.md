@@ -7,7 +7,7 @@
 - Edit: Default log retention changed from 365 days to 400 days
 - Edit: Refine VPC Flow Logs IAM Role/Policy
 - Edit: EC2 Monitoring enabled, EBS Optimization enabled, Dev Mode, remove AZ, Add Recovery Alarm
-- Edit: ASG EBS Optimized, Dynamic AMI Lookup, Encrypted Disk, Health Check, KMS Encryption, Dev Mode
+- Edit: ASG EBS Optimized, Dynamic AMI Lookup, Encrypted Disk, Health Check, KMS Encryption, Dev Mode, Alarms
 - Edit: ECS Cluster to better utilize resources, Dev Mode, CloudWatch Log Group
 - Edit: Load Balancer, more restrictive TLS/ciphers, cross-zone load balancing, CloudWatch alarms
 - Edit: WAF: rate limits, SQLi/Unix/Linux rule sets, Geo Blocking
