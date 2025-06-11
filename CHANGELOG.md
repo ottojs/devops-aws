@@ -6,6 +6,7 @@
 - Edit: Improve module sns
 - Edit: Default log retention changed from 365 days to 400 days
 - Edit: Review VPC Flow Logs IAM Role/Policy
+- Add: VPC Endpoints to modules/vpc
 - Add: Module security_global
 - Dependencies: Upgrade provider aws to 6.0.0-beta3
 

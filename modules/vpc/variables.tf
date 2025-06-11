@@ -56,9 +56,37 @@ variable "log_retention_days" {
   }
 }
 
-variable "vpc_endpoints" {
+variable "dev_mode" {
   type    = bool
   default = false
+}
+
+# List Available Endpoints
+# aws ec2 describe-vpc-endpoint-services --region us-east-1 | jq '.ServiceDetails[] | .Owner,.PrivateDnsName'
+variable "vpc_endpoints_interface" {
+  type        = list(string)
+  description = "List of AWS service names for Interface VPC endpoints"
+  default = [
+    # Core services
+    "ec2",
+    "ec2messages",
+    "ssm",
+    "ssmmessages",
+    "kms",
+    "logs",
+    # Container services
+    "secretsmanager",
+    "ecr.api",
+    "ecr.dkr",
+    "ecs",
+    "ecs-agent",
+    "ecs-telemetry",
+    # Databases
+    "rds",
+    "elasticache",
+    # Security
+    "sts"
+  ]
 }
 
 variable "tags" {
