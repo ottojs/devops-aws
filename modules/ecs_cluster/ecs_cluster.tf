@@ -30,6 +30,10 @@ resource "aws_ecs_cluster" "main" {
         cloud_watch_log_group_name     = local.exec_log_group_name
       }
     }
+
+    guardduty {
+      enabled = true
+    }
   }
   tags = merge(var.tags, {
     Name = "ecs-cluster-${var.name}"

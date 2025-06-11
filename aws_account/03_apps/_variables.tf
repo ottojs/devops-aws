@@ -11,6 +11,12 @@ variable "root_domain" {
   default = "example.com"
 }
 
+# https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_PutRetentionPolicy.html#API_PutRetentionPolicy_RequestSyntax
+variable "log_retention_days" {
+  type    = number
+  default = 400
+}
+
 # password must contain at least one:
 # - uppercase letter
 # - lowercase letter

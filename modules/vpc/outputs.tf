@@ -11,8 +11,16 @@ output "subnets_private" {
   value = [for i, subnet in var.subnets_private : aws_subnet.private[i]]
 }
 
+output "subnets_private_ids" {
+  value = [for i, subnet in var.subnets_private : aws_subnet.private[i].id]
+}
+
 output "subnets_public" {
   value = [for i, subnet in var.subnets_public : aws_subnet.public[i]]
+}
+
+output "subnets_public_ids" {
+  value = [for i, subnet in var.subnets_public : aws_subnet.public[i].id]
 }
 
 output "nat_ip" {

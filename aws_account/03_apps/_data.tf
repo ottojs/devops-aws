@@ -8,6 +8,10 @@ data "aws_s3_bucket" "logging" {
   bucket = "devops-log-bucket-${var.random_id}"
 }
 
+data "aws_sns_topic" "main" {
+  name = "devops"
+}
+
 data "aws_vpc" "main" {
   tags = {
     Name = "vpc-main"
