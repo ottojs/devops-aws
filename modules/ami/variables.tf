@@ -4,8 +4,8 @@
 # aws ec2 describe-images --owners amazon --filters "Name=architecture,Values=x86_64" --filters "Name=name,Values=al2023-ami-2023*"
 
 # Amazon Linux 2023
-# al2023-ami-2023.6.YYYYMMDD.2-kernel-6.1-x86_64
-# al2023-ami-2023.6.YYYYMMDD.2-kernel-6.1-arm64
+# al2023-ami-2023.7.YYYYMMDD.2-kernel-6.1-x86_64
+# al2023-ami-2023.7.YYYYMMDD.2-kernel-6.1-arm64
 
 # RHEL 9
 # RHEL-9.5.0_HVM-20250313-arm64-0-Hourly2-GP3

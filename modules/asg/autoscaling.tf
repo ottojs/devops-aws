@@ -1,4 +1,11 @@
 
+# AMI Lookup
+module "ami_lookup" {
+  source = "../ami"
+  os     = var.os
+  arch   = var.arch
+}
+
 # DO NOT USE THESE (OBSOLETE)
 # aws_launch_configuration
 # vpc_security_group_ids
@@ -7,12 +14,13 @@
 resource "aws_launch_template" "asg" {
   # name_prefix = "lt-${var.name}-"
   name                                 = "lt-${var.name}"
-  disable_api_stop                     = false
-  disable_api_termination              = false
-  image_id                             = var.ami
+  disable_api_stop                     = !var.dev_mode
+  disable_api_termination              = !var.dev_mode
+  image_id                             = var.ami == "" ? module.ami_lookup.ami_id : var.ami
   instance_initiated_shutdown_behavior = "terminate"
   instance_type                        = var.instance_type
   # key_name = not needed, use the web shell instead
+  ebs_optimized = true
 
   iam_instance_profile {
     name = var.iam_instance_profile.name
@@ -50,6 +58,17 @@ resource "aws_launch_template" "asg" {
   #     Name = "lt-test"
   #   })
   # }
+
+  # Encrypt root EBS volume
+  block_device_mappings {
+    device_name = "/dev/xvda"
+    ebs {
+      encrypted             = true
+      delete_on_termination = true
+      volume_type           = "gp3"
+      volume_size           = var.root_volume_size
+    }
+  }
 
   # Options for Referencing Userdata
   # file, filebase64, base64encode, templatefile
@@ -101,9 +120,11 @@ resource "aws_autoscaling_group" "asg" {
   vpc_zone_identifier       = local.subnet_ids
   default_cooldown          = var.seconds_cooldown
   default_instance_warmup   = var.seconds_warmup
+  health_check_type         = var.health_check_type
   health_check_grace_period = var.seconds_health
-  force_delete              = true
-  protect_from_scale_in     = false
+  force_delete              = var.dev_mode ? true : false
+  protect_from_scale_in     = !var.dev_mode
+  capacity_rebalance        = true
 
   # TODO: load_balancer attachment
   # placement_group         = aws_placement_group.main.id
@@ -133,6 +154,36 @@ resource "aws_autoscaling_group" "asg" {
     value               = true
     propagate_at_launch = true
   }
+
+  tag {
+    key                 = "ForceRefreshTrigger"
+    value               = var.force_refresh_trigger
+    propagate_at_launch = true
+  }
+
+  # Instance refresh for safe rolling updates
+  instance_refresh {
+    strategy = "Rolling"
+    preferences {
+      min_healthy_percentage = var.instance_refresh_min_healthy_percentage
+      instance_warmup        = var.seconds_warmup
+    }
+    triggers = ["tag"]
+  }
+
+}
+
+# SNS notifications for ASG events
+resource "aws_autoscaling_notification" "asg_notifications" {
+  group_names = [aws_autoscaling_group.asg.name]
+  topic_arn   = var.sns_topic_arn
+
+  notifications = [
+    "autoscaling:EC2_INSTANCE_LAUNCH",
+    "autoscaling:EC2_INSTANCE_TERMINATE",
+    "autoscaling:EC2_INSTANCE_LAUNCH_ERROR",
+    "autoscaling:EC2_INSTANCE_TERMINATE_ERROR",
+  ]
 }
 
 # TODO: Explore

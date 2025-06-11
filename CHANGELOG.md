@@ -5,8 +5,11 @@
 - Fix: Output ordering of VPC subnets
 - Edit: Improve module sns
 - Edit: Default log retention changed from 365 days to 400 days
-- Edit: Review VPC Flow Logs IAM Role/Policy
+- Edit: Refine VPC Flow Logs IAM Role/Policy
+- Edit: EC2 Monitoring enabled, EBS Optimization enabled, Dev Mode, remove AZ
+- Edit: ASG EBS Optimized, Dynamic AMI Lookup, Encrypted Disk, Health Check, Dev Mode
 - Add: VPC Endpoints to modules/vpc
+- Add: Module for AMI Lookup
 - Add: Enable switches for IGW/NAT to modules/vpc (default: false)
 - Add: Module security_global
 - Dependencies: Upgrade provider aws to 6.0.0-beta3

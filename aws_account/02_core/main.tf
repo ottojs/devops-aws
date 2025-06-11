@@ -77,8 +77,8 @@ module "myvpc" {
   cidr               = "10.2.0.0/16"
   log_bucket         = data.aws_s3_bucket.logging
   log_retention_days = var.log_retention_days
-  enable_igw = true
-  enable_nat = true
+  enable_igw         = true
+  enable_nat         = true
   subnets_public = [
     {
       name = "main"
