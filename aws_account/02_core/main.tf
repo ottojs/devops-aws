@@ -7,31 +7,31 @@ data "aws_s3_bucket" "logging" {
   bucket = "devops-log-bucket-${var.random_id}"
 }
 
-# Allows SSM Connection (WebShell)
-# Also contains EC2 Bastion role (ec2-ssm)
-module "ssm" {
-  source             = "../../modules/ssm"
-  kms_key            = data.aws_kms_key.main
-  log_bucket         = data.aws_s3_bucket.logging
-  log_retention_days = var.log_retention_days
-  tags               = var.tags
-}
+# # Allows SSM Connection (WebShell)
+# # Also contains EC2 Bastion role (ec2-ssm)
+# module "ssm" {
+#   source             = "../../modules/ssm"
+#   kms_key            = data.aws_kms_key.main
+#   log_bucket         = data.aws_s3_bucket.logging
+#   log_retention_days = var.log_retention_days
+#   tags               = var.tags
+# }
 
-# WARNING: For production, set cost_savings to false or remove it
-module "security" {
-  source       = "../../modules/security"
-  cost_savings = true
-  random_id    = var.random_id
-  kms_key      = data.aws_kms_key.main
-  tags         = var.tags
-}
+# # WARNING: For production, set cost_savings to false or remove it
+# module "security" {
+#   source       = "../../modules/security"
+#   cost_savings = true
+#   random_id    = var.random_id
+#   kms_key      = data.aws_kms_key.main
+#   tags         = var.tags
+# }
 
-module "route53" {
-  source      = "../../modules/route53_root"
-  vpc         = module.myvpc.vpc
-  root_domain = var.root_domain
-  tags        = var.tags
-}
+# module "route53" {
+#   source      = "../../modules/route53_root"
+#   vpc         = module.myvpc.vpc
+#   root_domain = var.root_domain
+#   tags        = var.tags
+# }
 
 module "sns" {
   source  = "../../modules/sns"
@@ -41,89 +41,89 @@ module "sns" {
   tags    = var.tags
 }
 
-module "ses" {
-  source      = "../../modules/ses"
-  root_domain = module.route53.domain
-  depends_on  = [module.route53]
-}
+# module "ses" {
+#   source      = "../../modules/ses"
+#   root_domain = module.route53.domain
+#   depends_on  = [module.route53]
+# }
 
-module "sqs" {
-  source  = "../../modules/sqs"
-  name    = "devops"
-  kms_key = data.aws_kms_key.main
-  tags    = var.tags
-}
+# module "sqs" {
+#   source  = "../../modules/sqs"
+#   name    = "devops"
+#   kms_key = data.aws_kms_key.main
+#   tags    = var.tags
+# }
 
-# Create the VPC with:
-# - public and private subnets
-# - NAT gateway, Internet gateway, Network ACLs
-# - empty default security group
-# - "main" security group as a starting point (HTTP, HTTPS, SSH)
-# - VPC flow logs in CloudWatch
-module "myvpc" {
-  source             = "../../modules/vpc"
-  name               = "main"
-  region             = data.aws_region.current.name
-  kms_key            = data.aws_kms_key.main
-  cidr               = "10.2.0.0/16"
-  log_bucket         = data.aws_s3_bucket.logging
-  log_retention_days = var.log_retention_days
-  vpc_endpoints      = false
-  subnets_public = [
-    {
-      name = "main"
-      az   = "a"
-      cidr = "10.2.1.0/24"
-    },
-    {
-      name = "main"
-      az   = "b"
-      cidr = "10.2.2.0/24"
-    },
-    {
-      name = "main"
-      az   = "c"
-      cidr = "10.2.3.0/24"
-    }
-  ]
-  subnets_private = [
-    {
-      name = "main"
-      az   = "a"
-      cidr = "10.2.11.0/24"
-    },
-    {
-      name = "main"
-      az   = "b"
-      cidr = "10.2.12.0/24"
-    },
-    {
-      name = "main"
-      az   = "c"
-      cidr = "10.2.13.0/24"
-    },
-    # {
-    #   name = "vpn"
-    #   az   = "a"
-    #   cidr = "10.2.99.0/24"
-    # }
-  ]
-  tags = var.tags
-}
+# # Create the VPC with:
+# # - public and private subnets
+# # - NAT gateway, Internet gateway, Network ACLs
+# # - empty default security group
+# # - "main" security group as a starting point (HTTP, HTTPS, SSH)
+# # - VPC flow logs in CloudWatch
+# module "myvpc" {
+#   source             = "../../modules/vpc"
+#   name               = "main"
+#   region             = data.aws_region.current.name
+#   kms_key            = data.aws_kms_key.main
+#   cidr               = "10.2.0.0/16"
+#   log_bucket         = data.aws_s3_bucket.logging
+#   log_retention_days = var.log_retention_days
+#   vpc_endpoints      = false
+#   subnets_public = [
+#     {
+#       name = "main"
+#       az   = "a"
+#       cidr = "10.2.1.0/24"
+#     },
+#     {
+#       name = "main"
+#       az   = "b"
+#       cidr = "10.2.2.0/24"
+#     },
+#     {
+#       name = "main"
+#       az   = "c"
+#       cidr = "10.2.3.0/24"
+#     }
+#   ]
+#   subnets_private = [
+#     {
+#       name = "main"
+#       az   = "a"
+#       cidr = "10.2.11.0/24"
+#     },
+#     {
+#       name = "main"
+#       az   = "b"
+#       cidr = "10.2.12.0/24"
+#     },
+#     {
+#       name = "main"
+#       az   = "c"
+#       cidr = "10.2.13.0/24"
+#     },
+#     # {
+#     #   name = "vpn"
+#     #   az   = "a"
+#     #   cidr = "10.2.99.0/24"
+#     # }
+#   ]
+#   tags = var.tags
+# }
 
-# External Load Balancer (Public)
-module "alb_public" {
-  source             = "../../modules/load_balancer"
-  name               = "alb-public" # Keep this name
-  public             = true
-  vpc                = module.myvpc.vpc
-  subnets            = module.myvpc.subnets_public
-  root_domain        = module.route53.domain
-  log_bucket         = data.aws_s3_bucket.logging
-  log_retention_days = var.log_retention_days
-  tags               = var.tags
-  depends_on         = [module.route53]
-}
+# # External Load Balancer (Public)
+# module "alb_public" {
+#   source             = "../../modules/load_balancer"
+#   name               = "alb-public" # Keep this name
+#   public             = true
+#   vpc                = module.myvpc.vpc
+#   subnets            = module.myvpc.subnets_public
+#   root_domain        = module.route53.domain
+#   log_bucket         = data.aws_s3_bucket.logging
+#   log_retention_days = var.log_retention_days
+#   tags               = var.tags
+#   depends_on         = [module.route53]
+# }
 
 # # Internal Load Balancer (Private)
 # module "alb_private" {
@@ -161,14 +161,14 @@ module "alb_public" {
 ##### FARGATE #####
 ###################
 
-module "ecs_cluster_fargate" {
-  source             = "../../modules/ecs_cluster"
-  name               = "ecs-cluster-fargate"
-  type               = "FARGATE"
-  kms_key            = data.aws_kms_key.main
-  log_retention_days = var.log_retention_days
-  tags               = var.tags
-}
+# module "ecs_cluster_fargate" {
+#   source             = "../../modules/ecs_cluster"
+#   name               = "ecs-cluster-fargate"
+#   type               = "FARGATE"
+#   kms_key            = data.aws_kms_key.main
+#   log_retention_days = var.log_retention_days
+#   tags               = var.tags
+# }
 
 ###########################
 ##### EC2 SELF-HOSTED #####
