@@ -80,28 +80,6 @@ podman push ACCOUNTID.dkr.ecr.REGION.amazonaws.com/NAME:TAG
 
 Due to limitations with Load Balancer logging, we cannot use a KMS key on the log bucket. If you know a workaround, please let us know. All other buckets are encrypted with your KMS customer-managed key (CMK).
 
-### KMS Key Edit
-
-- After step 2, you'll need to add this to step 1
-- The reason this is difficult is because step 1 validates and this snippet resource role does not exist yet.
-- We're looking for a better solution, but do not want to put much in step 1, use a new key, or disable validation
-- We could update the key policy as one option, overwriting step 1 with step 2 somehow
-
-```json
-{
-  Sid    = "Allow use of the key by EC2 for SSM"
-  Effect = "Allow"
-  Principal = {
-    AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/ec2-ssm"
-  },
-  Action = [
-    "kms:DescribeKey",
-    "kms:Decrypt"
-  ],
-  Resource = "*"
-},
-```
-
 ## TODO / Known Issues
 
 - Increase KMS Key deletion to max days for grace period

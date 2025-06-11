@@ -11,6 +11,7 @@
 - Edit: ECS Cluster to better utilize resources, Dev Mode, CloudWatch Log Group
 - Edit: Load Balancer, more restrictive TLS/ciphers, cross-zone load balancing, CloudWatch alarms
 - Edit: WAF: rate limits, SQLi/Unix/Linux rule sets, Geo Blocking
+- Edit: SSM now uses its own KMS key
 - Add: VPC Endpoints to modules/vpc
 - Add: Module for AMI Lookup
 - Add: Enable switches for IGW/NAT to modules/vpc (default: false)

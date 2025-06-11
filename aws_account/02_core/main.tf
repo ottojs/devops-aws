@@ -28,7 +28,6 @@ module "security_global" {
 # # Also contains EC2 Bastion role (ec2-ssm)
 # module "ssm" {
 #   source             = "../../modules/ssm"
-#   kms_key            = data.aws_kms_key.main
 #   log_bucket         = data.aws_s3_bucket.logging
 #   log_retention_days = var.log_retention_days
 #   tags               = var.tags
