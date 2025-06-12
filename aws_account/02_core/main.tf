@@ -179,7 +179,7 @@ module "myvpc" {
 
 # module "ecs_cluster_fargate" {
 #   source             = "../../modules/ecs_cluster"
-#   name               = "ecs-cluster-fargate"
+#   name               = "cluster-fargate"
 #   type               = "FARGATE"
 #   kms_key            = data.aws_kms_key.main
 #   log_retention_days = var.log_retention_days
@@ -208,20 +208,20 @@ module "myvpc" {
 #   sns_topic_arn        = module.sns.topic_arn
 #   dev_mode             = true
 #   tags                 = var.tags
-#   # RHEL Example
-#   os            = "al2023"
-#   userdata_file = file("../../userdata/rhel.sh")
+#   # # RHEL Example
+#   # os            = "al2023"
+#   # userdata_file = file("../../userdata/rhel.sh")
 #   #
-#   # # ECS Bottlerocket Example
-#   # os = "bottlerocket_ecs"
-#   # userdata_file = templatefile("../../userdata/ecs_bottlerocket.sh.tpl", {
-#   #   cluster_name = module.ecs_cluster_ec2.cluster_name
-#   # })
+#   # ECS Bottlerocket Example
+#   os = "bottlerocket_ecs"
+#   userdata_file = templatefile("../../userdata/ecs_bottlerocket.sh.tpl", {
+#     cluster_name = module.ecs_cluster_ec2.cluster_name
+#   })
 # }
 
 # module "ecs_cluster_ec2" {
 #   source             = "../../modules/ecs_cluster"
-#   name               = "ecs-cluster-ec2"
+#   name               = "cluster-ec2"
 #   type               = "EC2"
 #   asg                = module.asg_ec2.asg
 #   kms_key            = data.aws_kms_key.main

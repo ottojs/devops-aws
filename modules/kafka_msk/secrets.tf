@@ -16,7 +16,7 @@ resource "random_password" "msk_user_passwords" {
 resource "aws_secretsmanager_secret" "msk_credentials" {
   for_each = toset(var.sasl_scram_users)
 
-  name                    = "msk/${var.name}/${each.value}"
+  name                    = "AmazonMSK_${var.name}_${each.value}"
   description             = "MSK SASL/SCRAM credentials for ${each.value}"
   recovery_window_in_days = 30
   kms_key_id              = aws_kms_key.msk.arn
