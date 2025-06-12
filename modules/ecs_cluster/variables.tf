@@ -61,3 +61,42 @@ variable "tags" {
     error_message = "Required tags missing. Must include: Owner"
   }
 }
+
+# CloudWatch Alarm Variables
+
+variable "cpu_threshold_high" {
+  type        = number
+  default     = 70
+  description = "CPU utilization threshold for high alarm"
+}
+
+variable "memory_threshold_high" {
+  type    = number
+  default = 70
+}
+
+variable "min_running_tasks_threshold" {
+  type        = number
+  default     = 1
+  description = "Minimum number of running tasks before triggering alarm"
+}
+
+variable "gpu_threshold_high" {
+  type        = number
+  default     = 50
+  description = "GPU utilization threshold for high alarm"
+}
+
+# EC2 Only
+
+variable "failed_task_threshold" {
+  type        = number
+  default     = 5
+  description = "Number of failed tasks to trigger alarm"
+}
+
+variable "min_container_instances_threshold" {
+  type        = number
+  default     = 1
+  description = "Minimum number of container instances"
+}
