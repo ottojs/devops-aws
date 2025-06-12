@@ -1,6 +1,10 @@
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 
+locals {
+  log_name = "devops/aws/ssm/sessions"
+}
+
 variable "log_bucket" {
   type = object({
     id  = string

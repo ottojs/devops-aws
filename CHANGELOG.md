@@ -11,7 +11,7 @@
 - Edit: ECS Cluster to better utilize resources, Dev Mode, CloudWatch Log Group
 - Edit: Load Balancer, more restrictive TLS/ciphers, cross-zone load balancing, CloudWatch alarms, encrypted WAF logs
 - Edit: WAF: rate limits, SQLi/Unix/Linux rule sets, Geo Blocking
-- Edit: SSM now uses its own KMS key
+- Edit: SSM now uses its own KMS key, and has CloudTrail alarms
 - Edit: Bucket Private Logging Bucket, Allow CloudWatch Logs (BucketOwnerPreferred)
 - Add: Module Bucket Public with CloudFront
 - Add: VPC Endpoints to modules/vpc (S3/DynamoDB are free and enabled by default)
