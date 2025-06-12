@@ -12,3 +12,9 @@ variable "root_domain" {
 variable "tags" {
   type = map(string)
 }
+
+variable "create_dmarc_record" {
+  description = "Whether to create the _dmarc TXT record for email authentication"
+  type        = bool
+  default     = true
+}

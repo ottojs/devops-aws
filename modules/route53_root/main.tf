@@ -66,6 +66,7 @@ resource "aws_route53_record" "root_public_acm" {
 # Tool: https://easydmarc.com/tools/dmarc-record-generator
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record
 resource "aws_route53_record" "root_public_dmarc" {
+  count   = var.create_dmarc_record ? 1 : 0
   zone_id = aws_route53_zone.root_public.zone_id
   name    = "_dmarc.${var.root_domain}."
   type    = "TXT"
