@@ -253,7 +253,7 @@ resource "aws_cloudwatch_dashboard" "msk" {
           period  = 300
         }
       }
-    ], var.dev_mode ? [] : [
+      ], var.dev_mode ? [] : [
       # Row 5: Alarm Status Widget (only shown in non-dev mode)
       {
         type   = "alarm"
