@@ -85,6 +85,73 @@ data "aws_iam_policy_document" "log_bucket" {
       identifiers = ["logs.${data.aws_region.current.region}.amazonaws.com"]
     }
   }
+
+  #####################
+  ##### Kafka MSK #####
+  #####################
+  statement {
+    sid       = "DenyUnencryptedMSKLogs"
+    effect    = "Deny"
+    actions   = ["s3:PutObject"]
+    resources = ["arn:aws:s3:::${var.log_bucket_id}/devops/msk/${var.name}/*"]
+    principals {
+      type        = "*"
+      identifiers = ["*"]
+    }
+    condition {
+      test     = "StringNotEquals"
+      variable = "s3:x-amz-server-side-encryption"
+      values   = ["aws:kms"]
+    }
+  }
+
+  statement {
+    sid       = "DenyWrongKMSKeyForMSKLogs"
+    effect    = "Deny"
+    actions   = ["s3:PutObject"]
+    resources = ["arn:aws:s3:::${var.log_bucket_id}/devops/msk/${var.name}/*"]
+    principals {
+      type        = "*"
+      identifiers = ["*"]
+    }
+    condition {
+      test     = "StringNotEquals"
+      variable = "s3:x-amz-server-side-encryption-aws-kms-key-id"
+      values   = [aws_kms_key.msk.arn]
+    }
+  }
+
+  statement {
+    sid       = "AllowMSKToWriteLogs"
+    effect    = "Allow"
+    actions   = ["s3:PutObject"]
+    resources = ["arn:aws:s3:::${var.log_bucket_id}/devops/msk/${var.name}/*"]
+    principals {
+      type        = "Service"
+      identifiers = ["kafka.amazonaws.com"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "s3:x-amz-server-side-encryption"
+      values   = ["aws:kms"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "s3:x-amz-server-side-encryption-aws-kms-key-id"
+      values   = [aws_kms_key.msk.arn]
+    }
+  }
+
+  statement {
+    sid       = "AllowMSKToSetAcl"
+    effect    = "Allow"
+    actions   = ["s3:PutObjectAcl"]
+    resources = ["arn:aws:s3:::${var.log_bucket_id}/devops/msk/${var.name}/*"]
+    principals {
+      type        = "Service"
+      identifiers = ["kafka.amazonaws.com"]
+    }
+  }
 }
 
 # Normal Bucket

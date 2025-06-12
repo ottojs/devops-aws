@@ -14,6 +14,7 @@
 - Edit: SSM now uses its own KMS key, and has CloudTrail alarms
 - Edit: Bucket Private Logging Bucket, Allow CloudWatch Logs (BucketOwnerPreferred)
 - Add: Module Bucket Public with CloudFront
+- Add: Module Kafka_MSK (experimental)
 - Add: VPC Endpoints to modules/vpc (S3/DynamoDB are free and enabled by default)
 - Add: Module for AMI Lookup
 - Add: Enable switches for IGW/NAT to modules/vpc (default: false)
