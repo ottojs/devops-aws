@@ -71,39 +71,3 @@ data "aws_iam_policy_document" "cloudtrail_logs" {
     resources = ["${aws_cloudwatch_log_group.ssm_cloudtrail.arn}:*"]
   }
 }
-
-# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy
-resource "aws_s3_bucket_policy" "cloudtrail_bucket_policy" {
-  bucket = var.log_bucket.id
-  policy = data.aws_iam_policy_document.cloudtrail_bucket_policy.json
-}
-
-# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document
-data "aws_iam_policy_document" "cloudtrail_bucket_policy" {
-  statement {
-    sid    = "AWSCloudTrailAclCheck"
-    effect = "Allow"
-    principals {
-      type        = "Service"
-      identifiers = ["cloudtrail.amazonaws.com"]
-    }
-    actions   = ["s3:GetBucketAcl"]
-    resources = [var.log_bucket.arn]
-  }
-
-  statement {
-    sid    = "AWSCloudTrailWrite"
-    effect = "Allow"
-    principals {
-      type        = "Service"
-      identifiers = ["cloudtrail.amazonaws.com"]
-    }
-    actions   = ["s3:PutObject"]
-    resources = ["${var.log_bucket.arn}/cloudtrail/ssm/AWSLogs/${data.aws_caller_identity.current.account_id}/*"]
-    condition {
-      test     = "StringEquals"
-      variable = "s3:x-amz-acl"
-      values   = ["bucket-owner-full-control"]
-    }
-  }
-}

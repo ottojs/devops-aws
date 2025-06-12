@@ -38,3 +38,21 @@ variable "passwords" {
 variable "tags" {
   type = map(string)
 }
+
+variable "maintenance_window" {
+  type        = string
+  default     = "sun:05:00-sun:09:00"
+  description = "Weekly maintenance window in UTC"
+}
+
+variable "snapshot_window" {
+  type        = string
+  default     = "00:00-04:00"
+  description = "Daily snapshot window in UTC"
+}
+
+variable "snapshot_retention_limit" {
+  type        = number
+  default     = 10
+  description = "Number of days to retain snapshots"
+}

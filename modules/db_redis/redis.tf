@@ -14,11 +14,11 @@ resource "aws_elasticache_cluster" "redis" {
   subnet_group_name          = aws_elasticache_subnet_group.redis.name
   auto_minor_version_upgrade = false
   apply_immediately          = true
-  maintenance_window         = "sun:05:00-sun:09:00" # UTC/GMT
+  maintenance_window         = var.maintenance_window
   network_type               = "ipv4"
-  snapshot_retention_limit   = 10
-  snapshot_window            = "00:00-04:00"
-  final_snapshot_identifier  = "final-snapshot-${var.name}"
+  snapshot_retention_limit   = var.snapshot_retention_limit
+  snapshot_window            = var.snapshot_window
+  final_snapshot_identifier  = "redis-${var.name}-final-snapshot-${formatdate("YYYY-MM-DD-hhmm", timestamp())}"
   tags = merge(var.tags, {
     Name = var.name
   })
