@@ -24,14 +24,15 @@ module "security_global" {
   tags          = var.tags
 }
 
-# # Allows SSM Connection (WebShell)
-# # Also contains EC2 Bastion role (ec2-ssm)
-# module "ssm" {
-#   source             = "../../modules/ssm"
-#   log_bucket         = data.aws_s3_bucket.logging
-#   log_retention_days = var.log_retention_days
-#   tags               = var.tags
-# }
+# Allows SSM Connection (WebShell)
+# Also contains EC2 Bastion role (ec2-ssm)
+# Consider adding VPC Endpoints for extra protection
+module "ssm" {
+  source             = "../../modules/ssm"
+  log_bucket         = data.aws_s3_bucket.logging
+  log_retention_days = var.log_retention_days
+  tags               = var.tags
+}
 
 # # WARNING: For production, set cost_savings to false or remove it
 # module "security" {
@@ -42,12 +43,12 @@ module "security_global" {
 #   tags         = var.tags
 # }
 
-# module "route53" {
-#   source      = "../../modules/route53_root"
-#   vpc         = module.myvpc.vpc
-#   root_domain = var.root_domain
-#   tags        = var.tags
-# }
+module "route53" {
+  source      = "../../modules/route53_root"
+  vpc         = module.myvpc.vpc
+  root_domain = var.root_domain
+  tags        = var.tags
+}
 
 # module "ses" {
 #   source      = "../../modules/ses"
@@ -132,7 +133,7 @@ module "myvpc" {
 #   root_domain        = module.route53.domain
 #   log_bucket         = data.aws_s3_bucket.logging
 #   log_retention_days = var.log_retention_days
-#   kms_key = data.aws_kms_key.main
+#   kms_key            = data.aws_kms_key.main
 #   sns_topic_arn      = module.sns.topic_arn
 #   tags               = var.tags
 #   depends_on         = [module.route53]
@@ -148,7 +149,7 @@ module "myvpc" {
 #   root_domain        = module.route53.domain
 #   log_bucket         = data.aws_s3_bucket.logging
 #   log_retention_days = var.log_retention_days
-#   kms_key = data.aws_kms_key.main
+#   kms_key            = data.aws_kms_key.main
 #   sns_topic_arn      = module.sns.topic_arn
 #   tags               = var.tags
 #   depends_on         = [module.route53]

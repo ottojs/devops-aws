@@ -13,9 +13,9 @@ resource "aws_ssm_document" "sessions" {
     description   = "Session Manager Settings"
     sessionType   = "Standard_Stream"
     inputs = {
-      kmsKeyId                    = aws_kms_key.ssm.arn
+      kmsKeyId                    = "alias/ssm-${data.aws_region.current.region}"
       s3BucketName                = var.log_bucket.id
-      s3KeyPrefix                 = local.log_name
+      s3KeyPrefix                 = "${local.log_name}/$${aws:username}/$${aws:sessionid}"
       s3EncryptionEnabled         = true
       cloudWatchLogGroupName      = aws_cloudwatch_log_group.ssm_sessions.name
       cloudWatchEncryptionEnabled = true
