@@ -1,5 +1,13 @@
 data "aws_region" "current" {}
 
+# Import the main key and logging bucket from Step 1 to use it here
+data "aws_kms_key" "main" {
+  key_id = "alias/main"
+}
+data "aws_s3_bucket" "logging" {
+  bucket = "devops-log-bucket-${var.random_id}"
+}
+
 # # Using the VPN? Set this to your IP(s)
 # # https://whatismyipaddress.com/
 # variable "vpn_cidrs" {
