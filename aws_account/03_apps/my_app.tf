@@ -21,6 +21,7 @@ module "bucket_test_public" {
   log_bucket_id = data.aws_s3_bucket.logging.id
   root_domain   = var.root_domain
   domain_record = "static"
+  sns_topic_arn = data.aws_sns_topic.main.arn
   tags          = var.tags
 }
 

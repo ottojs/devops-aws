@@ -3,9 +3,7 @@
 
 # 4xx Error Rate Alarm
 resource "aws_cloudwatch_metric_alarm" "cloudfront_4xx_error_rate" {
-  count = var.enable_cloudwatch_alarms ? 1 : 0
-
-  alarm_name          = "${var.name}-cloudfront-4xx-error-rate"
+  alarm_name          = "cloudfront-${var.name}-4xx-error-rate"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = var.alarm_evaluation_periods
   threshold           = var.alarm_4xx_threshold
@@ -45,19 +43,17 @@ resource "aws_cloudwatch_metric_alarm" "cloudfront_4xx_error_rate" {
     }
   }
 
-  alarm_actions = var.alarm_sns_topic_arn != null ? [var.alarm_sns_topic_arn] : []
-  ok_actions    = var.alarm_sns_topic_arn != null ? [var.alarm_sns_topic_arn] : []
+  alarm_actions = [var.sns_topic_arn]
+  ok_actions    = [var.sns_topic_arn]
 
   tags = merge(var.tags, {
-    Name = "${var.name}-cloudfront-4xx-alarm"
+    Name = "cloudfront-${var.name}-4xx-alarm"
   })
 }
 
 # 5xx Error Rate Alarm
 resource "aws_cloudwatch_metric_alarm" "cloudfront_5xx_error_rate" {
-  count = var.enable_cloudwatch_alarms ? 1 : 0
-
-  alarm_name          = "${var.name}-cloudfront-5xx-error-rate"
+  alarm_name          = "cloudfront-${var.name}-5xx-error-rate"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = var.alarm_evaluation_periods
   threshold           = var.alarm_5xx_threshold
@@ -97,19 +93,17 @@ resource "aws_cloudwatch_metric_alarm" "cloudfront_5xx_error_rate" {
     }
   }
 
-  alarm_actions = var.alarm_sns_topic_arn != null ? [var.alarm_sns_topic_arn] : []
-  ok_actions    = var.alarm_sns_topic_arn != null ? [var.alarm_sns_topic_arn] : []
+  alarm_actions = [var.sns_topic_arn]
+  ok_actions    = [var.sns_topic_arn]
 
   tags = merge(var.tags, {
-    Name = "${var.name}-cloudfront-5xx-alarm"
+    Name = "cloudfront-${var.name}-5xx-alarm"
   })
 }
 
 # High 4xx Error Count Alarm (absolute count, not percentage)
 resource "aws_cloudwatch_metric_alarm" "cloudfront_4xx_count" {
-  count = var.enable_cloudwatch_alarms ? 1 : 0
-
-  alarm_name          = "${var.name}-cloudfront-4xx-count"
+  alarm_name          = "cloudfront-${var.name}-4xx-count"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = 1
   metric_name         = "4xxErrorRate"
@@ -124,18 +118,16 @@ resource "aws_cloudwatch_metric_alarm" "cloudfront_4xx_count" {
     DistributionId = aws_cloudfront_distribution.main.id
   }
 
-  alarm_actions = var.alarm_sns_topic_arn != null ? [var.alarm_sns_topic_arn] : []
+  alarm_actions = [var.sns_topic_arn]
 
   tags = merge(var.tags, {
-    Name = "${var.name}-cloudfront-4xx-count-alarm"
+    Name = "cloudfront-${var.name}-4xx-count-alarm"
   })
 }
 
 # Origin Error Rate Alarm
 resource "aws_cloudwatch_metric_alarm" "cloudfront_origin_error_rate" {
-  count = var.enable_cloudwatch_alarms ? 1 : 0
-
-  alarm_name          = "${var.name}-cloudfront-origin-error-rate"
+  alarm_name          = "cloudfront-${var.name}-origin-error-rate"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = var.alarm_evaluation_periods
   threshold           = 5
@@ -175,9 +167,9 @@ resource "aws_cloudwatch_metric_alarm" "cloudfront_origin_error_rate" {
     }
   }
 
-  alarm_actions = var.alarm_sns_topic_arn != null ? [var.alarm_sns_topic_arn] : []
+  alarm_actions = [var.sns_topic_arn]
 
   tags = merge(var.tags, {
-    Name = "${var.name}-cloudfront-origin-error-alarm"
+    Name = "cloudfront-${var.name}-origin-error-alarm"
   })
 }

@@ -27,31 +27,31 @@ output "website_url" {
 }
 
 output "cloudwatch_alarm_4xx_name" {
-  value       = var.enable_cloudwatch_alarms ? aws_cloudwatch_metric_alarm.cloudfront_4xx_error_rate[0].alarm_name : null
+  value       = aws_cloudwatch_metric_alarm.cloudfront_4xx_error_rate.alarm_name
   description = "Name of the CloudWatch alarm for 4xx errors"
 }
 
 output "cloudwatch_alarm_5xx_name" {
-  value       = var.enable_cloudwatch_alarms ? aws_cloudwatch_metric_alarm.cloudfront_5xx_error_rate[0].alarm_name : null
+  value       = aws_cloudwatch_metric_alarm.cloudfront_5xx_error_rate.alarm_name
   description = "Name of the CloudWatch alarm for 5xx errors"
 }
 
 output "budget_name" {
-  value       = var.enable_budget_alerts ? aws_budgets_budget.cloudfront[0].name : null
+  value       = aws_budgets_budget.cloudfront.name
   description = "Name of the AWS Budget for cost monitoring"
 }
 
 output "anomaly_monitor_arn" {
-  value       = var.enable_anomaly_detection ? aws_ce_anomaly_monitor.cloudfront[0].arn : null
+  value       = aws_ce_anomaly_monitor.cloudfront.arn
   description = "ARN of the Cost Anomaly Monitor"
 }
 
 output "traffic_spike_alarm_name" {
-  value       = var.enable_budget_alerts ? aws_cloudwatch_metric_alarm.traffic_spike[0].alarm_name : null
+  value       = aws_cloudwatch_metric_alarm.traffic_spike.alarm_name
   description = "Name of the CloudWatch alarm for traffic spikes"
 }
 
 output "bandwidth_spike_alarm_name" {
-  value       = var.enable_budget_alerts ? aws_cloudwatch_metric_alarm.bandwidth_spike[0].alarm_name : null
+  value       = aws_cloudwatch_metric_alarm.bandwidth_spike.alarm_name
   description = "Name of the CloudWatch alarm for bandwidth spikes"
 }

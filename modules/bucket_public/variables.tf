@@ -273,16 +273,9 @@ variable "dev_mode" {
   default     = false
 }
 
-variable "enable_cloudwatch_alarms" {
-  type        = bool
-  description = "Enable CloudWatch alarms for 4xx/5xx errors"
-  default     = true
-}
-
-variable "alarm_sns_topic_arn" {
+variable "sns_topic_arn" {
   type        = string
   description = "SNS topic ARN for CloudWatch alarm notifications"
-  default     = null
 }
 
 variable "alarm_4xx_threshold" {
@@ -309,16 +302,10 @@ variable "alarm_period" {
   default     = 300
 }
 
-variable "enable_budget_alerts" {
-  type        = bool
-  description = "Enable AWS Budget alerts for cost monitoring"
-  default     = false
-}
-
 variable "monthly_budget_amount" {
   type        = number
   description = "Monthly budget amount in USD for CloudFront costs"
-  default     = 100
+  default     = 20
 }
 
 variable "budget_alert_thresholds" {
@@ -327,22 +314,10 @@ variable "budget_alert_thresholds" {
   default     = [50, 80, 100, 120]
 }
 
-variable "budget_alert_email" {
-  type        = string
-  description = "Email address for budget alert notifications"
-  default     = null
-}
-
 variable "budget_time_unit" {
   type        = string
   description = "Time unit for budget (MONTHLY, QUARTERLY, ANNUALLY)"
   default     = "MONTHLY"
-}
-
-variable "enable_anomaly_detection" {
-  type        = bool
-  description = "Enable AWS Cost Anomaly Detection for unusual spending patterns"
-  default     = false
 }
 
 variable "anomaly_threshold" {
