@@ -132,6 +132,7 @@ module "myvpc" {
 #   root_domain        = module.route53.domain
 #   log_bucket         = data.aws_s3_bucket.logging
 #   log_retention_days = var.log_retention_days
+#   kms_key = data.aws_kms_key.main
 #   sns_topic_arn      = module.sns.topic_arn
 #   tags               = var.tags
 #   depends_on         = [module.route53]
@@ -147,6 +148,7 @@ module "myvpc" {
 #   root_domain        = module.route53.domain
 #   log_bucket         = data.aws_s3_bucket.logging
 #   log_retention_days = var.log_retention_days
+#   kms_key = data.aws_kms_key.main
 #   sns_topic_arn      = module.sns.topic_arn
 #   tags               = var.tags
 #   depends_on         = [module.route53]
@@ -199,7 +201,7 @@ module "myvpc" {
 #   iam_instance_profile = module.ssm.instance_profile
 #   instance_type        = "t3a.small"
 #   scale_up_cpu         = 60
-#   count_min            = 3
+#   count_min            = 1
 #   count_max            = 3
 #   kms_key              = data.aws_kms_key.main
 #   sns_topic_arn        = module.sns.topic_arn

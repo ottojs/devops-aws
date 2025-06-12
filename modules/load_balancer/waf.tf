@@ -239,7 +239,10 @@ resource "aws_wafv2_web_acl_association" "main" {
 resource "aws_cloudwatch_log_group" "main" {
   count             = var.public ? 1 : 0
   name              = "aws-waf-logs-${var.name}" # Must begin with "aws-waf-logs"
+  kms_key_id        = var.kms_key.arn
   retention_in_days = var.log_retention_days
+  skip_destroy      = !var.dev_mode
+  tags              = var.tags
 }
 
 # Logging

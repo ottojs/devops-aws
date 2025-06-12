@@ -42,6 +42,14 @@ variable "log_bucket" {
   description = "S3 Log Bucket Object"
 }
 
+variable "kms_key" {
+  type = object({
+    id  = string
+    arn = string
+  })
+  description = "KMS key for encrypting CloudWatch logs"
+}
+
 # https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_PutRetentionPolicy.html#API_PutRetentionPolicy_RequestSyntax
 variable "log_retention_days" {
   type        = number
