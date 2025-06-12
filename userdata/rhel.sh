@@ -161,7 +161,7 @@ npm --version;
 ##################
 ##### Golang #####
 ##################
-GO_VERSION="1.24.3";
+GO_VERSION="1.24.4";
 echo "=> INSTALL GOLANG";
 echo "https://go.dev/dl/go${GO_VERSION}.linux-${ARCH2}.tar.gz";
 wget --quiet -O golang.tar.gz "https://go.dev/dl/go${GO_VERSION}.linux-${ARCH2}.tar.gz";
