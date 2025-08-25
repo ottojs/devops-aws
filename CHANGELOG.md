@@ -31,6 +31,7 @@
 - Add: Valkey cluster mode switch selection
 - Add: Example for allowing only Cloudflare IP traffic on public Load Balancer
 - Dependencies: Upgrade provider aws to 6.10.0
+- Dependencies: Upgrade OpenTofu minimum from v1.9 to v1.10
 - Dependencies: Upgrade golang to v1.25.0
 - Dependencies: Upgrade PostgreSQL from v17.4 to v17.6
 - Dependencies: Upgrade Valkey from v8.0 to v8.1
