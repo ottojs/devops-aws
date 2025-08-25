@@ -34,7 +34,7 @@ variable "root_domain" {
 
 variable "opensearch_version" {
   type    = string
-  default = "2.17"
+  default = "2.19"
 }
 
 variable "username" {
