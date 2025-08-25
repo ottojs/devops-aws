@@ -51,7 +51,7 @@ resource "aws_msk_cluster" "main" {
       s3 {
         enabled = true
         bucket  = var.log_bucket_id
-        prefix  = "devops/msk/${var.name}"
+        prefix  = "devops/aws/msk/${var.name}"
       }
     }
   }
