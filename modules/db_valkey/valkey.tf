@@ -1,12 +1,17 @@
 
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/secretsmanager_secret_version
+data "aws_secretsmanager_secret_version" "secret_password" {
+  secret_id = var.password
+}
+
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elasticache_replication_group
 resource "aws_elasticache_replication_group" "valkey" {
   replication_group_id       = var.name
   description                = "Valkey"
   apply_immediately          = true # TODO: Review
   at_rest_encryption_enabled = true
-  auth_token                 = var.password
-  auth_token_update_strategy = "ROTATE"
+  auth_token                 = data.aws_secretsmanager_secret_version.secret_password.secret_string
+  auth_token_update_strategy = "SET"
   auto_minor_version_upgrade = false # TODO: Review
   automatic_failover_enabled = true
   cluster_mode               = "enabled"
@@ -57,11 +62,11 @@ resource "aws_elasticache_replication_group" "valkey" {
 #   user_name     = "app"
 #   access_string = "on ~* +@all"
 #   engine        = "REDIS"
-
+#
 #   # Passwords length must be between 16-128 characters
 #   authentication_mode {
 #     type      = "password"
-#     passwords = var.passwords
+#     passwords = [data.aws_secretsmanager_secret_version.secret_password.secret_string]
 #   }
 # }
 
@@ -71,14 +76,14 @@ resource "aws_elasticache_subnet_group" "valkey" {
   description = "db-vk-${var.name}"
   subnet_ids  = var.subnet_ids
   tags = merge(var.tags, {
-    Name = "db-${var.name}"
+    Name = "db-vk-${var.name}"
   })
 }
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record
 resource "aws_route53_record" "main" {
   zone_id = data.aws_route53_zone.root.zone_id
-  name    = "db-cache-${var.name}.${var.root_domain}"
+  name    = "db-vk-${var.name}.${var.root_domain}"
   type    = "CNAME"
   ttl     = "60"
   records = [aws_elasticache_replication_group.valkey.configuration_endpoint_address]

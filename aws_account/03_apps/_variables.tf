@@ -29,10 +29,10 @@ variable "opensearch_password" {
 
 # Valkey password requirements
 # 16 to 128 alphanumeric characters or symbols (excluding @, ", and /)
-# https://www.random.org/strings/?num=5&len=16&digits=on&upperalpha=on&loweralpha=on&unique=on&format=html&rnd=new
+# Input the Secrets Manager name after creating
 variable "valkey_password" {
   type    = string
-  default = "REPLACEME"
+  default = "db/valkey/password"
 }
 
 # You can use "checksum" to track and dynamically update tags
