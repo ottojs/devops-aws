@@ -33,9 +33,10 @@
 - Dependencies: Upgrade provider aws to 6.10.0
 - Dependencies: Upgrade OpenTofu minimum from v1.9 to v1.10
 - Dependencies: Upgrade golang to v1.25.0
-- Dependencies: Upgrade PostgreSQL from v17.4 to v17.6
-- Dependencies: Upgrade Valkey from v8.0 to v8.1
-- Dependencies: Upgrade OpenSearch from v2.17 to v2.19
+- Dependencies: Upgrade PostgreSQL default version from v17.4 to v17.6
+- Dependencies: Upgrade Valkey default version from v8.0 to v8.1
+- Dependencies: Upgrade OpenSearch default version from v2.17 to v2.19
+- Dependencies: Upgrade MariaDB default version from v11.4.5 to v11.8.3
 
 ## 2025-05-21 v0.8.0
 

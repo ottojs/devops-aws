@@ -26,7 +26,7 @@ variable "name" {
 # aws rds describe-db-engine-versions  --engine mariadb | jq '.DBEngineVersions[].EngineVersion'
 variable "engine_version" {
   type    = string
-  default = "11.4.5"
+  default = "11.8.3"
 }
 
 # https://aws.amazon.com/rds/instance-types/
