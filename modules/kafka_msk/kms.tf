@@ -53,7 +53,7 @@ resource "aws_kms_key" "msk" {
         Resource = "*"
         Condition = {
           ArnLike = {
-            "kms:EncryptionContext:aws:logs:arn" = "arn:aws:logs:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:log-group:devops/msk/${var.name}"
+            "kms:EncryptionContext:aws:logs:arn" = "arn:aws:logs:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:log-group:devops/aws/msk/${var.name}"
           }
         }
       },
@@ -91,7 +91,7 @@ resource "aws_kms_key" "msk" {
             "kms:ViaService" = "s3.${data.aws_region.current.region}.amazonaws.com"
           }
           StringLike = {
-            "kms:EncryptionContext:aws:s3:arn" = "arn:aws:s3:::*/devops/msk/${var.name}/*"
+            "kms:EncryptionContext:aws:s3:arn" = "arn:aws:s3:::*/devops/aws/msk/${var.name}/*"
           }
         }
       }

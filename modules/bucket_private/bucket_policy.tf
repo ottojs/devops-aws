@@ -128,7 +128,7 @@ data "aws_iam_policy_document" "log_bucket" {
     sid       = "DenyUnencryptedMSKLogs"
     effect    = "Deny"
     actions   = ["s3:PutObject"]
-    resources = ["arn:aws:s3:::${var.log_bucket_id}/devops/msk/${var.name}/*"]
+    resources = ["${aws_s3_bucket.bucket_private.arn}/devops/aws/msk/*"]
     principals {
       type        = "*"
       identifiers = ["*"]
@@ -138,50 +138,38 @@ data "aws_iam_policy_document" "log_bucket" {
       variable = "s3:x-amz-server-side-encryption"
       values   = ["aws:kms"]
     }
-  }
-
-  statement {
-    sid       = "DenyWrongKMSKeyForMSKLogs"
-    effect    = "Deny"
-    actions   = ["s3:PutObject"]
-    resources = ["arn:aws:s3:::${var.log_bucket_id}/devops/msk/${var.name}/*"]
-    principals {
-      type        = "*"
-      identifiers = ["*"]
-    }
     condition {
       test     = "StringNotEquals"
-      variable = "s3:x-amz-server-side-encryption-aws-kms-key-id"
-      values   = [aws_kms_key.msk.arn]
+      variable = "aws:SourceAccount"
+      values   = [data.aws_caller_identity.current.account_id]
+      # ArnLike aws:SourceArn
     }
   }
 
-  statement {
-    sid       = "AllowMSKToWriteLogs"
-    effect    = "Allow"
-    actions   = ["s3:PutObject"]
-    resources = ["arn:aws:s3:::${var.log_bucket_id}/devops/msk/${var.name}/*"]
-    principals {
-      type        = "Service"
-      identifiers = ["kafka.amazonaws.com"]
-    }
-    condition {
-      test     = "StringEquals"
-      variable = "s3:x-amz-server-side-encryption"
-      values   = ["aws:kms"]
-    }
-    condition {
-      test     = "StringEquals"
-      variable = "s3:x-amz-server-side-encryption-aws-kms-key-id"
-      values   = [aws_kms_key.msk.arn]
-    }
-  }
+  # This is disabled due to the MSK having its own key
+  # The key is unknown at this stage of deployment and
+  # may not even be needed, so this is here for reference
+  # statement {
+  #   sid       = "DenyWrongKMSKeyForMSKLogs"
+  #   effect    = "Deny"
+  #   actions   = ["s3:PutObject"]
+  #   resources = ["${aws_s3_bucket.bucket_private.arn}/devops/aws/msk/*"]
+  #   principals {
+  #     type        = "*"
+  #     identifiers = ["*"]
+  #   }
+  #   condition {
+  #     test     = "StringNotEquals"
+  #     variable = "s3:x-amz-server-side-encryption-aws-kms-key-id"
+  #     values   = [MSK_KMS_ARN_HERE]
+  #   }
+  # }
 
   statement {
     sid       = "AllowMSKToSetAcl"
     effect    = "Allow"
     actions   = ["s3:PutObjectAcl"]
-    resources = ["arn:aws:s3:::${var.log_bucket_id}/devops/msk/${var.name}/*"]
+    resources = ["${aws_s3_bucket.bucket_private.arn}/devops/aws/msk/*"]
     principals {
       type        = "Service"
       identifiers = ["kafka.amazonaws.com"]

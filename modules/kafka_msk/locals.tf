@@ -17,7 +17,7 @@ locals {
   }
 
   cloudwatch_encryption_context = {
-    "aws:logs:arn" = "arn:aws:logs:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:log-group:devops/msk/${var.name}"
+    "aws:logs:arn" = "arn:aws:logs:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:log-group:devops/aws/msk/${var.name}"
   }
 
   # Partition recommendations based on broker count
