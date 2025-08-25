@@ -1,21 +1,24 @@
 
-# Requires 1 day timeout after deletion before creating a new index
-# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/resourceexplorer2_index
-resource "aws_resourceexplorer2_index" "main" {
-  type = "AGGREGATOR" # "LOCAL"
-  tags = var.tags
-}
+# This is now disabled because the 24-hour cooldown between delete/create is inconvenient
+# You should set this up manually in the console instead
 
-# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/resourceexplorer2_view
-resource "aws_resourceexplorer2_view" "main" {
-  name         = "everything"
-  default_view = true
+# # Requires 1 day timeout after deletion before creating a new index
+# # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/resourceexplorer2_index
+# resource "aws_resourceexplorer2_index" "main" {
+#   type = "AGGREGATOR" # "LOCAL"
+#   tags = var.tags
+# }
 
-  included_property {
-    name = "tags"
-  }
+# # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/resourceexplorer2_view
+# resource "aws_resourceexplorer2_view" "main" {
+#   name         = "everything"
+#   default_view = true
 
-  tags = var.tags
+#   included_property {
+#     name = "tags"
+#   }
 
-  depends_on = [aws_resourceexplorer2_index.main]
-}
+#   tags = var.tags
+
+#   depends_on = [aws_resourceexplorer2_index.main]
+# }

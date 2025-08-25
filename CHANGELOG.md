@@ -2,6 +2,7 @@
 
 ## Unreleased v0.9.0
 
+- Removed: Resource Explorer in module "security" (create in console instead)
 - Breaking: Moving Valkey password to Secrets Manager
 - Breaking: Moving OpenSearch password to Secrets Manager
 - Fix: Output ordering of VPC subnets
