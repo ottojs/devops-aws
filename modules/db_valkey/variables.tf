@@ -15,7 +15,7 @@ variable "name" {
 
 variable "engine_version" {
   type    = string
-  default = "8.0"
+  default = "8.1"
 }
 
 # https://aws.amazon.com/elasticache/pricing/

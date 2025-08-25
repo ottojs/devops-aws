@@ -25,6 +25,7 @@
 - Dependencies: Upgrade provider aws to 6.10.0
 - Dependencies: Upgrade golang to v1.25.0
 - Dependencies: Upgrade PostgreSQL from v17.4 to v17.6
+- Dependencies: Upgrade Valkey from v8.0 to v8.1
 
 ## 2025-05-21 v0.8.0
 
