@@ -11,6 +11,7 @@
 #   log_retention_days = var.log_retention_days
 #   kms_key            = data.aws_kms_key.main
 #   sns_topic_arn      = module.sns.topic_arn
+#   waf_enabled        = true
 #   tags               = var.tags
 #   depends_on         = [module.route53]
 # }

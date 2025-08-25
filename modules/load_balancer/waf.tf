@@ -13,7 +13,7 @@
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_web_acl
 resource "aws_wafv2_web_acl" "main" {
-  count       = var.public ? 1 : 0
+  count       = var.public && var.waf_enabled ? 1 : 0
   name        = "${var.name}-waf"
   description = "Basic WAF"
   scope       = "REGIONAL"
@@ -229,7 +229,7 @@ resource "aws_wafv2_web_acl" "main" {
 # Link to Load Balancer
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_web_acl_association
 resource "aws_wafv2_web_acl_association" "main" {
-  count        = var.public ? 1 : 0
+  count        = var.public && var.waf_enabled ? 1 : 0
   resource_arn = aws_lb.main.arn
   web_acl_arn  = aws_wafv2_web_acl.main[0].arn
 }
@@ -237,7 +237,7 @@ resource "aws_wafv2_web_acl_association" "main" {
 # Logging
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group
 resource "aws_cloudwatch_log_group" "main" {
-  count             = var.public ? 1 : 0
+  count             = var.public && var.waf_enabled ? 1 : 0
   name              = "aws-waf-logs-${var.name}" # Must begin with "aws-waf-logs"
   kms_key_id        = var.kms_key.arn
   retention_in_days = var.log_retention_days
@@ -248,7 +248,7 @@ resource "aws_cloudwatch_log_group" "main" {
 # Logging
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_web_acl_logging_configuration
 resource "aws_wafv2_web_acl_logging_configuration" "main" {
-  count                   = var.public ? 1 : 0
+  count                   = var.public && var.waf_enabled ? 1 : 0
   log_destination_configs = [aws_cloudwatch_log_group.main[0].arn]
   resource_arn            = aws_wafv2_web_acl.main[0].arn
 }

@@ -82,6 +82,11 @@ variable "tags" {
   type = map(string)
 }
 
+variable "waf_enabled" {
+  type    = bool
+  default = true
+}
+
 variable "waf_rate_limit" {
   type        = number
   default     = 250
