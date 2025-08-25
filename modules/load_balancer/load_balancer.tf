@@ -11,6 +11,9 @@ data "aws_acm_certificate" "main" {
 #
 # Oddly, customer-managed KMS keys are not supported per
 # https://repost.aws/questions/QU2SV2jkZRSkuhNL-EGUgyTA/storing-application-load-balancer-access-logs-in-a-kms-encrypted-s3-bucket
+#
+# Limited header modification
+# https://docs.aws.amazon.com/elasticloadbalancing/latest/application/header-modification.html
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb
 resource "aws_lb" "main" {
@@ -31,7 +34,7 @@ resource "aws_lb" "main" {
   enable_zonal_shift                          = !var.dev_mode
   enable_cross_zone_load_balancing            = true # Better availability across AZs
   idle_timeout                                = var.idle_timeout
-  ip_address_type                             = "ipv4"
+  ip_address_type                             = "ipv4"   # "dualstack"
   preserve_host_header                        = false    # default (this should be set by the LoadBalancer)
   xff_header_processing_mode                  = "append" # default
 

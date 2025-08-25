@@ -40,12 +40,12 @@ resource "aws_lb_target_group" "main" {
   protocol                      = "HTTP"
   vpc_id                        = var.vpc.id
   target_type                   = "ip"
-  deregistration_delay          = 300
+  deregistration_delay          = 30
   load_balancing_algorithm_type = "round_robin"
   #preserve_client_ip = true
   protocol_version = "HTTP1"
   slow_start       = 0
-  ip_address_type  = "ipv4"
+  ip_address_type  = "ipv4" # "dualstack"
 
   # WARNING: Try to not enable this, only use it as a last resort
   stickiness {

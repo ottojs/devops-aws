@@ -6,7 +6,7 @@
 
 # module "ecs_cluster_fargate" {
 #   source             = "../../modules/ecs_cluster"
-#   name               = "cluster-fargate"
+#   name               = "fargate"
 #   type               = "FARGATE"
 #   kms_key            = data.aws_kms_key.main
 #   log_retention_days = var.log_retention_days
@@ -48,7 +48,7 @@
 
 # module "ecs_cluster_ec2" {
 #   source             = "../../modules/ecs_cluster"
-#   name               = "cluster-ec2"
+#   name               = "ec2"
 #   type               = "EC2"
 #   asg                = module.asg_ec2.asg
 #   kms_key            = data.aws_kms_key.main

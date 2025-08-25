@@ -104,7 +104,7 @@ module "bucket_test_public" {
 #
 # Then, replace the following
 # type = "FARGATE" change to "EC2"
-# ecs_cluster = "ecs-cluster-fargate" change to "ecs-cluster-ec2"
+# ecs_cluster = "fargate" change to "ec2"
 #
 # You can run Fargate and EC2 side-by-side but note that
 # the "name" must be unique as it's used for DNS
@@ -128,7 +128,7 @@ module "bucket_test_public" {
 #   name            = "api-server"
 #   tag             = "0.0.1"
 #   arch            = "X86_64" # ARM64
-#   ecs_cluster     = "ecs-cluster-fargate"
+#   ecs_cluster     = "fargate"
 #   vpc             = data.aws_vpc.main
 #   subnet_ids      = data.aws_subnets.private.ids
 #   kms_key         = data.aws_kms_key.main
@@ -174,7 +174,7 @@ module "bucket_test_public" {
 #   name            = "api-worker"
 #   tag             = "0.0.1"
 #   arch            = "X86_64" # ARM64
-#   ecs_cluster     = "ecs-cluster-fargate"
+#   ecs_cluster     = "fargate"
 #   vpc             = data.aws_vpc.main
 #   subnet_ids      = data.aws_subnets.private.ids
 #   kms_key         = data.aws_kms_key.main
@@ -204,7 +204,7 @@ module "bucket_test_public" {
 #   name            = "api-cron"
 #   tag             = "0.0.1"
 #   arch            = "X86_64" # ARM64
-#   ecs_cluster     = "ecs-cluster-fargate"
+#   ecs_cluster     = "fargate"
 #   vpc             = data.aws_vpc.main
 #   subnet_ids      = data.aws_subnets.private.ids
 #   kms_key         = data.aws_kms_key.main

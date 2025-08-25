@@ -2,7 +2,12 @@
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/elb_service_account
 data "aws_elb_service_account" "main" {}
 
-# Logging Bucket. Require TLS, Allow ELB Logs
+###############################
+##### Logging Bucket Only #####
+###############################
+# Block Non-TLS Connections
+#
+# Allow ELB Logs
 # https://docs.aws.amazon.com/elasticloadbalancing/latest/application/enable-access-logging.html
 #
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document
@@ -97,7 +102,7 @@ data "aws_iam_policy_document" "log_bucket" {
       identifiers = ["cloudtrail.amazonaws.com"]
     }
     actions   = ["s3:GetBucketAcl"]
-    resources = [var.log_bucket.arn]
+    resources = [aws_s3_bucket.bucket_private.arn]
   }
 
   statement {
@@ -108,7 +113,7 @@ data "aws_iam_policy_document" "log_bucket" {
       identifiers = ["cloudtrail.amazonaws.com"]
     }
     actions   = ["s3:PutObject"]
-    resources = ["${var.log_bucket.arn}/cloudtrail/ssm/AWSLogs/${data.aws_caller_identity.current.account_id}/*"]
+    resources = ["${aws_s3_bucket.bucket_private.arn}/cloudtrail/ssm/AWSLogs/${data.aws_caller_identity.current.account_id}/*"]
     condition {
       test     = "StringEquals"
       variable = "s3:x-amz-acl"
@@ -184,7 +189,9 @@ data "aws_iam_policy_document" "log_bucket" {
   }
 }
 
-# Normal Bucket
+###############################
+##### Normal Bucket Only #####
+###############################
 # Block Non-TLS Connections
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document
 data "aws_iam_policy_document" "normal" {
