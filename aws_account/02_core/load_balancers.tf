@@ -1,4 +1,10 @@
 
+# # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/security_group
+# data "aws_security_group" "cloudflare" {
+#   name   = "cloudflare"
+#   vpc_id = module.myvpc.vpc.id
+# }
+
 # # External Load Balancer (Public)
 # module "alb_public" {
 #   source             = "../../modules/load_balancer"
@@ -14,6 +20,9 @@
 #   waf_enabled        = true
 #   tags               = var.tags
 #   depends_on         = [module.route53]
+#   # If you want to allow access ONLY for Cloudflare IPs
+#   # Note: not guaranteed to be your account, add a header to verify if desired
+#   #security_group_ids = [data.aws_security_group.cloudflare.id]
 # }
 
 # # Internal Load Balancer (Private)
