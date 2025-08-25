@@ -13,8 +13,16 @@
 # al2023-ami-2023.8.20250818.2-kernel-6.12-arm64
 
 # RHEL 9
-# RHEL-9.5.0_HVM-20250313-arm64-0-Hourly2-GP3
-# RHEL-9.5.0_HVM-20250313-x86_64-0-Hourly2-GP3
+# Owner Alias: "amazon"
+# Owner Account ID: 309956199498
+# RHEL-9.6.0_HVM-20250730-x86_64-0-Hourly2-GP3
+# RHEL-9.6.0_HVM-20250730-arm64-0-Hourly2-GP3
+
+# RHEL 10
+# Owner Alias: "amazon"
+# Owner Account ID: 309956199498
+# RHEL-10.0.0_HVM-20250730-x86_64-0-Hourly2-GP3
+# RHEL-10.0.0_HVM-20250730-arm64-0-Hourly2-GP3
 
 # Rocky 9
 # Owner Alias: N/A
@@ -49,9 +57,11 @@ locals {
     # https://docs.aws.amazon.com/linux/al2023/ug/what-is-amazon-linux.html
     al2023      = "al2023-ami-2023.*-kernel-6.12-*"
     al2023_fips = "al2023-ami-fips-2023.*"
+    # RHEL
     # https://aws.amazon.com/partners/redhat/
     # Only datestamps are stable
-    rhel9 = "RHEL-9.5.0_HVM-2*"
+    rhel9  = "RHEL-9.6.0_HVM-2*"
+    rhel10 = "RHEL-10.0.0_HVM-2*"
     # Rocky Linux
     # https://rockylinux.org/download
     rocky9  = "Rocky-9-EC2-Base-9.6-*"
@@ -80,6 +90,7 @@ locals {
     al2023                    = "amazon"
     al2023_fips               = "amazon"
     rhel9                     = "amazon"
+    rhel10                    = "amazon"
     debian                    = "amazon"
     debian12                  = "amazon"
     debian_12                 = "amazon"

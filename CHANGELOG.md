@@ -21,6 +21,7 @@
 - Add: Module security_global
 - Add: Example for Debian ARM64 bastion instances
 - Add: Rocky Linux 10
+- Add: RHEL 10
 - Dependencies: Upgrade provider aws to 6.10.0
 
 ## 2025-05-21 v0.8.0

@@ -199,3 +199,75 @@ data "aws_iam_instance_profile" "ec2" {
 #   kms_key              = data.aws_kms_key.main
 #   tags                 = var.tags
 # }
+
+###################
+##### RHEL 10 #####
+###################
+# Pricing for license is approximately an additional $0.06/hour ($45/mo)
+# If you want RHEL without the additional license fee, try Rocky
+
+# # Bastion - RHEL10 x86_64
+# module "bastion_rhel10_x86_64" {
+#   source               = "../../modules/ec2"
+#   name                 = "bastion"
+#   subnet_id            = data.aws_subnets.private.ids[0]
+#   os                   = "rhel10"
+#   arch                 = "x86_64"
+#   machine              = "t3a.small"
+#   security_groups      = [data.aws_security_group.main.id]
+#   iam_instance_profile = data.aws_iam_instance_profile.ec2
+#   userdata             = "../../userdata/rhel.sh"
+#   kms_key              = data.aws_kms_key.main
+#   tags                 = var.tags
+# }
+
+# # Bastion - RHEL10 ARM64
+# module "bastion_rhel10_arm64" {
+#   source               = "../../modules/ec2"
+#   name                 = "bastion"
+#   subnet_id            = data.aws_subnets.private.ids[0]
+#   os                   = "rhel10"
+#   arch                 = "arm64"
+#   machine              = "t4g.small"
+#   security_groups      = [data.aws_security_group.main.id]
+#   iam_instance_profile = data.aws_iam_instance_profile.ec2
+#   userdata             = "../../userdata/rhel.sh"
+#   kms_key              = data.aws_kms_key.main
+#   tags                 = var.tags
+# }
+
+##################
+##### RHEL 9 #####
+##################
+# Pricing for license is approximately an additional $0.06/hour ($45/mo)
+# If you want RHEL without the additional license fee, try Rocky
+
+# # Bastion - RHEL9 x86_64
+# module "bastion_rhel9_x86_64" {
+#   source               = "../../modules/ec2"
+#   name                 = "bastion"
+#   subnet_id            = data.aws_subnets.private.ids[0]
+#   os                   = "rhel9"
+#   arch                 = "x86_64"
+#   machine              = "t3a.small"
+#   security_groups      = [data.aws_security_group.main.id]
+#   iam_instance_profile = data.aws_iam_instance_profile.ec2
+#   userdata             = "../../userdata/rhel.sh"
+#   kms_key              = data.aws_kms_key.main
+#   tags                 = var.tags
+# }
+
+# # Bastion - RHEL9 ARM64
+# module "bastion_rhel9_arm64" {
+#   source               = "../../modules/ec2"
+#   name                 = "bastion"
+#   subnet_id            = data.aws_subnets.private.ids[0]
+#   os                   = "rhel9"
+#   arch                 = "arm64"
+#   machine              = "t4g.small"
+#   security_groups      = [data.aws_security_group.main.id]
+#   iam_instance_profile = data.aws_iam_instance_profile.ec2
+#   userdata             = "../../userdata/rhel.sh"
+#   kms_key              = data.aws_kms_key.main
+#   tags                 = var.tags
+# }
