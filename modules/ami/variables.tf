@@ -1,11 +1,16 @@
 # AMI Lookup Module Variables
 
 # https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-images.html
-# aws ec2 describe-images --owners amazon --filters "Name=architecture,Values=x86_64" --filters "Name=name,Values=al2023-ami-2023*"
+# aws ec2 describe-images --owners amazon --filters "Name=architecture,Values=x86_64" --filters "Name=name,Values=al2023-ami-2023*-kernel-6.12-*"
 
 # Amazon Linux 2023
-# al2023-ami-2023.7.YYYYMMDD.2-kernel-6.1-x86_64
-# al2023-ami-2023.7.YYYYMMDD.2-kernel-6.1-arm64
+# Owner Alias: "amazon"
+# Owner Account ID: 137112412989
+# Be careful of kernel version, 6.1 and 6.12 could both match "6.1*"
+# al2023-ami-2023.8.20250818.2-kernel-6.1-x86_64
+# al2023-ami-2023.8.20250818.2-kernel-6.1-arm64
+# al2023-ami-2023.8.20250818.2-kernel-6.12-x86_64
+# al2023-ami-2023.8.20250818.2-kernel-6.12-arm64
 
 # RHEL 9
 # RHEL-9.5.0_HVM-20250313-arm64-0-Hourly2-GP3

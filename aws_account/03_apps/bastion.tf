@@ -22,6 +22,10 @@ data "aws_iam_instance_profile" "ec2" {
 # Then add the following line:
 # ssh_key = "name-of-key"
 
+#############################
+##### Amazon Linux 2023 #####
+#############################
+
 # # Bastion - AL2023 x86_64
 # module "bastion_al2023_x86_64" {
 #   source               = "../../modules/ec2"
@@ -52,6 +56,15 @@ data "aws_iam_instance_profile" "ec2" {
 #   tags                 = var.tags
 # }
 
+############################
+##### Debian 13 Trixie #####
+############################
+# Coming Soon
+
+##############################
+##### Debian 12 Bookworm #####
+##############################
+
 # # Bastion - Debian 12 Bookworm x86_64
 # module "bastion_debian12_x86_64" {
 #   source               = "../../modules/ec2"
@@ -66,6 +79,26 @@ data "aws_iam_instance_profile" "ec2" {
 #   kms_key              = data.aws_kms_key.main
 #   tags                 = var.tags
 # }
+
+# # Bastion - Debian 12 Bookworm ARM64
+# module "bastion_debian12_arm642" {
+#   source               = "../../modules/ec2"
+#   name                 = "bastion"
+#   subnet_id            = data.aws_subnets.private.ids[0]
+#   os                   = "debian12"
+#   arch                 = "arm64"
+#   machine              = "t4g.small"
+#   security_groups      = [data.aws_security_group.main.id]
+#   iam_instance_profile = data.aws_iam_instance_profile.ec2
+#   userdata             = "../../userdata/debian.sh"
+#   kms_key              = data.aws_kms_key.main
+#   tags                 = var.tags
+#   disk_size            = 80
+# }
+
+##############################
+##### Debian 11 Bullseye #####
+##############################
 
 # # Bastion - Debian 11 Bullseye x86_64
 # module "bastion_debian11_x86_64" {
@@ -82,7 +115,26 @@ data "aws_iam_instance_profile" "ec2" {
 #   tags                 = var.tags
 # }
 
-# # Bastion - Rocky Linux x86_64
+# # Bastion - Debian 11 Bullseye ARM64
+# module "bastion_debian11_x86_64" {
+#   source               = "../../modules/ec2"
+#   name                 = "bastion"
+#   subnet_id            = data.aws_subnets.private.ids[0]
+#   os                   = "debian11"
+#   arch                 = "arm64"
+#   machine              = "t4g.small"
+#   security_groups      = [data.aws_security_group.main.id]
+#   iam_instance_profile = data.aws_iam_instance_profile.ec2
+#   userdata             = "../../userdata/debian.sh"
+#   kms_key              = data.aws_kms_key.main
+#   tags                 = var.tags
+# }
+
+###################
+##### Rocky 9 #####
+###################
+
+# # Bastion - Rocky Linux 9 x86_64
 # module "bastion_rocky9_x86_64" {
 #   source               = "../../modules/ec2"
 #   name                 = "bastion"
