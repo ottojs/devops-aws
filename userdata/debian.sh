@@ -31,6 +31,7 @@ dpkg -i ./amazon-ssm-agent.deb;
 systemctl enable amazon-ssm-agent;
 systemctl start amazon-ssm-agent;
 systemctl status amazon-ssm-agent;
+amazon-ssm-agent --version > /root/amazon-ssm-agent.upgraded.txt; # 3.3.2746.0 (2025-08-25)
 
 ########################
 ##### Common Tools #####

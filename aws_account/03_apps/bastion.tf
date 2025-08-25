@@ -81,7 +81,7 @@ data "aws_iam_instance_profile" "ec2" {
 # }
 
 # # Bastion - Debian 12 Bookworm ARM64
-# module "bastion_debian12_arm642" {
+# module "bastion_debian12_arm64" {
 #   source               = "../../modules/ec2"
 #   name                 = "bastion"
 #   subnet_id            = data.aws_subnets.private.ids[0]
@@ -116,7 +116,7 @@ data "aws_iam_instance_profile" "ec2" {
 # }
 
 # # Bastion - Debian 11 Bullseye ARM64
-# module "bastion_debian11_x86_64" {
+# module "bastion_debian11_arm64" {
 #   source               = "../../modules/ec2"
 #   name                 = "bastion"
 #   subnet_id            = data.aws_subnets.private.ids[0]
@@ -128,6 +128,42 @@ data "aws_iam_instance_profile" "ec2" {
 #   userdata             = "../../userdata/debian.sh"
 #   kms_key              = data.aws_kms_key.main
 #   tags                 = var.tags
+# }
+
+####################
+##### Rocky 10 #####
+####################
+
+# # Bastion - Rocky Linux 10 x86_64
+# module "bastion_rocky10_x86_64" {
+#   source               = "../../modules/ec2"
+#   name                 = "bastion"
+#   subnet_id            = data.aws_subnets.private.ids[0]
+#   os                   = "rocky10"
+#   arch                 = "x86_64"
+#   machine              = "t3a.small"
+#   security_groups      = [data.aws_security_group.main.id]
+#   iam_instance_profile = data.aws_iam_instance_profile.ec2
+#   userdata             = "../../userdata/rhel.sh"
+#   kms_key              = data.aws_kms_key.main
+#   tags                 = var.tags
+#   disk_size            = 200
+# }
+
+# # Bastion - Rocky Linux 10 ARM64
+# module "bastion_rocky10_arm64" {
+#   source               = "../../modules/ec2"
+#   name                 = "bastion"
+#   subnet_id            = data.aws_subnets.private.ids[0]
+#   os                   = "rocky10"
+#   arch                 = "arm64"
+#   machine              = "t4g.small"
+#   security_groups      = [data.aws_security_group.main.id]
+#   iam_instance_profile = data.aws_iam_instance_profile.ec2
+#   userdata             = "../../userdata/rhel.sh"
+#   kms_key              = data.aws_kms_key.main
+#   tags                 = var.tags
+#   disk_size            = 200
 # }
 
 ###################

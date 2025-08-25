@@ -29,7 +29,7 @@ cd /root || exit 1;
 # https://docs.aws.amazon.com/systems-manager/latest/userguide/verify-agent-signature.html
 # We hardcode this for security purposes, because a dynamic URI download could change
 echo "=> INSTALL AMAZON SSM";
-amazon-ssm-agent --version > /root/amazon-ssm-agent.default.txt || echo "NO-SSM-AGENT"; # 3.3.1957.0 (2025-05-07)
+amazon-ssm-agent --version > /root/amazon-ssm-agent.default.txt || echo "NO-SSM-AGENT"; # 3.3.2299.0 (2025-08-25)
 cat << EOF > ./amazon-ssm-agent.gpg;
 -----BEGIN PGP PUBLIC KEY BLOCK-----
 Version: GnuPG v2.0.22 (GNU/Linux)
@@ -73,7 +73,6 @@ E6+O8RI2451Dcg==
 =aDkv
 -----END PGP PUBLIC KEY BLOCK-----
 EOF
-rpm --import ./amazon-ssm-agent.gpg;
 gpg --import ./amazon-ssm-agent.gpg;
 rm ./amazon-ssm-agent.gpg;
 
@@ -89,12 +88,6 @@ else
   echo "==> [FAILED] Amazon SSM Agent GPG Check";
   exit 1;
 fi
-if rpm --checksig ./amazon-ssm-agent.rpm.sig ./amazon-ssm-agent.rpm | grep 'digests signatures OK'; then
-  echo "==> [OK] Amazon SSM Agent RPM Check";
-else
-  echo "==> [FAILED] Amazon SSM Agent RPM Check";
-  exit 1;
-fi
 
 yum install -y ./amazon-ssm-agent.rpm;
 rm ./amazon-ssm-agent.rpm;
@@ -106,7 +99,7 @@ rm ./amazon-ssm-agent.rpm.sig;
 
 # Capture SSM Agent Version
 # It's core to connecting and may be useful for debugging
-amazon-ssm-agent --version > /root/amazon-ssm-agent.upgraded.txt; # 3.3.2299.0 (2025-05-07)
+amazon-ssm-agent --version > /root/amazon-ssm-agent.upgraded.txt; # 3.3.2746.0 (2025-08-25)
 
 ############################
 ##### Upgrade Packages #####
