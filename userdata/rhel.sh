@@ -154,7 +154,7 @@ npm --version;
 ##################
 ##### Golang #####
 ##################
-GO_VERSION="1.24.4";
+GO_VERSION="1.25.0";
 echo "=> INSTALL GOLANG";
 echo "https://go.dev/dl/go${GO_VERSION}.linux-${ARCH2}.tar.gz";
 wget --quiet -O golang.tar.gz "https://go.dev/dl/go${GO_VERSION}.linux-${ARCH2}.tar.gz";
@@ -202,7 +202,7 @@ chmod +x /root/container_build.sh;
 ##########################
 # Alternative Path: /usr/local/lib/docker/cli-plugins
 # https://github.com/docker/compose/releases
-DOCKER_COMPOSE_VERSION="v2.36.0";
+DOCKER_COMPOSE_VERSION="v2.39.2";
 # if grep amazon:amazon_linux:2023 /etc/os-release; then
 echo "=> INSTALL DOCKER COMPOSE ${DOCKER_COMPOSE_VERSION} on AL2023";
 mkdir -p /usr/libexec/docker/cli-plugins/;
