@@ -17,24 +17,6 @@ variable "log_retention_days" {
   default = 400
 }
 
-# password must contain at least one:
-# - uppercase letter
-# - lowercase letter
-# - number
-# - special character
-variable "opensearch_password" {
-  type    = string
-  default = "REPLACEME"
-}
-
-# Valkey password requirements
-# 16 to 128 alphanumeric characters or symbols (excluding @, ", and /)
-# Input the Secrets Manager name after creating
-variable "valkey_password" {
-  type    = string
-  default = "db/valkey/password"
-}
-
 # You can use "checksum" to track and dynamically update tags
 # If you change the checksum and immediately run an "apply"
 # You'll be able to detect which resources are not in the pipeline

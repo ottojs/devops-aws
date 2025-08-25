@@ -1,4 +1,9 @@
 
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/secretsmanager_secret_version
+data "aws_secretsmanager_secret_version" "secret_password" {
+  secret_id = var.password
+}
+
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group
 resource "aws_security_group" "opensearch" {
   name        = "db-os-${var.name}"
@@ -106,7 +111,7 @@ resource "aws_opensearch_domain" "main" {
     internal_user_database_enabled = true
     master_user_options {
       master_user_name     = var.username
-      master_user_password = var.password
+      master_user_password = data.aws_secretsmanager_secret_version.secret_password.secret_string
     }
   }
 
@@ -114,6 +119,7 @@ resource "aws_opensearch_domain" "main" {
     enabled = true
   }
 
+  # https://docs.aws.amazon.com/opensearch-service/latest/APIReference/API_DomainEndpointOptions.html
   domain_endpoint_options {
     enforce_https                   = true
     tls_security_policy             = "Policy-Min-TLS-1-2-2019-07"

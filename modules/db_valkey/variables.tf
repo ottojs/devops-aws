@@ -48,7 +48,8 @@ variable "kms_key" {
   })
 }
 
-# # 16 to 128 alphanumeric characters or symbols (excluding @, ", and /)
+# This is a path to secret in Secrets Manager, do not put password here
+# 16 to 128 alphanumeric characters or symbols (excluding @, ", and /)
 variable "password" {
   type = string
 }

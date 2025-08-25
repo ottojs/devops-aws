@@ -26,6 +26,9 @@
 # # Valkey - Redis Fork/Alternative
 # # Takes about 19 minutes to create
 # # Takes about 9  minutes to destroy
+# #
+# # Password should be stored in Secrets Manager
+# # Password Requirements: 16 to 128 alphanumeric characters or symbols (excluding @, ", and /)
 # module "db_valkey" {
 #   source      = "../../modules/db_valkey"
 #   name        = "my-valkey-8"
@@ -33,7 +36,7 @@
 #   subnet_ids  = data.aws_subnets.private.ids
 #   root_domain = var.root_domain
 #   kms_key     = data.aws_kms_key.main
-#   password    = var.valkey_password
+#   password    = "db/valkey/password"
 #   tags        = var.tags
 # }
 
@@ -61,10 +64,17 @@
 # # OpenSearch - ElasticSearch Fork/Alternative
 # # Takes about 18 minutes to create
 # # Takes about 15 minutes to delete
+# #
+# # Password should be stored in Secrets Manager
+# # Password must contain at least one:
+# # - uppercase letter
+# # - lowercase letter
+# # - number
+# # - special character
 # module "db_opensearch" {
 #   source      = "../../modules/opensearch"
 #   name        = "my-search"
-#   password    = var.opensearch_password
+#   password    = "db/opensearch/password"
 #   vpc         = data.aws_vpc.main
 #   subnet_ids  = data.aws_subnets.private.ids
 #   root_domain = var.root_domain

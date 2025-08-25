@@ -42,6 +42,7 @@ variable "username" {
   default = "admin"
 }
 
+# This is a path to secret in Secrets Manager, do not put password here
 # password must contain at least one:
 # - uppercase letter
 # - lowercase letter

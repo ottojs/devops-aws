@@ -3,6 +3,7 @@
 ## Unreleased v0.9.0
 
 - Breaking: Moving Valkey password to Secrets Manager
+- Breaking: Moving OpenSearch password to Secrets Manager
 - Fix: Output ordering of VPC subnets
 - Edit: Improve module sns
 - Edit: Default log retention changed from 365 days to 400 days
