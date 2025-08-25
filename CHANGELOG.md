@@ -23,6 +23,7 @@
 - Add: Example for Debian ARM64 bastion instances
 - Add: Rocky Linux 10
 - Add: RHEL 10
+- Add: Valkey cluster mode switch selection
 - Dependencies: Upgrade provider aws to 6.10.0
 - Dependencies: Upgrade golang to v1.25.0
 - Dependencies: Upgrade PostgreSQL from v17.4 to v17.6

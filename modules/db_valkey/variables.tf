@@ -53,6 +53,13 @@ variable "password" {
   type = string
 }
 
+# Beware: This is a different mode of operation and some
+# applications may not be able to support full cluster mode
+variable "cluster_mode" {
+  type    = bool
+  default = false
+}
+
 variable "tags" {
   type = map(string)
 }

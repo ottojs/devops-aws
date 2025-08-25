@@ -14,7 +14,7 @@ resource "aws_elasticache_replication_group" "valkey" {
   auth_token_update_strategy = "SET"
   auto_minor_version_upgrade = false # TODO: Review
   automatic_failover_enabled = true
-  cluster_mode               = "enabled"
+  cluster_mode               = var.cluster_mode ? "enabled" : "disabled"
   data_tiering_enabled       = false
   engine                     = "valkey"
   engine_version             = var.engine_version
@@ -28,7 +28,7 @@ resource "aws_elasticache_replication_group" "valkey" {
   notification_topic_arn     = data.aws_sns_topic.devops.arn
   num_cache_clusters         = 2
   # num_node_groups - conflicts with num_cache_clusters
-  parameter_group_name = "default.valkey8.cluster.on" # "default.valkey8"
+  parameter_group_name = var.cluster_mode ? "default.valkey8.cluster.on" : "default.valkey8"
   port                 = "6379"
   # preferred_cache_cluster_azs
   # replicas_per_node_group - requires num_node_groups
@@ -86,7 +86,7 @@ resource "aws_route53_record" "main" {
   name    = "db-vk-${var.name}.${var.root_domain}"
   type    = "CNAME"
   ttl     = "60"
-  records = [aws_elasticache_replication_group.valkey.configuration_endpoint_address]
+  records = [var.cluster_mode ? aws_elasticache_replication_group.valkey.configuration_endpoint_address : aws_elasticache_replication_group.valkey.primary_endpoint_address]
 }
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group
