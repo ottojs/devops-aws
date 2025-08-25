@@ -6,7 +6,7 @@ resource "aws_lb_listener_rule" "default" {
   priority     = var.priority
   condition {
     host_header {
-      values = ["${var.name}.${var.root_domain}"]
+      values = concat(["${var.name}.${var.root_domain}"], var.additional_hosts)
     }
   }
   action {

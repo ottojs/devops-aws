@@ -163,6 +163,7 @@
 #   public      = true
 #   root_domain = var.root_domain
 #   priority    = 1
+#   #additional_hosts = ["something.${var.root_domain}"]
 # }
 
 # ### API WORKER ###

@@ -149,6 +149,11 @@ variable "root_domain" {
   default = "example.com"
 }
 
+variable "additional_hosts" {
+  type    = list(string)
+  default = []
+}
+
 variable "priority" {
   type    = number
   default = 1
