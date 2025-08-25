@@ -24,6 +24,7 @@
 - Add: RHEL 10
 - Dependencies: Upgrade provider aws to 6.10.0
 - Dependencies: Upgrade golang to v1.25.0
+- Dependencies: Upgrade PostgreSQL from v17.4 to v17.6
 
 ## 2025-05-21 v0.8.0
 
