@@ -1,6 +1,6 @@
 # Releases
 
-## Unreleased v0.9.0
+## 2025-08-26 v0.9.0
 
 - Removed: Redis module, use Valkey instead (license fork)
 - Removed: Resource Explorer in module "security" (create in console instead)
