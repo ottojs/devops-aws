@@ -19,6 +19,7 @@
 - Edit: Bucket Private Logging Bucket, Allow CloudWatch Logs (BucketOwnerPreferred)
 - Add: Module Bucket Public with CloudFront
 - Add: Module Kafka_MSK (experimental)
+- Add: Aurora MySQL (primary with optional readers)
 - Add: ECS Service option: additional_hosts
 - Add: Load Balancer option: waf_enabled
 - Add: VPC Endpoints to modules/vpc (S3/DynamoDB are free and enabled by default)

@@ -40,6 +40,24 @@
 #   tags        = var.tags
 # }
 
+# # MySQL Aurora
+# # Takes about 7  minutes to create
+# # Takes about 11 minutes to destroy
+# module "db_mysql_aurora" {
+#   source             = "../../modules/db_mysql_aurora"
+#   name               = "my-app"
+#   vpc                = data.aws_vpc.main
+#   kms_key_id         = data.aws_kms_key.main.arn
+#   subnet_ids         = data.aws_subnets.private.ids
+#   sns_topic          = data.aws_sns_topic.main
+#   admin_username     = "customadmin"
+#   admin_password     = "db/aurora-mysql/password"
+#   log_retention_days = var.log_retention_days
+#   dev_mode           = true
+#   tags               = var.tags
+#   #reader_instance_count = 1
+# }
+
 # # MariaDB
 # # Takes about 18 minutes to create
 # # Takes about  7 minutes to destroy, may need multiple runs
