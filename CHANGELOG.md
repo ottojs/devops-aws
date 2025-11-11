@@ -1,5 +1,8 @@
 # Releases
 
+## Unreleased
+- Dependencies: Upgrade provider aws to 6.20.0
+
 ## 2025-08-26 v0.9.0
 
 - Removed: Redis module, use Valkey instead (license fork)
