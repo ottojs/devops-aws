@@ -13,9 +13,11 @@ variable "name" {
   type = string
 }
 
+# https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/engine-versions.html
+# aws elasticache describe-cache-engine-versions --engine valkey | jq -r '.CacheEngineVersions[].EngineVersion'
 variable "engine_version" {
   type    = string
-  default = "8.1"
+  default = "8.2"
 }
 
 # https://aws.amazon.com/elasticache/pricing/

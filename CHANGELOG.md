@@ -1,8 +1,9 @@
 # Releases
 
 ## Unreleased
-- Tools: Upgrade Node.js to v24.x
-- Tools: Upgrade Golang from v1.25.0 to 1.25.4
+- Valkey: Upgrade default version from v8.1 to v8.2
+- Bastion: Upgrade Node.js to v24.x
+- Bastion: Upgrade Golang from v1.25.0 to v1.25.4
 - Bastion: Add RDS CA Certificate for PostgreSQL
 - Dependencies: Upgrade provider aws to 6.20.0
 
