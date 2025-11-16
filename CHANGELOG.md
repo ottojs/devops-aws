@@ -8,6 +8,7 @@
 - Bastion: Upgrade Golang from v1.25.0 to v1.25.4
 - Bastion: Add RDS CA Certificate for PostgreSQL
 - Dependencies: Upgrade provider aws to 6.20.0
+- Dependencies: Upgrade container example Node.js to v24.11.1
 
 ## 2025-08-26 v0.9.0
 

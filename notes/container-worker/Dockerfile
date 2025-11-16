@@ -1,4 +1,4 @@
-FROM node:22.14.0-alpine3.21
+FROM node:24.11.1-alpine
 
 USER node
 WORKDIR /home/node
