@@ -25,7 +25,7 @@ variable "name" {
 
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/PostgreSQL.Concepts.General.DBVersions.html
 # https://docs.aws.amazon.com/AmazonRDS/latest/PostgreSQLReleaseNotes/postgresql-release-calendar.html
-# aws rds describe-db-engine-versions  --engine postgres | jq '.DBEngineVersions[].EngineVersion'
+# aws rds describe-db-engine-versions --engine postgres | jq '.DBEngineVersions[].EngineVersion'
 variable "engine_version" {
   type    = string
   default = "17.6"

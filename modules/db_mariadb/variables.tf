@@ -23,7 +23,7 @@ variable "name" {
 }
 
 # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/MariaDB.Concepts.VersionMgmt.html
-# aws rds describe-db-engine-versions  --engine mariadb | jq '.DBEngineVersions[].EngineVersion'
+# aws rds describe-db-engine-versions --engine mariadb | jq '.DBEngineVersions[].EngineVersion'
 variable "engine_version" {
   type    = string
   default = "11.8.3"

@@ -1,4 +1,15 @@
 
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group
+resource "aws_cloudwatch_log_group" "postgresql" {
+  name              = "/aws/rds/instance/${var.name}/postgresql"
+  retention_in_days = var.log_retention_days
+  kms_key_id        = var.kms_key.arn
+
+  tags = merge(var.tags, {
+    Name = "db-rds-${var.name}-postgresql-logs"
+  })
+}
+
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_instance
 resource "aws_db_instance" "main" {
   allocated_storage                   = 20
@@ -27,10 +38,11 @@ resource "aws_db_instance" "main" {
   performance_insights_kms_key_id     = var.kms_key.arn
 
   # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html#gp3-storage
-  storage_type            = "gp3"
-  vpc_security_group_ids  = [aws_security_group.postgresql.id]
-  backup_retention_period = var.backup_days
-  backup_window           = "05:00-07:00" # UTC/GMT
+  storage_type                    = "gp3"
+  vpc_security_group_ids          = [aws_security_group.postgresql.id]
+  backup_retention_period         = var.backup_days
+  backup_window                   = "05:00-07:00" # UTC/GMT
+  enabled_cloudwatch_logs_exports = ["postgresql"]
 
   # TODO: Review
   engine_lifecycle_support  = "open-source-rds-extended-support-disabled"
