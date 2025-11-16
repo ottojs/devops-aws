@@ -80,6 +80,11 @@ variable "backup_days" {
   default = 7
 }
 
+variable "log_retention_days" {
+  type    = number
+  default = 7
+}
+
 variable "alert_cpu" {
   type    = number
   default = 60 # Percent

@@ -5,22 +5,28 @@
 # # PostgreSQL Database
 # # Takes about 17 minutes to create
 # # Takes about  7 minutes to destroy, may need multiple runs
+# #
+# # Connect on Bastion with:
+# # psql "postgresql://USER:PASS@ENDPOINT:5432/defaultdb"
+# #
+# # tofu import module.db_postgresql.aws_cloudwatch_log_group.postgresql /aws/rds/instance/my-postgresql-17/postgresql
 # module "db_postgresql" {
-#   source           = "../../modules/db_postgresql"
-#   name             = "my-postgresql-17"
-#   vpc              = data.aws_vpc.main
-#   subnet_ids       = data.aws_subnets.private.ids
-#   root_domain      = var.root_domain
-#   kms_key          = data.aws_kms_key.main
-#   admin_username   = "customadmin"
-#   db_name          = "defaultdb"
-#   backup_days      = 30
-#   alert_cpu        = 60  # Percent
-#   alert_memory     = 256 # MB
-#   alert_disk_space = 5   # GB
-#   alert_write_iops = 20
-#   alert_read_iops  = 100
-#   tags             = var.tags
+#   source             = "../../modules/db_postgresql"
+#   name               = "my-postgresql-17"
+#   vpc                = data.aws_vpc.main
+#   subnet_ids         = data.aws_subnets.private.ids
+#   root_domain        = var.root_domain
+#   kms_key            = data.aws_kms_key.main
+#   admin_username     = "customadmin"
+#   db_name            = "defaultdb"
+#   backup_days        = 30
+#   alert_cpu          = 60  # Percent
+#   alert_memory       = 256 # MB
+#   alert_disk_space   = 5   # GB
+#   alert_write_iops   = 20
+#   alert_read_iops    = 100
+#   log_retention_days = var.log_retention_days
+#   tags               = var.tags
 # }
 
 # # Valkey - Redis Fork/Alternative
