@@ -1,6 +1,7 @@
 # Releases
 
 ## Unreleased
+- New: Ignore terraform.tfvars
 - Fix: IAM Policy Name aws_iam_policy.policy => aws_iam_policy.block_regions
 - PostgreSQL: Add force TLS/SSL and other logging flags
 - PostgreSQL: Add explicit log stream CloudWatch resource

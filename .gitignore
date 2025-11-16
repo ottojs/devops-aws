@@ -2,6 +2,7 @@
 .terraform
 .terraform.lock.hcl
 .terraform.tfstate.lock.info
+terraform.tfvars
 *.pem
 *.ovpn
 node_modules
