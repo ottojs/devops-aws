@@ -31,7 +31,7 @@ variable "ami" {
 variable "os" {
   type        = string
   default     = "al2023"
-  description = "Operating system for the instance (al2023, rhel9, debian12, rocky9, etc.)"
+  description = "Operating system for the instance (al2023, rhel10, debian13, rocky10, etc.)"
 }
 
 variable "arch" {

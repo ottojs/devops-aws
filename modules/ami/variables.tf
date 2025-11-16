@@ -68,15 +68,19 @@ locals {
     rocky10 = "Rocky-10-EC2-Base-10.0-*"
     # https://www.debian.org/releases/
     # We add "a" at the end to catch "amd64" and "arm64", and avoid "backports"
-    debian           = "debian-12-a*"
-    debian12         = "debian-12-a*"
-    debian_12        = "debian-12-a*"
-    debian_bookworm  = "debian-12-a*"
-    debian_stable    = "debian-12-a*"
-    debian11         = "debian-11-a*"
-    debian_11        = "debian-11-a*"
-    debian_bullseye  = "debian-11-a*"
-    debian_oldstable = "debian-11-a*"
+    debian              = "debian-13-a*"
+    debian13            = "debian-13-a*"
+    debian_13           = "debian-13-a*"
+    debian_trixie       = "debian-13-a*"
+    debian_stable       = "debian-13-a*"
+    debian12            = "debian-12-a*"
+    debian_12           = "debian-12-a*"
+    debian_bookworm     = "debian-12-a*"
+    debian_oldstable    = "debian-12-a*"
+    debian11            = "debian-11-a*"
+    debian_11           = "debian-11-a*"
+    debian_bullseye     = "debian-11-a*"
+    debian_oldoldstable = "debian-11-a*"
   }
   # Note: We only use owner alias "amazon" and official Account IDs for safety purposes
   # AlmaLinux, SUSE, and more are only available in AWS Marketplace 679593333241
@@ -92,14 +96,18 @@ locals {
     rhel9                     = "amazon"
     rhel10                    = "amazon"
     debian                    = "amazon"
+    debian13                  = "amazon"
+    debian_13                 = "amazon"
+    debian_trixie             = "amazon"
+    debian_stable             = "amazon"
     debian12                  = "amazon"
     debian_12                 = "amazon"
     debian_bookworm           = "amazon"
-    debian_stable             = "amazon"
+    debian_oldstable          = "amazon"
     debian11                  = "amazon"
     debian_11                 = "amazon"
     debian_bullseye           = "amazon"
-    debian_oldstable          = "amazon"
+    debian_oldoldstable       = "amazon"
     # Rocky Linux
     # https://rockylinux.org/download
     rocky9  = "792107900819"
@@ -127,7 +135,7 @@ locals {
 variable "os" {
   type        = string
   default     = "al2023"
-  description = "Operating system for the instance (al2023, rhel9, debian12, rocky9, etc.)"
+  description = "Operating system for the instance (al2023, rhel10, debian13, rocky10, etc.)"
 
   validation {
     condition     = contains(keys(local.ami_filters), var.os)

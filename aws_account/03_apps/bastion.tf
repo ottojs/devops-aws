@@ -21,6 +21,9 @@ data "aws_iam_instance_profile" "ec2" {
 # If you need to attach an SSH Key (not recommended, except for debugging)
 # Then add the following line:
 # ssh_key = "name-of-key"
+#
+# Increase root volume disk dize by providing
+# disk_size = 80 # in GB
 
 #############################
 ##### Amazon Linux 2023 #####
@@ -59,7 +62,36 @@ data "aws_iam_instance_profile" "ec2" {
 ############################
 ##### Debian 13 Trixie #####
 ############################
-# Coming Soon
+
+# # Bastion - Debian 13 Trixie x86_64
+# module "bastion_debian13_x86_64" {
+#   source               = "../../modules/ec2"
+#   name                 = "bastion"
+#   subnet_id            = data.aws_subnets.private.ids[0]
+#   os                   = "debian13"
+#   arch                 = "x86_64"
+#   machine              = "t3a.small"
+#   security_groups      = [data.aws_security_group.main.id]
+#   iam_instance_profile = data.aws_iam_instance_profile.ec2
+#   userdata             = "../../userdata/debian.sh"
+#   kms_key              = data.aws_kms_key.main
+#   tags                 = var.tags
+# }
+
+# # Bastion - Debian 13 Trixie ARM64
+# module "bastion_debian13_arm64" {
+#   source               = "../../modules/ec2"
+#   name                 = "bastion"
+#   subnet_id            = data.aws_subnets.private.ids[0]
+#   os                   = "debian13"
+#   arch                 = "arm64"
+#   machine              = "t4g.small"
+#   security_groups      = [data.aws_security_group.main.id]
+#   iam_instance_profile = data.aws_iam_instance_profile.ec2
+#   userdata             = "../../userdata/debian.sh"
+#   kms_key              = data.aws_kms_key.main
+#   tags                 = var.tags
+# }
 
 ##############################
 ##### Debian 12 Bookworm #####
@@ -93,7 +125,6 @@ data "aws_iam_instance_profile" "ec2" {
 #   userdata             = "../../userdata/debian.sh"
 #   kms_key              = data.aws_kms_key.main
 #   tags                 = var.tags
-#   disk_size            = 80
 # }
 
 ##############################
@@ -147,7 +178,6 @@ data "aws_iam_instance_profile" "ec2" {
 #   userdata             = "../../userdata/rhel.sh"
 #   kms_key              = data.aws_kms_key.main
 #   tags                 = var.tags
-#   disk_size            = 200
 # }
 
 # # Bastion - Rocky Linux 10 ARM64
@@ -163,7 +193,6 @@ data "aws_iam_instance_profile" "ec2" {
 #   userdata             = "../../userdata/rhel.sh"
 #   kms_key              = data.aws_kms_key.main
 #   tags                 = var.tags
-#   disk_size            = 200
 # }
 
 ###################
