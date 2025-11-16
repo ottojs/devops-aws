@@ -3,6 +3,7 @@
 ## Unreleased
 - Tools: Upgrade Node.js to v24.x
 - Tools: Upgrade Golang from v1.25.0 to 1.25.4
+- Bastion: Add RDS CA Certificate for PostgreSQL
 - Dependencies: Upgrade provider aws to 6.20.0
 
 ## 2025-08-26 v0.9.0

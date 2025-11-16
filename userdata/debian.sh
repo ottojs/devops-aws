@@ -49,6 +49,10 @@ if [ "${DEBIAN_RELVER}" == "12" ]; then
   apt-get install -y valkey-tools;
 fi
 
+# RDS Certificate Authority
+mkdir /root/.postgresql;
+wget -O /root/.postgresql/root.crt https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem;
+
 #########################
 ##### Node.js v24.x #####
 #########################
