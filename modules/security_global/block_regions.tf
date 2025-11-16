@@ -1,7 +1,7 @@
 
 # https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_aws_deny-requested-region.html
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy
-resource "aws_iam_policy" "policy" {
+resource "aws_iam_policy" "block_regions" {
   name        = "block-regions"
   path        = "/"
   description = "Blocks non-US regions"

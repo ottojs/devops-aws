@@ -1,6 +1,7 @@
 # Releases
 
 ## Unreleased
+- Fix: IAM Policy Name aws_iam_policy.policy => aws_iam_policy.block_regions
 - PostgreSQL: Add force TLS/SSL and other logging flags
 - PostgreSQL: Add explicit log stream CloudWatch resource
 - Valkey: Upgrade default version from v8.1 to v8.2
