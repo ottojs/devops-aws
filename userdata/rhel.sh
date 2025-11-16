@@ -128,11 +128,11 @@ else
 fi
 
 #########################
-##### Node.js v22.x #####
+##### Node.js v24.x #####
 #########################
-# https://github.com/nodesource/distributions/blob/master/scripts/rpm/setup_22.x
+# https://github.com/nodesource/distributions/blob/master/scripts/rpm/setup_24.x
 echo "=> INSTALL NODEJS";
-NODE_VERSION="22.x";
+NODE_VERSION="24.x";
 cat << NODEJS > /etc/yum.repos.d/nodesource-nodejs.repo;
 [nodesource-nodejs]
 name=Node.js Packages for Linux RPM based distros - ${ARCH}

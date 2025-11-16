@@ -50,11 +50,11 @@ if [ "${DEBIAN_RELVER}" == "12" ]; then
 fi
 
 #########################
-##### Node.js v22.x #####
+##### Node.js v24.x #####
 #########################
-# https://github.com/nodesource/distributions/blob/master/scripts/deb/setup_22.x
+# https://github.com/nodesource/distributions/blob/master/scripts/deb/setup_24.x
 echo "=> INSTALL NODEJS";
-NODE_VERSION="22.x";
+NODE_VERSION="24.x";
 curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /usr/share/keyrings/nodesource.gpg;
 chmod 644 /usr/share/keyrings/nodesource.gpg
 cat << NODEJS > /etc/apt/sources.list.d/nodesource.list;
