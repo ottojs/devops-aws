@@ -1,6 +1,7 @@
 # Releases
 
 ## Unreleased
+- PostgreSQL: Add force TLS/SSL and other logging flags
 - Valkey: Upgrade default version from v8.1 to v8.2
 - Bastion: Upgrade Node.js to v24.x
 - Bastion: Upgrade Golang from v1.25.0 to v1.25.4

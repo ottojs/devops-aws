@@ -59,6 +59,36 @@ resource "aws_db_parameter_group" "postgresql17" {
   family = "postgres17"
 
   parameter {
+    name         = "rds.force_ssl"
+    value        = "1"
+    apply_method = "pending-reboot"
+  }
+
+  parameter {
+    name         = "password_encryption"
+    value        = "scram-sha-256"
+    apply_method = "immediate"
+  }
+
+  parameter {
+    name         = "log_connections"
+    value        = "1"
+    apply_method = "immediate"
+  }
+
+  parameter {
+    name         = "log_disconnections"
+    value        = "1"
+    apply_method = "immediate"
+  }
+
+  parameter {
+    name         = "log_checkpoints"
+    value        = "1"
+    apply_method = "pending-reboot"
+  }
+
+  parameter {
     name         = "authentication_timeout"
     value        = "10"
     apply_method = "immediate"
